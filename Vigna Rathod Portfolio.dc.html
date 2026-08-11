@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,800&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;background:var(--bg)}
+  :root{
+    --bg:#F4F4F2; --bg2:#FBFBFA; --ink:#0E0E0E; --ink2:#5A5A55; --ink3:#8E8E88;
+    --card:#FFFFFF; --line:#E7E6E1; --dot:rgba(0,0,0,.13); --grid:rgba(91,71,224,.10); --navbg:rgba(255,255,255,.82); --shadow:rgba(20,20,20,.10);
+  }
+  body.dark{
+    --bg:#0C0D10; --bg2:#121419; --ink:#F4F4F2; --ink2:#A8AAB2; --ink3:#6E7079;
+    --card:#16181E; --line:#262932; --dot:rgba(255,255,255,.07); --grid:rgba(124,224,188,.06); --navbg:rgba(18,20,25,.82); --shadow:rgba(0,0,0,.5);
+  }
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hanken Grotesk',sans-serif;-webkit-font-smoothing:antialiased;transition:background .4s,color .4s}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      radial-gradient(var(--dot) 1.5px,transparent 1.5px),
+      linear-gradient(var(--grid) 1px,transparent 1px),
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px,104px 104px,104px 104px;
+    background-position:0 0,0 0,0 0;
+    -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 60%,transparent 96%);
+    mask-image:linear-gradient(180deg,#000 0%,#000 60%,transparent 96%)}
+  ::selection{background:#6C5CE7;color:#fff}
+  a{color:inherit;text-decoration:none}
+  @keyframes floaty{0%,100%{transform:translate(0,0) var(--rot,rotate(0))}25%{transform:translate(6px,-7px) var(--rot,rotate(0))}55%{transform:translate(-5px,4px) var(--rot,rotate(0))}80%{transform:translate(4px,7px) var(--rot,rotate(0))}}
+  @keyframes drift{0%,100%{transform:translate(0,0)}22%{transform:translate(9px,-7px)}48%{transform:translate(-7px,6px)}73%{transform:translate(6px,9px)}}
+  @keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.4}}
+  @keyframes ampliLine1{0%,6%{opacity:0}14%,90%{opacity:1}98%,100%{opacity:0}}
+  @keyframes ampliLine2{0%,26%{opacity:0}34%,90%{opacity:1}98%,100%{opacity:0}}
+  @keyframes ampliLine3{0%,46%{opacity:0}54%,90%{opacity:1}98%,100%{opacity:0}}
+  @keyframes ampliLine4{0%,66%{opacity:0}74%,90%{opacity:1}98%,100%{opacity:0}}
+  .sticker{position:absolute;pointer-events:none;z-index:1;font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:clamp(13px,1.15vw,17px);padding:9px 18px;border-radius:999px;white-space:nowrap;box-shadow:0 8px 20px -8px rgba(0,0,0,.32);z-index:5;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+  .sticker:hover{transform:scale(1.08) rotate(0deg) !important;z-index:9}
+  .cursor{position:absolute;z-index:5;pointer-events:none;animation:drift 6s ease-in-out infinite}
+  .cursor:nth-of-type(1){animation-delay:0s}
+  .cursor:nth-of-type(2){animation-delay:1.4s}
+  .cursor:nth-of-type(3){animation-delay:2.8s}
+  .cursor:nth-of-type(4){animation-delay:4.1s}
+  .navpill{transition:background .25s,color .25s}
+  .toggle-opt{transition:color .25s}
+  .pill-btn{transition:transform .25s,box-shadow .25s,background .25s,border-color .25s}
+  .pill-btn:hover{transform:translateY(-2px)}
+  .workcard{transition:transform .5s cubic-bezier(.22,.7,.18,1),box-shadow .5s}
+  .workcard:hover{transform:translateY(-8px);box-shadow:0 40px 90px -45px var(--shadow)}
+  .workcard:hover .wc-go{transform:translate(5px,-5px)}
+  .wc-go{transition:transform .4s}
+  .procard{transition:transform .4s,box-shadow .4s,border-color .4s}
+  .procard:hover{transform:translateY(-5px);box-shadow:0 26px 56px -34px var(--shadow)}
+  .rescard{transition:border-color .3s,transform .35s,box-shadow .35s}
+  .rescard:hover{border-color:var(--ink);transform:translateY(-3px);box-shadow:0 20px 46px -30px var(--shadow)}
+  body.js [data-rv]{opacity:0;transform:translateY(20px)}
+  body.js [data-rv].in{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.22,.7,.18,1),transform .7s cubic-bezier(.22,.7,.18,1)}
+  .knob{transition:transform .35s cubic-bezier(.34,1.56,.64,1),background .3s}
+  @media(max-width:860px){.h1big{font-size:17vw !important}.two{grid-template-columns:1fr !important}.sticker{display:none}.cursor{display:none}}
+  .selbox{position:absolute;inset:-.06em -.04em;pointer-events:none;z-index:3;border:2px solid #5B47E0;background:rgba(91,71,224,.07);opacity:0;clip-path:inset(0 100% 100% 0);animation:marqueeLoop 6s ease-in-out .45s infinite}
+  @keyframes marqueeLoop{0%{opacity:0;clip-path:inset(0 100% 100% 0)}3%{opacity:1}13%{clip-path:inset(0 0 0 0)}90%{opacity:1;clip-path:inset(0 0 0 0)}97%{opacity:0;clip-path:inset(0 0 0 0)}100%{opacity:0;clip-path:inset(0 100% 100% 0)}}
+  @keyframes marquee{0%{opacity:0;clip-path:inset(0 100% 100% 0)}2%{opacity:1}100%{opacity:1;clip-path:inset(0 0 0 0)}}
+  .selbox .h{position:absolute;width:10px;height:10px;background:#fff;border:2px solid #5B47E0;border-radius:1px;opacity:0;animation:hPopLoop 6s ease .45s infinite}
+  .selbox .h.tl{top:-6px;left:-6px}.selbox .h.tr{top:-6px;right:-6px}.selbox .h.bl{bottom:-6px;left:-6px}.selbox .h.br{bottom:-6px;right:-6px}
+  @keyframes hPopLoop{0%,13%{opacity:0;transform:scale(0)}18%{opacity:1;transform:scale(1)}90%{opacity:1;transform:scale(1)}96%,100%{opacity:0;transform:scale(0)}}
+  .selbox .tag{position:absolute;top:-22px;left:-2px;background:#5B47E0;color:#fff;font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:11px;padding:3px 9px;border-radius:5px 5px 5px 0;white-space:nowrap;opacity:0;animation:hPopLoop 6s ease .45s infinite}
+  .pin-note{position:absolute;z-index:8;top:108%;left:50%;transform:translateX(-50%) rotate(-3deg);background:#F7B9C4;color:#2A1A1F;font-family:'Hanken Grotesk',sans-serif;font-weight:600;text-transform:none;letter-spacing:0;font-size:clamp(13px,1.4vw,18px);line-height:1.35;padding:11px 20px;border-radius:9px;box-shadow:0 16px 36px -16px rgba(0,0,0,.45);white-space:nowrap}
+  .pin-note::before{content:"";position:absolute;top:-13px;left:50%;width:2px;height:13px;background:#C98A98}
+  .pin-note::after{content:"";position:absolute;top:-20px;left:calc(50% - 4px);width:9px;height:9px;border-radius:50%;background:#C98A98}
+</style>
+</helmet>
+
+<div style="position:relative;z-index:1;min-height:100vh;background:transparent">
+
+  <!-- ============ NAV ============ -->
+  <nav style="position:fixed;top:18px;left:0;right:0;z-index:50;display:flex;justify-content:center;pointer-events:none">
+    <div style="display:flex;align-items:center;gap:10px;pointer-events:auto">
+      <div onClick="{{ goHome }}" style="cursor:pointer;width:54px;height:54px;border-radius:50%;background:var(--card);border:1px solid var(--line);box-shadow:0 8px 22px -12px var(--shadow);display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:900;font-size:24px;backdrop-filter:blur(8px)">V<span style="color:#F2C200">.</span></div>
+      <div style="display:flex;align-items:center;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px;box-shadow:0 8px 22px -12px var(--shadow);backdrop-filter:blur(8px)">
+        <div onClick="{{ goHome }}" class="navpill" style="cursor:pointer;padding:9px 22px;border-radius:999px;font-weight:600;font-size:15px;background:{{ homePillBg }};color:{{ homePillInk }}">Work</div>
+        <div onClick="{{ goAbout }}" class="navpill" style="cursor:pointer;padding:9px 22px;border-radius:999px;font-weight:600;font-size:15px;background:{{ aboutPillBg }};color:{{ aboutPillInk }}">About</div>
+      </div>
+      <div onClick="{{ toggleTheme }}" class="pill-btn" style="cursor:pointer;width:58px;height:54px;border-radius:999px;background:var(--card);border:1px solid var(--line);box-shadow:0 8px 22px -12px var(--shadow);display:flex;align-items:center;padding:0 6px;backdrop-filter:blur(8px)">
+        <div class="knob" style="width:42px;height:42px;border-radius:50%;background:{{ knobBg }};display:flex;align-items:center;justify-content:center;transform:translateX({{ knobX }})">
+          <span style="font-size:19px">{{ themeIcon }}</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main style="max-width:1180px;margin:0 auto;padding:128px 32px 60px">
+
+  <!-- ================= HOME ================= -->
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <div>
+
+    <!-- HERO -->
+    <section style="position:relative;text-align:center;padding:20px 0 40px;min-height:62vh">
+      <svg class="cursor" style="top:10%;left:14%" width="30" height="30" viewBox="0 0 24 24" fill="#6C5CE7" stroke="#fff" stroke-width="1.5"><path d="M5 3l14 7-6 2-2 6z"/></svg>
+      <svg class="cursor" style="top:18%;right:13%" width="30" height="30" viewBox="0 0 24 24" fill="#1FA0FF" stroke="#fff" stroke-width="1.5"><path d="M5 3l14 7-6 2-2 6z"/></svg>
+      <svg class="cursor" style="top:46%;left:11%" width="30" height="30" viewBox="0 0 24 24" fill="#E5326E" stroke="#fff" stroke-width="1.5"><path d="M5 3l14 7-6 2-2 6z"/></svg>
+      <svg class="cursor" style="bottom:26%;right:16%" width="30" height="30" viewBox="0 0 24 24" fill="#F5B312" stroke="#fff" stroke-width="1.5"><path d="M5 3l14 7-6 2-2 6z"/></svg>
+
+      <span class="sticker" style="top:6%;left:6%;background:#CDB4F0;color:#2A1A4A;--rot:rotate(-4deg);transform:rotate(-4deg);animation:floaty 6s ease-in-out infinite">Insight Signals</span>
+      <span class="sticker" style="top:12%;right:4%;background:#1FA0FF;color:#fff;--rot:rotate(4deg);transform:rotate(4deg);animation:floaty 7s ease-in-out infinite .4s">System Friction</span>
+      <span class="sticker" style="top:36%;left:1%;background:#E5326E;color:#fff;--rot:rotate(-5deg);transform:rotate(-5deg);animation:floaty 6.5s ease-in-out infinite .2s">Trust &amp; Retention</span>
+      <span class="sticker" style="top:32%;right:1%;background:#F5B312;color:#2A1A00;--rot:rotate(3deg);transform:rotate(3deg);animation:floaty 7.4s ease-in-out infinite .6s">User Intent</span>
+
+      <div style="position:relative;display:inline-block;text-align:center">
+        <h1 class="h1big" style="font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(46px,9vw,132px);line-height:.84;letter-spacing:-.04em;text-transform:uppercase;margin:0;color:var(--ink)">
+          <span style="position:relative;display:inline-block">DESIGN<span class="selbox" aria-hidden="true"><span class="h tl"></span><span class="h tr"></span><span class="h bl"></span><span class="h br"></span><span class="tag">Design</span></span></span> <span style="position:relative;display:inline-block">&amp;<span style="position:absolute;top:-6%;left:118%;width:.62em;height:.62em">
+            <svg viewBox="0 0 54 54" width="100%" height="100%"><path fill="#7CE0BC" d="M27 0l5 9 9-5-5 9 9 5-9 5 5 9-9-5-5 9-5-9-9 5 5-9-9-5 9-5-5-9 9 5z"/></svg></span></span><br>
+          <span style="color:#5B47E0;-webkit-text-stroke:0;display:inline-block;margin-top:.04em">DEC<span style="position:relative;display:inline-block">I<span class="pin-note">Hello! I'm Vigna,<br>Lead UX Designer</span></span>DE</span>
+        </h1>
+      </div>
+
+      <p data-rv style="margin:104px auto 0;font-size:clamp(17px,1.7vw,21px);line-height:1.6;color:var(--ink2);max-width:64ch">With <strong style="color:var(--ink)">6+ years of experience</strong>, I turn complex, high-stakes workflows into products people actually want to use, across <strong style="color:var(--ink)">healthcare, SaaS, analytics, fintech &amp; enterprise</strong>. Currently leading UX for <strong style="color:var(--ink)">TruFlo</strong>, building omnichannel and AI-powered experiences from 0 to 1. Previously led a team of 3 on a UK care platform that <strong style="color:var(--ink)">improved task completion by 25%</strong>.</p>
+
+      <div data-rv style="display:flex;flex-wrap:wrap;gap:13px;justify-content:center;margin-top:34px">
+        <div onClick="{{ scrollWork }}" class="pill-btn" style="cursor:pointer;background:var(--ink);color:var(--bg);font-weight:700;font-size:16px;padding:15px 30px;border-radius:999px;display:inline-flex;align-items:center;gap:9px">View My Work ↓</div>
+        <a class="pill-btn" href="mailto:vignarathod122@gmail.com?subject=Resume%20request" style="background:var(--card);border:1px solid var(--line);font-weight:700;font-size:16px;padding:15px 30px;border-radius:999px">Download Resume</a>
+      </div>
+    </section>
+
+    <!-- FEATURED WORK -->
+    <section id="work" style="scroll-margin-top:110px;padding-top:50px">
+      <h2 data-rv style="font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(38px,5.2vw,72px);letter-spacing:-.03em;text-align:center;margin:0 0 48px">Featured Work</h2>
+
+      <div style="display:flex;flex-direction:column;gap:30px">
+        <sc-for list="{{ cases }}" as="c" hint-placeholder-count="4">
+          <div data-rv onClick="{{ c.open }}" class="workcard" style="cursor:pointer;border-radius:30px;overflow:hidden;background:{{ c.grad }};border:1px solid var(--line);padding:44px 46px 0">
+            <div class="two" style="display:grid;grid-template-columns:0.95fr 1.05fr;gap:30px;align-items:start">
+              <div style="padding-bottom:44px">
+                <div style="display:flex;align-items:center;gap:9px;font-family:'Hanken Grotesk';font-weight:600;font-size:14.5px;color:{{ c.metaInk }};margin-bottom:18px"><span>{{ c.kicker1 }}</span><span style="width:5px;height:5px;border-radius:50%;background:{{ c.accent }}"></span><span>{{ c.kicker2 }}</span></div>
+                <h3 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(26px,2.9vw,38px);line-height:1.04;letter-spacing:-.02em;margin:0 0 18px;color:#15131F">{{ c.title }}</h3>
+                <p style="margin:0 0 22px;font-size:16.5px;line-height:1.55;color:{{ c.bodyInk }};max-width:42ch">{{ c.cardDesc }}</p>
+                <div style="display:flex;flex-wrap:wrap;gap:9px;margin-bottom:26px">
+                  <sc-for list="{{ c.chips }}" as="ch" hint-placeholder-count="3"><span style="font-size:13px;font-weight:600;color:#15131F;background:rgba(255,255,255,.6);border-radius:999px;padding:7px 14px">{{ ch }}</span></sc-for>
+                </div>
+                <span style="display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:15.5px;color:#15131F">View Case Study <span class="wc-go" style="display:inline-flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#15131F" stroke-width="2.2"><path d="M7 17 17 7M9 7h8v8"/></svg></span></span>
+              </div>
+              <div style="position:relative;align-self:end;height:352px;border-radius:18px 18px 0 0;background:{{ c.mockBg }};border:1px solid rgba(0,0,0,.06);border-bottom:none;overflow:hidden;display:flex;align-items:flex-end;justify-content:center">
+                <span style="position:absolute;bottom:-12%;right:-4%;font-family:'Archivo',sans-serif;font-weight:900;font-size:160px;line-height:.7;letter-spacing:-.05em;color:{{ c.ghost }};text-transform:uppercase;pointer-events:none">{{ c.short }}</span>
+                <sc-if value="{{ c.preview }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:relative;z-index:1;width:76%;max-width:240px;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -20px 46px -22px rgba(20,20,20,.28);padding:12px 13px 0;margin-top:10px;border:1px solid rgba(0,0,0,.05);border-bottom:none">
+                    <div style="display:flex;align-items:center;gap:9px;padding-bottom:12px;border-bottom:1px solid #F1EAE5">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B655F" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg>
+                      <div style="position:relative;width:28px;height:28px;flex-shrink:0">
+                        <svg width="28" height="28" viewBox="0 0 28 28"><defs><linearGradient id="ep-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7A5CD0"/><stop offset="1" stop-color="#494FC9"/></linearGradient></defs><circle cx="14" cy="14" r="14" fill="url(#ep-grad)"/><text x="14" y="18.5" text-anchor="middle" font-family="Archivo" font-weight="800" font-size="11" fill="#fff">EP</text></svg>
+                        <span style="position:absolute;bottom:0;right:0;width:7px;height:7px;border-radius:50%;background:#1FA56B;border:1.5px solid #fff"></span>
+                      </div>
+                      <span style="font-family:'Archivo';font-weight:800;font-size:13px;color:#15131F;flex:1">Erin Press</span>
+                      <span style="font-size:13px;color:#B8A99D;letter-spacing:1px">⋮</span>
+                    </div>
+                    <div style="padding:9px 0 7px">
+                      <div style="text-align:center;font-size:8.5px;color:#A99A8E;margin-bottom:7px">23 September</div>
+                      <div style="background:#FBF6F3;border:1px solid #F1E6DF;border-radius:9px;padding:6px 9px;font-size:9px;line-height:1.35;color:#6B655F;margin-bottom:7px">Erin applied for <strong style="color:#4A4038">Hourly care</strong>. <span style="color:#7A5CD0;font-weight:700">View</span></div>
+                      <div style="display:flex;justify-content:flex-end;margin-bottom:6px"><div style="background:#F1EAE5;border-radius:11px 11px 2px 11px;padding:6px 10px;font-size:9.5px;line-height:1.35;color:#3A332D;max-width:78%">Are you available on these dates?</div></div>
+                      <div style="display:flex;justify-content:flex-start;margin-bottom:6px"><div style="background:linear-gradient(150deg,#8A6EE0,#494FC9);border-radius:11px 11px 11px 2px;padding:6px 10px;font-size:9.5px;line-height:1.35;color:#fff;max-width:78%">Yes, I am available!</div></div>
+                      <div style="display:flex;justify-content:flex-start"><div style="display:flex;align-items:center;gap:6px;background:#F4EFEC;border-radius:11px 11px 11px 2px;padding:6px 9px;max-width:82%">
+                        <span style="width:18px;height:18px;border-radius:50%;background:#494FC9;flex-shrink:0;display:flex;align-items:center;justify-content:center"><svg width="8" height="8" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span>
+                        <span style="display:flex;align-items:center;gap:1.5px;flex:1"><span style="width:2px;height:5px;background:#C7BEEA;border-radius:1px"></span><span style="width:2px;height:9px;background:#C7BEEA;border-radius:1px"></span><span style="width:2px;height:6px;background:#C7BEEA;border-radius:1px"></span><span style="width:2px;height:11px;background:#9E8FE0;border-radius:1px"></span><span style="width:2px;height:7px;background:#C7BEEA;border-radius:1px"></span><span style="width:2px;height:10px;background:#C7BEEA;border-radius:1px"></span><span style="width:2px;height:5px;background:#C7BEEA;border-radius:1px"></span><span style="width:2px;height:8px;background:#C7BEEA;border-radius:1px"></span><span style="width:2px;height:4px;background:#C7BEEA;border-radius:1px"></span><span style="width:2px;height:9px;background:#C7BEEA;border-radius:1px"></span></span>
+                        <span style="font-size:8px;color:#8A8078">1:52</span>
+                      </div></div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:7px;background:#EDE9FB;border-radius:9px;padding:7px 9px;margin-top:10px;margin-bottom:9px">
+                      <span style="font-size:10px">📅</span><span style="font-size:9px;font-weight:700;color:#494FC9;flex:1">Schedule a meeting</span><span style="color:#494FC9;font-size:10px">›</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;border-top:1px solid #F1EAE5;padding:10px 0 12px;margin:0 -13px;padding-left:13px;padding-right:13px">
+                      <span style="flex:1;font-size:9.5px;color:#B8A99D">Type here…</span>
+                      <span style="width:24px;height:24px;border-radius:50%;background:#494FC9;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></span>
+                    </div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ c.ampliPreview }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:relative;z-index:1;width:88%;max-width:300px;background:#fff;border-radius:18px 18px 0 0;box-shadow:0 -20px 46px -22px rgba(20,20,20,.28);padding:16px 16px 0;margin-top:10px;border:1px solid rgba(0,0,0,.05);border-bottom:none">
+                    <div style="display:flex;align-items:center;gap:7px;margin-bottom:12px">
+                      <span style="width:15px;height:15px;border-radius:4px;background:#EA6A2E;flex-shrink:0"></span>
+                      <span style="font-size:11px;font-weight:700;color:#15131F">Home</span>
+                      <span style="margin-left:auto;font-size:10.5px;font-weight:700;color:#fff;background:#EA6A2E;border-radius:999px;padding:5px 10px">1W</span>
+                      <span style="font-size:10.5px;font-weight:600;color:#8792a2;padding:5px 6px">1M</span>
+                    </div>
+                    <div style="display:flex;gap:8px;margin-bottom:12px">
+                      <div style="flex:1;background:#fff;border:1px solid #EEEBE8;border-radius:10px;padding:8px 10px">
+                        <div style="font-size:9px;color:#8792a2;font-weight:700;text-transform:uppercase;letter-spacing:.04em">GMV</div>
+                        <div style="font-size:15px;font-weight:800;color:#15131F">₹9.0L</div>
+                        <div style="font-size:9.5px;color:#1FA56B;font-weight:700">↑5.9%</div>
+                      </div>
+                      <div style="flex:1;background:#fff;border:1px solid #EEEBE8;border-radius:10px;padding:8px 10px">
+                        <div style="font-size:9px;color:#8792a2;font-weight:700;text-transform:uppercase;letter-spacing:.04em">TACOS</div>
+                        <div style="font-size:15px;font-weight:800;color:#15131F">4.7</div>
+                        <div style="font-size:9.5px;color:#1FA56B;font-weight:700">↑5.9%</div>
+                      </div>
+                      <div style="flex:1;background:#fff;border:1px solid #EEEBE8;border-radius:10px;padding:8px 10px">
+                        <div style="font-size:9px;color:#8792a2;font-weight:700;text-transform:uppercase;letter-spacing:.04em">SKU Avail.</div>
+                        <div style="font-size:15px;font-weight:800;color:#15131F">75%</div>
+                        <div style="font-size:9.5px;color:#1FA56B;font-weight:700">↑5.9%</div>
+                      </div>
+                    </div>
+                    <svg width="100%" height="82" viewBox="0 0 268 82" style="display:block">
+                      <path d="M0,44 C30,20 60,32 90,40 C120,46 150,10 180,22 C210,32 240,50 268,18 L268,82 L0,82 Z" fill="#EA6A2E" opacity="0.12"></path>
+                      <polyline points="0,44 30,20 60,32 90,40 120,46 150,10 180,22 210,32 240,50 268,18" fill="none" stroke="#EA6A2E" stroke-width="2.5"></polyline>
+                      <polyline points="0,60 30,54 60,58 90,56 120,60 150,48 180,52 210,56 240,60 268,50" fill="none" stroke="#EA6A2E" stroke-width="1.6" stroke-dasharray="3 3" opacity="0.55"></polyline>
+                    </svg>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ c.shotPreview }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:relative;z-index:1;width:92%;max-width:320px;border-radius:14px 14px 0 0;overflow:hidden;box-shadow:0 -20px 46px -22px rgba(20,20,20,.28);margin-top:10px;border:1px solid rgba(0,0,0,.05);border-bottom:none">
+                    <img src="ordestra-assets/screen-picking.png" alt="{{ c.shotLabel }}" style="width:100%;height:200px;object-fit:cover;object-position:top;display:block" />
+                  </div>
+                </sc-if>
+                <sc-if value="{{ c.noPreview }}" hint-placeholder-val="{{ true }}">
+                  <div style="position:relative;z-index:1;text-align:center">
+                    <div style="width:60px;height:60px;border-radius:16px;background:{{ c.logoBg }};color:{{ c.logoInk }};display:flex;align-items:center;justify-content:center;font-family:'Archivo';font-weight:800;font-size:20px;margin:0 auto 14px">{{ c.mono }}</div>
+                    <div style="font-family:'Hanken Grotesk';font-weight:600;font-size:12.5px;letter-spacing:.04em;color:rgba(21,19,31,.55)">[ {{ c.shotLabel }} ]</div>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- BIG OUTCOME STRIP -->
+    <section data-rv style="margin-top:60px;border-radius:30px;background:var(--ink);color:var(--bg);padding:54px 48px">
+      <div style="font-family:'Hanken Grotesk';font-weight:600;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:34px">By the numbers</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px" class="two">
+        <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+          <div style="border-left:3px solid {{ s.c }};padding-left:20px">
+            <div style="font-family:'Archivo';font-weight:900;font-size:clamp(40px,4.6vw,62px);line-height:1;letter-spacing:-.03em;color:{{ s.c }}">{{ s.v }}</div>
+            <div style="font-size:14.5px;color:var(--bg);opacity:.78;margin-top:10px;line-height:1.4">{{ s.l }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section style="text-align:center;padding:96px 0 30px">
+      <h2 data-rv style="font-family:'Archivo';font-weight:900;font-size:clamp(40px,6.4vw,96px);line-height:.98;letter-spacing:-.035em;margin:0 auto 26px;max-width:14ch">Let's build something worth using.</h2>
+      <p data-rv style="font-size:18px;line-height:1.6;color:var(--ink2);max-width:48ch;margin:0 auto 36px">Open to Lead UX Designer and Senior Product Designer roles, plus select consulting. Always up for a good conversation.</p>
+      <div data-rv style="display:flex;flex-wrap:wrap;gap:13px;justify-content:center">
+        <a class="pill-btn" href="mailto:vignarathod122@gmail.com" style="background:#6C5CE7;color:#fff;font-weight:700;font-size:16px;padding:15px 32px;border-radius:999px">Say Hi</a>
+        <a class="pill-btn" href="https://linkedin.com/in/vigna-rathod" target="_blank" style="background:var(--card);border:1px solid var(--line);font-weight:700;font-size:16px;padding:15px 30px;border-radius:999px">LinkedIn</a>
+        <a class="pill-btn" href="https://instagram.com/vignarathod" target="_blank" style="background:var(--card);border:1px solid var(--line);font-weight:700;font-size:16px;padding:15px 30px;border-radius:999px">Instagram</a>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ================= ABOUT ================= -->
+  <sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
+  <div>
+    <!-- intro -->
+    <section style="display:grid;grid-template-columns:1fr 0.92fr;gap:54px;align-items:center;padding-top:10px" class="two">
+      <div data-rv>
+        <h1 style="font-family:'Archivo';font-weight:800;font-size:clamp(30px,3.6vw,46px);letter-spacing:-.025em;line-height:1.08;margin:0 0 22px">Hi, I'm Vigna, Lead UX Designer</h1>
+        <p style="font-size:19px;line-height:1.65;color:var(--ink2);margin:0 0 22px">I've spent 6.5 years designing products that work for people navigating genuinely complex systems. My job isn't to make things pretty. It's to make sure the right person can do the right thing without friction getting in the way.</p>
+        <div style="display:inline-flex;flex-wrap:wrap;gap:9px">
+          <sc-for list="{{ domains }}" as="d" hint-placeholder-count="5"><span style="font-size:13.5px;font-weight:600;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 15px">{{ d }}</span></sc-for>
+        </div>
+      </div>
+      <div data-rv style="position:relative">
+        <div style="aspect-ratio:4/4.4;border-radius:24px;background:linear-gradient(150deg,#6C5CE7,#9E3F2C);display:flex;align-items:center;justify-content:center">
+          <span style="font-family:'Archivo';font-weight:800;font-size:13px;color:rgba(255,255,255,.9);text-align:center;line-height:1.5;letter-spacing:.04em">[ PORTRAIT ]<br>full-bleed photo</span>
+        </div>
+        <div style="position:absolute;bottom:18px;left:18px;background:#6C5CE7;color:#fff;border-radius:14px;padding:16px 20px;max-width:62%">
+          <div style="font-size:12.5px;opacity:.8;margin-bottom:5px">Experience Across Domains</div>
+          <div style="font-weight:700;font-size:15.5px;line-height:1.4">Healthcare · Fintech · SaaS<br>Analytics · Enterprise</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MY STORY -->
+    <section style="display:grid;grid-template-columns:0.8fr 1.2fr;gap:54px;padding-top:96px" class="two">
+      <div data-rv>
+        <div style="font-size:15px;color:var(--ink3);margin-bottom:16px">My Story</div>
+        <h2 style="font-family:'Archivo';font-weight:800;font-size:clamp(34px,4.4vw,58px);letter-spacing:-.03em;line-height:1.02;margin:0">People, Patterns, &amp; Perspective</h2>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:34px">
+        <sc-for list="{{ story }}" as="s" hint-placeholder-count="3">
+          <div data-rv style="display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start">
+            <div style="width:44px;height:44px;border-radius:12px;background:{{ s.iconBg }};color:{{ s.iconInk }};display:flex;align-items:center;justify-content:center;font-size:20px">{{ s.icon }}</div>
+            <div>
+              <h3 style="font-family:'Archivo';font-weight:700;font-size:21px;letter-spacing:-.01em;margin:0 0 9px">{{ s.h }}</h3>
+              <p style="margin:0;font-size:16.5px;line-height:1.65;color:var(--ink2)">{{ s.b }}</p>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- PROCESS STRATEGY -->
+    <section style="margin-top:96px;border-radius:30px;background:linear-gradient(160deg,var(--bg2),var(--bg));border:1px solid var(--line);padding:60px 44px">
+      <div style="text-align:center;margin-bottom:46px">
+        <h2 data-rv style="font-family:'Archivo';font-weight:900;font-size:clamp(36px,5vw,68px);letter-spacing:-.03em;margin:0 0 18px">How I Think</h2>
+        <p data-rv style="font-size:18px;line-height:1.6;color:var(--ink2);max-width:60ch;margin:0 auto">Leading design at scale takes more than craft. It takes the ability to frame the right problem, navigate ambiguity, and orchestrate complex systems.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px" class="two">
+        <sc-for list="{{ process }}" as="p" hint-placeholder-count="4">
+          <div data-rv class="procard" style="background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px 26px">
+            <div style="width:42px;height:42px;border-radius:11px;background:{{ p.iconBg }};color:{{ p.iconInk }};display:flex;align-items:center;justify-content:center;font-size:19px;margin-bottom:22px">{{ p.icon }}</div>
+            <h3 style="font-family:'Archivo';font-weight:700;font-size:20px;letter-spacing:-.01em;line-height:1.12;margin:0 0 12px">{{ p.h }}</h3>
+            <p style="margin:0;font-size:15px;line-height:1.6;color:var(--ink2)">{{ p.b }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- PROFESSIONAL HISTORY -->
+    <section style="padding-top:96px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:end;margin-bottom:42px" class="two">
+        <div data-rv>
+          <div style="font-size:15px;color:var(--ink3);margin-bottom:14px">Professional History</div>
+          <h2 style="font-family:'Archivo';font-weight:800;font-size:clamp(32px,4.2vw,54px);letter-spacing:-.03em;line-height:1.02;margin:0">6+ years across complex systems</h2>
+        </div>
+        <p data-rv style="font-size:17px;line-height:1.6;color:var(--ink2);margin:0">A series of deep dives across industries, always chasing the core human needs beneath the technical noise, and leading the design from discovery to shipped product.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px" class="two">
+        <sc-for list="{{ resume }}" as="r" hint-placeholder-count="5">
+          <div data-rv class="rescard" style="border:1px solid color-mix(in srgb, {{ r.accent }} 30%, var(--line));border-radius:20px;padding:30px 30px;background:color-mix(in srgb, {{ r.accent }} 9%, var(--card))">
+            <div style="width:48px;height:48px;border-radius:13px;background:{{ r.logoBg }};color:{{ r.logoInk }};display:flex;align-items:center;justify-content:center;font-family:'Archivo';font-weight:800;font-size:15px;margin-bottom:24px">{{ r.mono }}</div>
+            <div style="display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:5px">
+              <h3 style="font-family:'Archivo';font-weight:800;font-size:21px;letter-spacing:-.015em;margin:0">{{ r.org }}</h3>
+              <span style="font-size:14px;color:var(--ink3)">{{ r.period }}</span>
+            </div>
+            <div style="font-size:14.5px;font-weight:600;color:{{ r.accent }};margin-bottom:12px">{{ r.role }}</div>
+            <p style="margin:0;font-size:15.5px;line-height:1.6;color:var(--ink2)">{{ r.desc }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- BELIEFS -->
+    <section style="display:grid;grid-template-columns:0.8fr 1.2fr;gap:54px;padding-top:96px" class="two">
+      <div data-rv>
+        <div style="font-size:15px;color:var(--ink3);margin-bottom:14px">What I stand for</div>
+        <h2 style="font-family:'Archivo';font-weight:800;font-size:clamp(32px,4.2vw,52px);letter-spacing:-.03em;line-height:1.04;margin:0">A point of view, not just a process</h2>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <sc-for list="{{ beliefs }}" as="b" hint-placeholder-count="3">
+          <div data-rv style="padding:28px 0;border-top:1px solid var(--line)">
+            <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:10px"><span style="font-family:'Archivo';font-weight:800;font-size:14px;color:#6C5CE7">{{ b.n }}</span><h3 style="font-family:'Archivo';font-weight:700;font-size:21px;letter-spacing:-.015em;margin:0;line-height:1.18">{{ b.h }}</h3></div>
+            <p style="margin:0 0 0 30px;font-size:16.5px;line-height:1.65;color:var(--ink2)">{{ b.b }}</p>
+          </div>
+        </sc-for>
+        <div style="border-top:1px solid var(--line)"></div>
+      </div>
+    </section>
+
+    <!-- CONTACT (about) -->
+    <section style="text-align:center;padding:96px 0 30px">
+      <h2 data-rv style="font-family:'Archivo';font-weight:900;font-size:clamp(38px,6vw,86px);line-height:.98;letter-spacing:-.035em;margin:0 auto 22px;max-width:14ch">Let's talk.</h2>
+      <p data-rv style="font-size:18px;line-height:1.6;color:var(--ink2);max-width:46ch;margin:0 auto 34px">Whether you have a role, a project, or just want to exchange ideas, I'm always open to a good conversation.</p>
+      <div data-rv style="display:flex;flex-wrap:wrap;gap:13px;justify-content:center">
+        <a class="pill-btn" href="mailto:vignarathod122@gmail.com" style="background:#6C5CE7;color:#fff;font-weight:700;font-size:16px;padding:15px 32px;border-radius:999px">vignarathod122@gmail.com</a>
+        <a class="pill-btn" href="tel:+918460821631" style="background:var(--card);border:1px solid var(--line);font-weight:700;font-size:16px;padding:15px 30px;border-radius:999px">+91 8460821631</a>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ============ CURAM CARE — FULL CASE STUDY ============ -->
+  <sc-if value="{{ isCuram }}" hint-placeholder-val="{{ false }}">
+  <div>
+    <div onClick="{{ goHome }}" class="pill-btn" style="cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14px;color:var(--ink2);margin-bottom:24px">← All work</div>
+
+    <!-- HERO -->
+    <div style="position:relative;border-radius:30px;overflow:hidden;background:linear-gradient(135deg,#FCE9DF,#F3D9EC);padding:56px 50px;min-height:340px;display:flex;flex-direction:column;justify-content:center;margin-bottom:34px">
+      <span style="position:absolute;top:-14%;right:-2%;font-family:'Archivo';font-weight:900;font-size:clamp(120px,18vw,260px);line-height:.78;letter-spacing:-.05em;color:rgba(192,85,47,.13);text-transform:uppercase;pointer-events:none;text-align:right">Curam</span>
+      <div style="position:relative;z-index:1;max-width:74%">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px"><div style="width:52px;height:52px;border-radius:14px;background:#D2603E;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Archivo';font-weight:800;font-size:17px">CC</div><div style="font-family:'Hanken Grotesk';font-weight:600;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:rgba(21,19,31,.55)">UX Case Study · Curam Care · 2022–2023</div></div>
+        <h2 style="font-family:'Archivo';font-weight:900;font-size:clamp(29px,4vw,50px);line-height:1.02;letter-spacing:-.03em;margin:0 0 18px;color:#15131F">Designing trust into a two-sided care marketplace, one manual process at a time.</h2>
+        <p style="margin:0;font-size:18.5px;line-height:1.5;color:#3A3340;max-width:56ch">A ten-month research-to-redesign engagement that found why carers were leaving a UK care platform, then rebuilt onboarding, job discovery, messaging, and the design system to fix it for both sides of the marketplace.</p>
+      </div>
+    </div>
+
+    <!-- META -->
+    <div style="display:flex;flex-wrap:wrap;gap:26px 52px;padding:0 4px 30px;border-bottom:1px solid var(--line);margin-bottom:20px">
+      <div><div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;margin:0 0 6px">Role</div><div style="font-size:16px;font-weight:600">Lead Product Designer</div></div>
+      <div><div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;margin:0 0 6px">Team</div><div style="font-size:16px;font-weight:600">1 lead + 3 designers</div></div>
+      <div><div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;margin:0 0 6px">Duration</div><div style="font-size:16px;font-weight:600">10 months</div></div>
+      <div><div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;margin:0 0 6px">Platform</div><div style="font-size:16px;font-weight:600">Web · iOS · Android</div></div>
+    </div>
+
+    <!-- SCOPE STAT BAND -->
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:52px">
+      <div style="flex:1;min-width:150px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px"><div style="font-family:'Archivo';font-weight:900;font-size:38px;letter-spacing:-.03em;line-height:1;color:#C0552F">19</div><div style="font-size:13.5px;color:var(--ink2);margin-top:8px;line-height:1.4">problem areas mapped across the lifecycle</div></div>
+      <div style="flex:1;min-width:150px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px"><div style="font-family:'Archivo';font-weight:900;font-size:38px;letter-spacing:-.03em;line-height:1;color:#1FA56B">4</div><div style="font-size:13.5px;color:var(--ink2);margin-top:8px;line-height:1.4">workstreams delivered in 10 months</div></div>
+      <div style="flex:1;min-width:150px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px"><div style="font-family:'Archivo';font-weight:900;font-size:38px;letter-spacing:-.03em;line-height:1;color:#2456E6">2</div><div style="font-size:13.5px;color:var(--ink2);margin-top:8px;line-height:1.4">sides of the marketplace redesigned</div></div>
+      <div style="flex:1;min-width:150px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px"><div style="font-family:'Archivo';font-weight:900;font-size:38px;letter-spacing:-.03em;line-height:1;color:#B03A76">3</div><div style="font-size:13.5px;color:var(--ink2);margin-top:8px;line-height:1.4">designers led, plus the design system owned</div></div>
+    </div>
+
+    <div style="max-width:900px;margin:0 auto">
+
+      <!-- 01 CONTEXT -->
+      <section style="margin-bottom:56px">
+        <div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px">01 · Context &amp; the problem</div>
+        <h3 style="font-family:'Archivo';font-weight:800;font-size:clamp(25px,3vw,37px);letter-spacing:-.025em;line-height:1.08;margin:0 0 16px;max-width:20ch">Independence for carers, built on invisible manual work.</h3>
+        <p style="margin:0 0 8px;font-size:17.5px;line-height:1.7;color:var(--ink2);max-width:70ch">Curam lets care receivers post jobs and independent carers choose which to take, better pay and autonomy than a traditional agency. I led design for ten months across the carer app, the receiver app, and the design system underneath both.</p>
+        <ul style="list-style:none;margin:20px 0 0;padding:0;display:flex;flex-direction:column;gap:12px;max-width:72ch">
+          <li style="display:flex;gap:12px;font-size:16.5px;line-height:1.6;color:var(--ink2)"><span style="color:#C0552F;font-weight:800;flex-shrink:0">→</span><span>Stakeholders' working theory: carers were leaving because they weren't "tech-savvy enough."</span></li>
+          <li style="display:flex;gap:12px;font-size:16.5px;line-height:1.6;color:var(--ink2)"><span style="color:#C0552F;font-weight:800;flex-shrink:0">→</span><span>My job was to test that theory first, a research-led engagement, not a straight redesign.</span></li>
+          <li style="display:flex;gap:12px;font-size:16.5px;line-height:1.6;color:var(--ink2)"><span style="color:#C0552F;font-weight:800;flex-shrink:0">→</span><span>It turned out to be almost entirely wrong.</span></li>
+        </ul>
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:30px 30px 26px;margin-top:26px;padding:24px 26px">
+          <div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;color:var(--ink3);margin-bottom:10px">A note on the two sides of this marketplace</div>
+          <p style="margin:0;font-size:15.5px;line-height:1.65;color:var(--ink2)">Formal research here is <strong style="color:var(--ink)">carer-side</strong>, carers were the group leaving, so that's where discovery started. But carer interviews kept surfacing problems only a <strong style="color:var(--ink)">care-receiver-facing</strong> redesign could fix. So this study also covers receiver-side design reasoning and the shared systems work. Every section is tagged with whose experience it covers.</p>
+        </div>
+        <div style="border-left:3px solid #C0552F;padding:6px 0 6px 26px;margin:30px 0 0;font-family:'Archivo';font-weight:500;font-size:clamp(19px,2.2vw,25px);line-height:1.4;letter-spacing:-.01em;color:var(--ink);max-width:30ch">A platform built to feel like independence for the carer, running on a stack of manual, back-office decisions neither side could see.</div>
+
+        <!-- PHASE TIMELINE -->
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:30px 30px 26px;margin-top:32px">
+          <div style="font-family:'Archivo';font-weight:800;font-size:20px;letter-spacing:-.01em;color:var(--ink);margin-bottom:24px">Ten months, four phases</div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px" class="two">
+            <sc-for list="{{ phases }}" as="p" hint-placeholder-count="4">
+              <div>
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="width:15px;height:15px;border-radius:50%;background:#C0552F;flex-shrink:0;box-shadow:0 0 0 4px var(--bg2),0 0 0 5px var(--line)"></span><span style="font-family:'Hanken Grotesk';font-weight:700;font-size:12px;letter-spacing:.04em;color:var(--ink3)">{{ p.months }}</span></div>
+                <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;border-radius:14px;padding:16px 18px;min-height:100px"><div style="font-family:'Archivo';font-weight:800;font-size:16px;color:#C0552F;margin-bottom:7px">{{ p.name }}</div><div style="font-size:13.5px;line-height:1.5;color:var(--ink2)">{{ p.detail }}</div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- WORKSHOP SKETCHES -->
+        <div style="margin-top:28px">
+          <div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px">From the whiteboard</div>
+
+          <div style="position:relative;border-radius:18px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(20,20,20,.35);border:1px solid rgba(0,0,0,.08)">
+            <!-- board surface -->
+            <div style="position:relative;height:300px;background:linear-gradient(180deg,#FCFBF8,#EFEEE9);background-image:linear-gradient(rgba(0,0,0,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.045) 1px,transparent 1px);background-size:24px 24px">
+
+              <!-- tape corners -->
+              <span style="position:absolute;top:-6px;left:34px;width:52px;height:20px;background:rgba(255,255,255,.55);border:1px solid rgba(0,0,0,.05);transform:rotate(-8deg);box-shadow:0 2px 4px rgba(0,0,0,.08)"></span>
+              <span style="position:absolute;top:-6px;right:40px;width:52px;height:20px;background:rgba(255,255,255,.55);border:1px solid rgba(0,0,0,.05);transform:rotate(6deg);box-shadow:0 2px 4px rgba(0,0,0,.08)"></span>
+
+              <!-- pinned board title -->
+              <span style="position:absolute;top:18px;left:22px;background:#15131F;color:#fff;font-family:'Hanken Grotesk';font-weight:700;font-size:11.5px;letter-spacing:.03em;border-radius:5px;padding:6px 12px;transform:rotate(-2deg);box-shadow:0 8px 14px -8px rgba(20,20,20,.5);z-index:3">Discovery workshop board</span>
+
+              <!-- connecting lines from title to notes -->
+              <svg width="100%" height="100%" viewBox="0 0 860 300" preserveAspectRatio="none" style="position:absolute;inset:0" fill="none" stroke="#B8AFA4" stroke-width="2" stroke-linecap="round">
+                <path d="M110 56 L190 108" stroke-dasharray="1 7"/>
+                <path d="M200 60 L300 96" stroke-dasharray="1 7"/>
+                <path d="M260 150 L340 190" stroke-dasharray="1 7"/>
+                <path d="M420 90 L470 130" stroke-dasharray="1 7"/>
+                <line x1="588" y1="20" x2="588" y2="280" stroke="#C9BEB2" stroke-width="2" stroke-dasharray="6 6"/>
+              </svg>
+
+              <!-- sticky notes, left zone -->
+              <span style="position:absolute;top:52px;left:150px;width:76px;height:58px;background:#F5B312;border-radius:3px;transform:rotate(-6deg);box-shadow:0 10px 16px -8px rgba(20,20,20,.4);display:flex;align-items:center;justify-content:center;text-align:center;padding:4px;z-index:2"><span style="font-family:'Caveat';font-weight:700;font-size:17px;color:#2A1A00;line-height:1.1">Onboarding</span></span>
+              <span style="position:absolute;top:66px;left:270px;width:76px;height:58px;background:#7CE0BC;border-radius:3px;transform:rotate(4deg);box-shadow:0 10px 16px -8px rgba(20,20,20,.4);display:flex;align-items:center;justify-content:center;text-align:center;padding:4px;z-index:2"><span style="font-family:'Caveat';font-weight:700;font-size:17px;color:#0F3D2A;line-height:1.1">Job search</span></span>
+              <span style="position:absolute;top:26px;left:390px;width:70px;height:58px;background:#9FD6F5;border-radius:3px;transform:rotate(-3deg);box-shadow:0 10px 16px -8px rgba(20,20,20,.4);display:flex;align-items:center;justify-content:center;text-align:center;padding:4px;z-index:2"><span style="font-family:'Caveat';font-weight:700;font-size:17px;color:#0F3350;line-height:1.1">Messaging</span></span>
+              <span style="position:absolute;top:150px;left:60px;width:76px;height:58px;background:#F7B9C4;border-radius:3px;transform:rotate(5deg);box-shadow:0 10px 16px -8px rgba(20,20,20,.4);display:flex;align-items:center;justify-content:center;text-align:center;padding:4px;z-index:2"><span style="font-family:'Caveat';font-weight:700;font-size:17px;color:#4A1420;line-height:1.1">Trust &amp; safety</span></span>
+              <span style="position:absolute;top:186px;left:190px;width:76px;height:58px;background:#CDB4F0;border-radius:3px;transform:rotate(-4deg);box-shadow:0 10px 16px -8px rgba(20,20,20,.4);display:flex;align-items:center;justify-content:center;text-align:center;padding:4px;z-index:2"><span style="font-family:'Caveat';font-weight:700;font-size:17px;color:#2A1A4A;line-height:1.1">Payments</span></span>
+              <span style="position:absolute;top:150px;left:330px;width:70px;height:56px;background:#F5B312;border-radius:3px;transform:rotate(3deg);box-shadow:0 10px 16px -8px rgba(20,20,20,.4);display:flex;align-items:center;justify-content:center;text-align:center;padding:4px;z-index:2"><span style="font-family:'Caveat';font-weight:700;font-size:17px;color:#2A1A00;line-height:1.1">Verification</span></span>
+              <span style="position:absolute;top:218px;left:440px;width:70px;height:56px;background:#7CE0BC;border-radius:3px;transform:rotate(-5deg);box-shadow:0 10px 16px -8px rgba(20,20,20,.4);display:flex;align-items:center;justify-content:center;text-align:center;padding:4px;z-index:2"><span style="font-family:'Caveat';font-weight:700;font-size:17px;color:#0F3D2A;line-height:1.1">Categorization</span></span>
+
+              <!-- flow diagram, right zone -->
+              <svg width="100%" height="100%" viewBox="0 0 860 300" preserveAspectRatio="none" style="position:absolute;inset:0">
+                <g fill="none" stroke="#6B655F" stroke-width="2" stroke-dasharray="4 4">
+                  <rect x="638" y="120" width="90" height="42" rx="7"/>
+                  <rect x="638" y="192" width="90" height="42" rx="7"/>
+                  <rect x="638" y="60" width="90" height="34" rx="7"/>
+                </g>
+                <g stroke="#C0552F" stroke-width="2.4" stroke-linecap="round" fill="none">
+                  <path d="M683 162 L683 190"/><path d="M676 182 L683 190 L690 182"/>
+                </g>
+                <g stroke="#2456E6" stroke-width="2" stroke-linecap="round" stroke-dasharray="1 6" fill="none">
+                  <path d="M683 94 L683 118"/>
+                </g>
+                <text x="683" y="146" text-anchor="middle" font-family="Caveat" font-weight="700" font-size="19" fill="#4A4038">Apply</text>
+                <text x="683" y="218" text-anchor="middle" font-family="Caveat" font-weight="700" font-size="19" fill="#4A4038">Hire!</text>
+                <text x="683" y="82" text-anchor="middle" font-family="Caveat" font-weight="700" font-size="17" fill="#2456E6">Message</text>
+                <text x="620" y="258" font-family="Caveat" font-weight="700" font-size="16" fill="#8A8078">→ becomes the shipped flow</text>
+              </svg>
+            </div>
+
+            <!-- marker tray -->
+            <div style="height:34px;background:linear-gradient(180deg,#DADDE1,#C7CBD1);border-top:1px solid rgba(0,0,0,.12);display:flex;align-items:center;gap:10px;padding:0 22px">
+              <span style="width:36px;height:11px;border-radius:6px;background:#15131F"></span>
+              <span style="width:36px;height:11px;border-radius:6px;background:#C0552F"></span>
+              <span style="width:36px;height:11px;border-radius:6px;background:#1FA56B"></span>
+              <span style="width:36px;height:11px;border-radius:6px;background:#2456E6"></span>
+              <span style="margin-left:auto;width:26px;height:16px;border-radius:3px;background:#F4F1EC;border:1px solid rgba(0,0,0,.1)"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 02 DISCOVERY CARER -->
+      <section style="margin-bottom:56px">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px"><span style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;margin:0">02 · Discovery, the carer side</span><span style="display:inline-flex;align-items:center;font-size:11.5px;font-weight:700;letter-spacing:.02em;color:#C0552F;background:#FBE2D4;border-radius:999px;padding:5px 12px">Carer-facing</span></div>
+        <h3 style="font-family:'Archivo';font-weight:800;font-size:clamp(25px,3vw,37px);letter-spacing:-.025em;line-height:1.08;margin:0 0 16px;max-width:22ch">I researched the whole carer lifecycle, not just onboarding.</h3>
+        <p style="margin:0 0 8px;font-size:17.5px;line-height:1.7;color:var(--ink2);max-width:70ch">Research covered the entire carer lifecycle because early conversations kept surfacing problems downstream of signup. Four methods, triangulated, each answered a different question.</p>
+
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:26px 0 14px" class="two">
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 20px;display:flex;flex-direction:column;gap:11px;min-height:212px"><div style="width:38px;height:38px;border-radius:11px;background:#FBE2D4;color:#C0552F;display:flex;align-items:center;justify-content:center;font-size:18px">◉</div><div><div style="font-family:'Archivo';font-weight:800;font-size:15.5px;margin-bottom:6px">Carer interviews</div><div style="font-size:13px;line-height:1.5;color:var(--ink2)">30+ carers &amp; stakeholder sessions surfaced what made people stay or leave.</div></div><div style="margin-top:auto;align-self:flex-start;font-size:11px;font-weight:700;color:#C0552F;background:#FBE2D4;border-radius:999px;padding:5px 11px">the "why"</div></div>
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 20px;display:flex;flex-direction:column;gap:11px;min-height:212px"><div style="width:38px;height:38px;border-radius:11px;background:#E2ECFF;color:#2456E6;display:flex;align-items:center;justify-content:center;font-size:18px">◈</div><div><div style="font-family:'Archivo';font-weight:800;font-size:15.5px;margin-bottom:6px">Google Analytics</div><div style="font-size:13px;line-height:1.5;color:var(--ink2)">Onboarding &amp; application funnels pinpointed the steepest drop-off in each flow.</div></div><div style="margin-top:auto;align-self:flex-start;font-size:11px;font-weight:700;color:#2456E6;background:#E2ECFF;border-radius:999px;padding:5px 11px">the "where"</div></div>
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 20px;display:flex;flex-direction:column;gap:11px;min-height:212px"><div style="width:38px;height:38px;border-radius:11px;background:#F7DEEB;color:#B03A76;display:flex;align-items:center;justify-content:center;font-size:18px">▣</div><div><div style="font-family:'Archivo';font-weight:800;font-size:15.5px;margin-bottom:6px">Hotjar recordings</div><div style="font-size:13px;line-height:1.5;color:var(--ink2)">Session replays &amp; heatmaps exposed hesitation, rage-clicks and form abandonment.</div></div><div style="margin-top:auto;align-self:flex-start;font-size:11px;font-weight:700;color:#B03A76;background:#F7DEEB;border-radius:999px;padding:5px 11px">the "how"</div></div>
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 20px;display:flex;flex-direction:column;gap:11px;min-height:212px"><div style="width:38px;height:38px;border-radius:11px;background:#DAF3E4;color:#1FA56B;display:flex;align-items:center;justify-content:center;font-size:18px">◐</div><div><div style="font-family:'Archivo';font-weight:800;font-size:15.5px;margin-bottom:6px">Whiteboarding</div><div style="font-size:13px;line-height:1.5;color:var(--ink2)">Team &amp; stakeholder workshops turned insight into flows engineering could scope.</div></div><div style="margin-top:auto;align-self:flex-start;font-size:11px;font-weight:700;color:#1FA56B;background:#DAF3E4;border-radius:999px;padding:5px 11px">alignment</div></div>
+        </div>
+        
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:30px 30px 26px;margin-top:22px">
+          <div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;color:var(--ink3)">The carer lifecycle · 19 problem areas mapped</div>
+          <div style="display:flex;flex-wrap:wrap;gap:14px 10px;margin-top:18px;padding:6px 2px 10px">
+            <sc-for list="{{ curamAreasStyled }}" as="a" hint-placeholder-count="10">
+              <span style="position:relative;display:inline-flex;align-items:center;font-family:'Hanken Grotesk';font-size:12.5px;font-weight:700;color:{{ a.ink }};background:{{ a.bg }};padding:9px 15px 8px;border-radius:3px;box-shadow:0 10px 18px -10px rgba(20,20,20,.35);transform:rotate({{ a.rot }});transition:transform .25s" style-hover="transform:rotate(0deg) scale(1.06);z-index:2"><span style="position:absolute;top:-5px;left:50%;transform:translateX(-50%);width:9px;height:9px;border-radius:50%;background:rgba(0,0,0,.18);box-shadow:0 1px 2px rgba(0,0,0,.3)"></span>{{ a.label }}</span>
+            </sc-for>
+          </div>
+          <p style="margin:15px 0 0;font-size:14.5px;color:var(--ink2);line-height:1.6">Each area produced its own "How Might We" statements, the mechanism that let the team prioritise with stakeholders instead of guessing.</p>
+        </div>
+
+        <div style="background:#DAF3E4;border:1px solid #B9E6CE;border-radius:16px;padding:22px 26px;margin-top:20px">
+          <div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;color:#1A8A57;margin-bottom:9px">Key finding</div>
+          <p style="margin:0;font-size:16px;line-height:1.6;color:#134A32">Carers weren't struggling with the interface. They were struggling with an absence of information the system already had but never surfaced, why a field was needed, whether a job was still open, why they'd been marked unavailable, when they'd get paid.</p>
+        </div>
+      </section>
+
+      <!-- 03 DISCOVERY RECEIVER -->
+      <section style="margin-bottom:56px">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px"><span style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;margin:0">03 · Discovery, the care-receiver side</span><span style="display:inline-flex;align-items:center;font-size:11.5px;font-weight:700;letter-spacing:.02em;color:#2456E6;background:#E2ECFF;border-radius:999px;padding:5px 12px">Care-receiver-facing</span></div>
+        <h3 style="font-family:'Archivo';font-weight:800;font-size:clamp(25px,3vw,37px);letter-spacing:-.025em;line-height:1.08;margin:0 0 16px;max-width:24ch">The other end of every conversation was an anxious family.</h3>
+        <p style="margin:0 0 8px;font-size:17.5px;line-height:1.7;color:var(--ink2);max-width:70ch">No formal interview study existed for care receivers; this side comes from what carer interviews revealed, plus product and stakeholder reasoning about who a care receiver actually is.</p>
+        <ul style="list-style:none;margin:20px 0 0;padding:0;display:flex;flex-direction:column;gap:12px;max-width:72ch">
+          <li style="display:flex;gap:12px;font-size:16.5px;line-height:1.6;color:var(--ink2)"><span style="color:#2456E6;font-weight:800;flex-shrink:0">→</span><span>Care receivers are often <strong style="color:var(--ink)">older adults or family members arranging care for someone elderly</strong>, a very different comfort level with apps than the carers themselves.</span></li>
+          <li style="display:flex;gap:12px;font-size:16.5px;line-height:1.6;color:var(--ink2)"><span style="color:#2456E6;font-weight:800;flex-shrink:0">→</span><span>Carers described receivers as slow to reply, unclear about what they needed, and hesitant to commit, all symptoms of one root cause: <strong style="color:var(--ink)">fear of messaging a stranger about a vulnerable family member.</strong></span></li>
+          <li style="display:flex;gap:12px;font-size:16.5px;line-height:1.6;color:var(--ink2)"><span style="color:#2456E6;font-weight:800;flex-shrink:0">→</span><span>That fear was rational: old messaging let either side start a chat, had no way to verify a meeting happened, and pushed both sides off-platform once things got serious, where Curam had no data or way to help.</span></li>
+        </ul>
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:30px 30px 26px;margin-top:24px;padding:22px 26px">
+          <div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;color:var(--ink3);margin-bottom:9px">Why this section reads differently from the carer research</div>
+          <p style="margin:0;font-size:15px;line-height:1.65;color:var(--ink2)">Not formal receiver interviews or usability testing, design reasoning built from carer-side evidence and product judgment about an anxious, often older user base. Flagging that distinction deliberately.</p>
+        </div>
+      </section>
+
+      <!-- 04 EMPATHY MAP -->
+      <section style="margin-bottom:56px">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px"><span style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;margin:0">04 · Who we were designing for</span><span style="display:inline-flex;align-items:center;font-size:11.5px;font-weight:700;letter-spacing:.02em;color:#C0552F;background:#FBE2D4;border-radius:999px;padding:5px 12px">Carer-facing</span></div>
+        <h3 style="font-family:'Archivo';font-weight:800;font-size:clamp(25px,3vw,37px);letter-spacing:-.025em;line-height:1.08;margin:0 0 16px;max-width:24ch">Motivated by pay and flexibility, gone the moment either felt uncertain.</h3>
+        <p style="margin:0 0 8px;font-size:17.5px;line-height:1.7;color:var(--ink2);max-width:70ch">Drawn directly from interview transcripts, not assumptions.</p>
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:30px 30px 26px;margin-top:22px">
+          <div style="font-family:'Archivo';font-weight:800;font-size:20px;letter-spacing:-.01em;color:var(--ink)">Empathy map, the independent carer</div>
+          <div style="font-size:13.5px;color:var(--ink3);margin-top:5px;margin-bottom:20px">Synthesised from 30+ carer interviews and stakeholder sessions</div>
+          <div style="display:grid;grid-template-columns:1fr 64px 1fr;grid-template-rows:auto 64px auto;grid-template-areas:'tf gap1 says' 'gap2 hub gap3' 'does gap4 pain';align-items:stretch" class="two">
+            <div style="grid-area:tf;background:#FCF0E7;border:1px solid #F3D9C4;border-radius:16px 16px 4px 16px;padding:20px 22px"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span style="width:30px;height:30px;border-radius:9px;background:#F5D3B6;color:#B0561E;display:flex;align-items:center;justify-content:center;font-size:15px">◔</span><span style="font-family:'Archivo';font-weight:700;font-size:14px;color:#B0561E">THINKS &amp; FEELS</span></div><ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px"><sc-for list="{{ empThinks }}" as="t" hint-placeholder-count="6"><li style="font-size:14px;line-height:1.5;color:#5A4636;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:#C99568">·</span>{{ t }}</li></sc-for></ul></div>
+            <div style="grid-area:says;background:#EBF1FF;border:1px solid #CFE0FF;border-radius:16px 16px 16px 4px;padding:20px 22px"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span style="width:30px;height:30px;border-radius:9px;background:#CFE0FF;color:#2456E6;display:flex;align-items:center;justify-content:center;font-size:15px">❝</span><span style="font-family:'Archivo';font-weight:700;font-size:14px;color:#2456E6">SAYS</span></div><ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px"><sc-for list="{{ empSays }}" as="t" hint-placeholder-count="6"><li style="font-size:14px;line-height:1.5;color:#3D4A63;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:#7FA0E0">·</span>{{ t }}</li></sc-for></ul></div>
+            <div style="grid-area:does;background:#E8F7EE;border:1px solid #C3E9D2;border-radius:16px 4px 16px 16px;padding:20px 22px"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span style="width:30px;height:30px;border-radius:9px;background:#C3E9D2;color:#1A8A57;display:flex;align-items:center;justify-content:center;font-size:15px">✋</span><span style="font-family:'Archivo';font-weight:700;font-size:14px;color:#1A8A57">DOES</span></div><ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px"><sc-for list="{{ empDoes }}" as="t" hint-placeholder-count="6"><li style="font-size:14px;line-height:1.5;color:#385647;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:#5CB98A">·</span>{{ t }}</li></sc-for></ul></div>
+            <div style="grid-area:pain;background:#FCEFEA;border:1px solid #F1D3C8;border-radius:4px 16px 16px 16px;padding:20px 22px"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span style="width:30px;height:30px;border-radius:9px;background:#F5D3C6;color:#B23C1E;display:flex;align-items:center;justify-content:center;font-size:15px">⚠</span><span style="font-family:'Archivo';font-weight:700;font-size:14px;color:#B23C1E">PAIN &amp; FEARS</span></div><ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px"><sc-for list="{{ empPains }}" as="t" hint-placeholder-count="7"><li style="font-size:14px;line-height:1.5;color:#7A2D18;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:#B23C1E">·</span>{{ t }}</li></sc-for></ul></div>
+            <div style="grid-area:hub;position:relative">
+              <svg width="64" height="64" viewBox="0 0 64 64" style="position:absolute;inset:0">
+                <path d="M32 32 L2 2" stroke="#C0552F" stroke-width="2" stroke-dasharray="1 5" stroke-linecap="round"/>
+                <path d="M32 32 L62 2" stroke="#2456E6" stroke-width="2" stroke-dasharray="1 5" stroke-linecap="round"/>
+                <path d="M32 32 L2 62" stroke="#1A8A57" stroke-width="2" stroke-dasharray="1 5" stroke-linecap="round"/>
+                <path d="M32 32 L62 62" stroke="#B23C1E" stroke-width="2" stroke-dasharray="1 5" stroke-linecap="round"/>
+                <circle cx="2" cy="2" r="3" fill="#C0552F"/><circle cx="62" cy="2" r="3" fill="#2456E6"/><circle cx="2" cy="62" r="3" fill="#1A8A57"/><circle cx="62" cy="62" r="3" fill="#B23C1E"/>
+              </svg>
+              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:58px;height:58px;border-radius:50%;background:linear-gradient(150deg,#6C5CE7,#494FC9);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 22px -8px rgba(20,20,20,.45),0 0 0 5px var(--bg2);z-index:3">
+                <span style="font-family:'Archivo';font-weight:800;font-size:10.5px;color:#fff;text-align:center;line-height:1.2">The<br>Carer</span>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:18px;font-size:14.5px;line-height:1.5;color:var(--ink)"><strong style="color:#C0552F">Core tension →</strong> Carers want to feel like professionals running their own business, the product rarely tells them where they stand.</div>
+        </div>
+      </section>
+
+      <!-- 05 REFRAME -->
+      <section style="margin-bottom:56px">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px"><span style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;margin:0">05 · Reframing the problem</span><span style="display:inline-flex;align-items:center;font-size:11.5px;font-weight:700;letter-spacing:.02em;color:#C0552F;background:#FBE2D4;border-radius:999px;padding:5px 12px">Carer-facing</span></div>
+        <h3 style="font-family:'Archivo';font-weight:800;font-size:clamp(25px,3vw,37px);letter-spacing:-.025em;line-height:1.08;margin:0 0 16px;max-width:24ch">A service blueprint, not a journey map.</h3>
+        <p style="margin:0 0 8px;font-size:17.5px;line-height:1.7;color:var(--ink2);max-width:70ch">The most useful artifact from discovery put Curam's manual back-office work in the same frame as the carer's experience.</p>
+        <ul style="list-style:none;margin:20px 0 0;padding:0;display:flex;flex-direction:column;gap:11px;max-width:72ch">
+          <li style="display:flex;gap:12px;font-size:16px;line-height:1.55;color:#7A2D18"><span style="color:#B23C1E;font-weight:800;flex-shrink:0">✕</span><span>Documents verified by hand, overseas, forged documents could slip through.</span></li>
+          <li style="display:flex;gap:12px;font-size:16px;line-height:1.55;color:#7A2D18"><span style="color:#B23C1E;font-weight:800;flex-shrink:0">✕</span><span>Job listings with no lapse detection, carers applied to jobs already filled.</span></li>
+          <li style="display:flex;gap:12px;font-size:16px;line-height:1.55;color:#7A2D18"><span style="color:#B23C1E;font-weight:800;flex-shrink:0">✕</span><span>An unannounced 48-hour "reply or go unavailable" rule enforced by a person, not the product.</span></li>
+          <li style="display:flex;gap:12px;font-size:16px;line-height:1.55;color:#7A2D18"><span style="color:#B23C1E;font-weight:800;flex-shrink:0">✕</span><span>Client payments manually reconciled to carer payouts, one at a time.</span></li>
+        </ul>
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:30px 30px 26px;margin-top:24px;padding:22px 26px">
+          <div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;color:var(--ink3);margin-bottom:9px">Why this mattered strategically</div>
+          <p style="margin:0;font-size:15.5px;line-height:1.65;color:var(--ink2)">Several "carer engagement" problems weren't solvable with better copy, they needed the product to expose state the backend already had. That shaped what we could ship in ten months versus what needed a longer conversation with engineering.</p>
+        </div>
+
+        <!-- BLUEPRINT SKETCH PHOTO -->
+        <div style="position:relative;border-radius:18px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(20,20,20,.35);border:1px solid rgba(0,0,0,.08);margin-top:24px">
+          <div style="position:relative;height:230px;background:linear-gradient(180deg,#FCFBF8,#EFEEE9);background-image:linear-gradient(rgba(0,0,0,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.045) 1px,transparent 1px);background-size:24px 24px">
+            <span style="position:absolute;top:-6px;left:30px;width:52px;height:20px;background:rgba(255,255,255,.55);border:1px solid rgba(0,0,0,.05);transform:rotate(-7deg);box-shadow:0 2px 4px rgba(0,0,0,.08)"></span>
+            <span style="position:absolute;top:-6px;right:36px;width:52px;height:20px;background:rgba(255,255,255,.55);border:1px solid rgba(0,0,0,.05);transform:rotate(7deg);box-shadow:0 2px 4px rgba(0,0,0,.08)"></span>
+            <span style="position:absolute;top:16px;left:22px;background:#15131F;color:#fff;font-family:'Hanken Grotesk';font-weight:700;font-size:11.5px;letter-spacing:.03em;border-radius:5px;padding:6px 12px;transform:rotate(-2deg);box-shadow:0 8px 14px -8px rgba(20,20,20,.5);z-index:3">Reframing session</span>
+
+            <!-- blueprint grid sketch, left zone -->
+            <svg width="100%" height="100%" viewBox="0 0 860 230" preserveAspectRatio="none" style="position:absolute;inset:0" fill="none">
+              <g stroke="#B23C1E" stroke-width="2" stroke-dasharray="5 5">
+                <line x1="150" y1="60" x2="150" y2="196"/>
+                <line x1="310" y1="60" x2="310" y2="196"/>
+                <line x1="470" y1="60" x2="470" y2="196"/>
+              </g>
+              <g stroke="#6B655F" stroke-width="2" stroke-dasharray="5 5">
+                <line x1="40" y1="100" x2="556" y2="100"/>
+                <line x1="40" y1="150" x2="556" y2="150"/>
+              </g>
+              <path d="M200 118 L228 140 L262 96" stroke="#1FA56B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M350 108 L390 140 M390 108 L350 140" stroke="#C0552F" stroke-width="3" stroke-linecap="round"/>
+              <path d="M508 118 L536 140 L570 96" stroke="#1FA56B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <text x="90" y="80" font-family="Caveat" font-weight="700" font-size="19" fill="#4A4038">Sign up</text>
+              <text x="225" y="80" font-family="Caveat" font-weight="700" font-size="19" fill="#4A4038">Apply</text>
+              <text x="340" y="80" font-family="Caveat" font-weight="700" font-size="19" fill="#B23C1E">Lapsed job!</text>
+              <text x="505" y="80" font-family="Caveat" font-weight="700" font-size="19" fill="#4A4038">Hired</text>
+              <text x="56" y="182" font-family="Caveat" font-weight="700" font-size="17" fill="#6B655F">front-stage</text>
+              <text x="370" y="182" font-family="Caveat" font-weight="700" font-size="17" fill="#B23C1E">manual back-stage</text>
+              <line x1="588" y1="20" x2="588" y2="210" stroke="#C9BEB2" stroke-width="2" stroke-dasharray="6 6"/>
+            </svg>
+
+            <!-- ideation cluster, right zone -->
+            <svg width="100%" height="100%" viewBox="0 0 860 230" preserveAspectRatio="none" style="position:absolute;inset:0" fill="none" stroke="#B8AFA4" stroke-width="2" stroke-dasharray="1 7" stroke-linecap="round">
+              <path d="M718 118 L660 66"/><path d="M718 118 L784 60"/><path d="M718 118 L648 168"/><path d="M718 118 L788 176"/>
+            </svg>
+            <span style="position:absolute;top:98px;left:696px;width:44px;height:34px;border-radius:50%;background:#15131F;color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;z-index:2">◐</span>
+            <span style="position:absolute;top:38px;left:618px;width:64px;height:50px;background:#F5B312;border-radius:3px;transform:rotate(-6deg);box-shadow:0 10px 16px -8px rgba(20,20,20,.4);display:flex;align-items:center;justify-content:center;text-align:center;z-index:2"><span style="font-family:'Caveat';font-weight:700;font-size:16px;color:#2A1A00">Trust</span></span>
+            <span style="position:absolute;top:30px;right:44px;width:64px;height:50px;background:#7CE0BC;border-radius:3px;transform:rotate(5deg);box-shadow:0 10px 16px -8px rgba(20,20,20,.4);display:flex;align-items:center;justify-content:center;text-align:center;z-index:2"><span style="font-family:'Caveat';font-weight:700;font-size:16px;color:#0F3D2A">Clarity</span></span>
+            <span style="position:absolute;bottom:26px;left:596px;width:62px;height:50px;background:#F7B9C4;border-radius:3px;transform:rotate(4deg);box-shadow:0 10px 16px -8px rgba(20,20,20,.4);display:flex;align-items:center;justify-content:center;text-align:center;z-index:2"><span style="font-family:'Caveat';font-weight:700;font-size:16px;color:#4A1420">Fear</span></span>
+            <span style="position:absolute;bottom:22px;right:34px;width:62px;height:50px;background:#9FD6F5;border-radius:3px;transform:rotate(-5deg);box-shadow:0 10px 16px -8px rgba(20,20,20,.4);display:flex;align-items:center;justify-content:center;text-align:center;z-index:2"><span style="font-family:'Caveat';font-weight:700;font-size:16px;color:#0F3350">Control</span></span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;height:34px;background:linear-gradient(180deg,#DADDE1,#C7CBD1);border-top:1px solid rgba(0,0,0,.12);padding:0 22px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="width:36px;height:11px;border-radius:6px;background:#15131F"></span>
+              <span style="width:36px;height:11px;border-radius:6px;background:#C0552F"></span>
+              <span style="width:36px;height:11px;border-radius:6px;background:#494FC9"></span>
+            </div>
+            <span style="font-family:'Hanken Grotesk';font-weight:700;font-size:11.5px;color:#494349">↓ formalised into the blueprint below</span>
+          </div>
+        </div>
+
+        <!-- SERVICE BLUEPRINT -->
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:30px 30px 26px;margin-top:22px;overflow-x:auto">
+          <div style="font-family:'Archivo';font-weight:800;font-size:20px;letter-spacing:-.01em;color:var(--ink)">Service blueprint, front-stage vs. back-stage</div>
+          <div style="font-size:13.5px;color:var(--ink3);margin-top:5px;margin-bottom:20px">Where a "self-serve" carer journey was quietly propped up by manual operations</div>
+          <div style="min-width:900px">
+            <div style="display:grid;grid-template-columns:130px repeat(5,1fr);gap:12px;align-items:end;margin-bottom:12px"><div></div><sc-for list="{{ bpStages }}" as="s" hint-placeholder-count="5"><div style="font-family:'Archivo';font-weight:700;font-size:14px;letter-spacing:-.01em;color:#C0552F;text-align:center">{{ s }}</div></sc-for></div>
+            <div style="display:grid;grid-template-columns:130px repeat(5,1fr);gap:12px;align-items:stretch;margin-bottom:12px"><div style="display:flex;align-items:center;font-family:'Hanken Grotesk';font-weight:700;font-size:11px;letter-spacing:.08em;color:var(--ink3)">CARER DOES</div><sc-for list="{{ bpDoes }}" as="d" hint-placeholder-count="5"><div style="background:var(--card);border:1px solid var(--line);border-radius:16px;border-radius:13px;padding:15px 16px;font-size:13px;line-height:1.5;color:var(--ink2)">{{ d }}</div></sc-for></div>
+            <div style="display:grid;grid-template-columns:130px repeat(5,1fr);gap:12px;margin-bottom:12px;padding-bottom:14px;border-bottom:1px dashed var(--line)"><div style="display:flex;align-items:center;font-family:'Hanken Grotesk';font-weight:700;font-size:11px;letter-spacing:.08em;color:var(--ink3)">FEELS</div><sc-for list="{{ bpFeels }}" as="ff" hint-placeholder-count="5"><div style="font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px"><span>{{ ff.icon }}</span><span style="color:var(--ink)">{{ ff.label }}</span></div></sc-for></div>
+            <div style="display:grid;grid-template-columns:130px repeat(5,1fr);gap:12px;align-items:stretch;margin-bottom:22px"><div style="display:flex;align-items:center;font-family:'Hanken Grotesk';font-weight:700;font-size:11px;letter-spacing:.08em;color:var(--ink3)">BACK-STAGE (MANUAL)</div><div></div><sc-for list="{{ bpBack }}" as="b" hint-placeholder-count="4"><div style="background:#FCEFEA;border:1px solid #F1D3C8;border-radius:13px;padding:15px 16px"><div style="font-family:'Archivo';font-weight:700;font-size:13.5px;color:#B23C1E;margin-bottom:6px">{{ b.title }}</div><div style="font-size:12.5px;line-height:1.45;color:#7A2D18">{{ b.body }}</div></div></sc-for></div>
+            <div style="font-family:'Archivo';font-weight:800;font-size:16px;letter-spacing:-.01em;color:var(--ink);margin-bottom:12px">Where trust actually breaks</div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px"><sc-for list="{{ bpBreaks }}" as="b" hint-placeholder-count="4"><div style="background:var(--card);border:1px solid var(--line);border-radius:16px;border-left:4px solid #E24D2B;border-radius:12px;padding:16px 18px"><div style="font-family:'Archivo';font-weight:700;font-size:14px;color:#B23C1E;margin-bottom:8px">{{ b.title }}</div><div style="font-size:12.5px;line-height:1.5;color:var(--ink2)">{{ b.body }}</div></div></sc-for></div>
+            <div style="background:#EEEAFB;border:1px solid #DAD2F2;border-radius:12px;padding:16px 20px"><span style="font-family:'Archivo';font-weight:700;font-size:14px;color:#494FC9">Design problem&nbsp;&nbsp;</span><span style="font-size:14px;line-height:1.5;color:var(--ink)">Nearly every point of friction traces back to information the system already has, but never surfaces to the person who needs it.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 HMW -->
+      <section style="margin-bottom:56px">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px"><span style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;margin:0">06 · From insight to roadmap</span><span style="display:inline-flex;align-items:center;font-size:11.5px;font-weight:700;letter-spacing:.02em;color:#1FA56B;background:#DAF3E4;border-radius:999px;padding:5px 12px">Both sides</span></div>
+        <h3 style="font-family:'Archivo';font-weight:800;font-size:clamp(25px,3vw,37px);letter-spacing:-.025em;line-height:1.08;margin:0 0 16px;max-width:22ch">Four workstreams, prioritised against two questions.</h3>
+        <p style="margin:0 0 8px;font-size:17.5px;line-height:1.7;color:var(--ink2);max-width:70ch">Too many problems for ten months and a team of three. We prioritised against: what's actually causing carers to leave or receivers to hesitate, and what can we influence without a backend rebuild?</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px 18px;margin-top:28px" class="two">
+          <sc-for list="{{ hmw }}" as="h" hint-placeholder-count="4">
+            <div style="position:relative;background:{{ h.bg }};border-radius:4px;padding:24px 24px 26px;box-shadow:0 16px 34px -18px rgba(20,20,20,.3);transform:rotate({{ h.rot }})" style-hover="transform:rotate(0deg) translateY(-3px)"><span style="position:absolute;top:-7px;left:28px;width:14px;height:14px;border-radius:50%;background:#B23C1E;box-shadow:0 2px 4px rgba(0,0,0,.35),inset 0 2px 2px rgba(255,255,255,.4)"></span><div style="font-size:11.5px;font-weight:700;letter-spacing:.03em;color:{{ h.tagInk }};margin-bottom:10px">{{ h.tag }}</div><p style="margin:0;font-family:'Archivo';font-weight:500;font-size:17px;line-height:1.4;letter-spacing:-.01em;color:{{ h.tagInk }}">{{ h.q }}</p></div>
+          </sc-for>
+        </div>
+      </section>
+
+      <!-- DESIGN & DELIVERY -->
+      <section style="margin-bottom:56px">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px"><span style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;margin:0">07 · Design &amp; delivery</span><span style="display:inline-flex;align-items:center;font-size:11.5px;font-weight:700;letter-spacing:.02em;color:#1FA56B;background:#DAF3E4;border-radius:999px;padding:5px 12px">Both sides</span></div>
+        <h3 style="font-family:'Archivo';font-weight:800;font-size:clamp(25px,3vw,37px);letter-spacing:-.025em;line-height:1.08;margin:0 0 16px;margin-bottom:24px">Four workstreams.</h3>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <!-- A -->
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 28px">
+            <div style="display:flex;gap:18px;align-items:flex-start">
+              <div style="width:46px;height:46px;border-radius:12px;background:#FBE2D4;color:#C0552F;display:flex;align-items:center;justify-content:center;font-family:'Archivo';font-weight:800;font-size:20px;flex-shrink:0">A</div>
+              <div style="flex:1">
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px"><span style="font-size:11.5px;font-weight:700;color:var(--ink2);background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:5px 12px">Led design · partnered with 1 designer + engineering</span><span style="font-size:11.5px;font-weight:700;color:#C0552F;background:#FBE2D4;border-radius:999px;padding:5px 12px">Carer-facing</span></div>
+                <h4 style="font-family:'Archivo';font-weight:800;font-size:19px;letter-spacing:-.015em;line-height:1.15;margin:0 0 12px;color:var(--ink)">Structuring onboarding around trust, not just data collection</h4>
+                <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px">
+                  <li style="display:flex;gap:11px;font-size:15px;line-height:1.55;color:var(--ink2)"><span style="color:#C0552F;font-weight:800;flex-shrink:0">→</span><span>Replaced one long form with a segmented flow: identity &amp; right-to-work, care experience, availability, payment setup.</span></li>
+                  <li style="display:flex;gap:11px;font-size:15px;line-height:1.55;color:var(--ink2)"><span style="color:#C0552F;font-weight:800;flex-shrink:0">→</span><span>Each step explains why the information is needed and shows visible progress.</span></li>
+                  <li style="display:flex;gap:11px;font-size:15px;line-height:1.55;color:var(--ink2)"><span style="color:#C0552F;font-weight:800;flex-shrink:0">→</span><span>Designed the first version of profile-completion status shown directly to the carer, replacing a generic "please complete your profile" email.</span></li>
+                  <li style="display:flex;gap:11px;font-size:15px;line-height:1.55;color:var(--ink2)"><span style="color:#C0552F;font-weight:800;flex-shrink:0">→</span><span>Clarified DBS requirements (Basic vs. Enhanced/Standard) and what to do if circumstances change, the #1 reason carers dropped off before ever reaching a job listing.</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- B -->
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 28px">
+            <div style="display:flex;gap:18px;align-items:flex-start">
+              <div style="width:46px;height:46px;border-radius:12px;background:#E2ECFF;color:#2456E6;display:flex;align-items:center;justify-content:center;font-family:'Archivo';font-weight:800;font-size:20px;flex-shrink:0">B</div>
+              <div style="flex:1">
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px"><span style="font-size:11.5px;font-weight:700;color:var(--ink2);background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:5px 12px">Led design · partnered with 2 designers</span><span style="font-size:11.5px;font-weight:700;color:#2456E6;background:#E2ECFF;border-radius:999px;padding:5px 12px">Care-receiver-facing — fixes a carer-reported problem</span></div>
+                <h4 style="font-family:'Archivo';font-weight:800;font-size:19px;letter-spacing:-.015em;line-height:1.15;margin:0 0 12px;color:var(--ink)">A care-receiver job dashboard that fixes what carers were reporting</h4>
+                <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px">
+                  <li style="display:flex;gap:11px;font-size:15px;line-height:1.55;color:var(--ink2)"><span style="color:#2456E6;font-weight:800;flex-shrink:0">→</span><span>Carer research found receivers posted vague requirements and left listings open after filling them, this redesigns the <strong style="color:var(--ink)">receiver's</strong> screens to fix both at the source.</span></li>
+                  <li style="display:flex;gap:11px;font-size:15px;line-height:1.55;color:var(--ink2)"><span style="color:#2456E6;font-weight:800;flex-shrink:0">→</span><span>Replaced "post and wait" with a guided next-step banner (Review → Message → Hire).</span></li>
+                  <li style="display:flex;gap:11px;font-size:15px;line-height:1.55;color:var(--ink2)"><span style="color:#2456E6;font-weight:800;flex-shrink:0">→</span><span>Always-visible advertised rate with plain-language fee explanation.</span></li>
+                  <li style="display:flex;gap:11px;font-size:15px;line-height:1.55;color:var(--ink2)"><span style="color:#2456E6;font-weight:800;flex-shrink:0">→</span><span>A recommended-carer list receivers can invite with one click, instead of waiting passively for applicants.</span></li>
+                  <li style="display:flex;gap:11px;font-size:15px;line-height:1.55;color:var(--ink2)"><span style="color:#2456E6;font-weight:800;flex-shrink:0">→</span><span>Added filtering by care type, language, and carer preference, the exact context carers said receivers never explained up front.</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- C -->
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 28px">
+            <div style="display:flex;gap:18px;align-items:flex-start">
+              <div style="width:46px;height:46px;border-radius:12px;background:#DAF3E4;color:#1FA56B;display:flex;align-items:center;justify-content:center;font-family:'Archivo';font-weight:800;font-size:20px;flex-shrink:0">C</div>
+              <div style="flex:1">
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px"><span style="font-size:11.5px;font-weight:700;color:var(--ink2);background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:5px 12px">Led design · partnered with 1 designer</span><span style="font-size:11.5px;font-weight:700;color:#1FA56B;background:#DAF3E4;border-radius:999px;padding:5px 12px">Care-receiver-facing, benefits both sides</span></div>
+                <h4 style="font-family:'Archivo';font-weight:800;font-size:19px;letter-spacing:-.015em;line-height:1.15;margin:0 0 8px;color:var(--ink)">Redesigning messaging so a stranger feels safe to hire</h4>
+                <p style="margin:0 0 12px;font-size:14.5px;line-height:1.6;color:var(--ink2)">The workstream with the clearest business case: every off-platform meeting or payment was a moment Curam had no data and no way to intervene. Four specific changes, each solving a named fear:</p>
+                <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px">
+                  <li style="display:flex;gap:11px;font-size:15px;line-height:1.55;color:var(--ink2)"><span style="color:#1FA56B;font-weight:800;flex-shrink:0">→</span><span><strong style="color:var(--ink)">Only the care receiver can start a conversation</strong>, a carer can never cold-message a family, answering the most common fear directly.</span></li>
+                  <li style="display:flex;gap:11px;font-size:15px;line-height:1.55;color:var(--ink2)"><span style="color:#1FA56B;font-weight:800;flex-shrink:0">→</span><span><strong style="color:var(--ink)">Voice notes</strong> for receivers who find typing a barrier, common among older users setting up care for the first time.</span></li>
+                  <li style="display:flex;gap:11px;font-size:15px;line-height:1.55;color:var(--ink2)"><span style="color:#1FA56B;font-weight:800;flex-shrink:0">→</span><span><strong style="color:var(--ink)">An in-app meeting scheduler</strong> that logs the meeting to Curam, so if either side later reports an issue, the platform has a record instead of nothing.</span></li>
+                  <li style="display:flex;gap:11px;font-size:15px;line-height:1.55;color:var(--ink2)"><span style="color:#1FA56B;font-weight:800;flex-shrink:0">→</span><span><strong style="color:var(--ink)">Shift invoice, accept, and pay, inside the same thread.</strong> The receiver pays through a connected processor without leaving the conversation, and the thread flips to a "Hired!" state once payment clears.</span></li>
+                </ul>
+                <div style="background:var(--bg2);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin-top:16px"><div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px">Trade-off I made deliberately</div><p style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink2)">Restricting carers from starting conversations costs them a sense of proactive control, a real trade-off, since flexibility is why carers choose Curam. I made it anyway: receiver-initiated messaging protects the trust relationship retention depends on most.</p></div>
+              </div>
+            </div>
+          </div>
+          <!-- D -->
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 28px">
+            <div style="display:flex;gap:18px;align-items:flex-start">
+              <div style="width:46px;height:46px;border-radius:12px;background:#15131F;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Archivo';font-weight:800;font-size:20px;flex-shrink:0">D</div>
+              <div style="flex:1">
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px"><span style="font-size:11.5px;font-weight:700;color:var(--ink2);background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:5px 12px">Owned end to end</span><span style="font-size:11.5px;font-weight:700;color:#1FA56B;background:#DAF3E4;border-radius:999px;padding:5px 12px">Both sides</span></div>
+                <h4 style="font-family:'Archivo';font-weight:800;font-size:19px;letter-spacing:-.015em;line-height:1.15;margin:0 0 12px;color:var(--ink)">Rebuilding the design system for accessibility and speed</h4>
+                <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px">
+                  <li style="display:flex;gap:11px;font-size:15px;line-height:1.55;color:var(--ink2)"><span style="color:#C0552F;font-weight:800;flex-shrink:0">→</span><span>Replaced three inconsistent gray scales with one governed colour ramp (Neutral, Secondary, Negative, Gray — 9–11 steps each).</span></li>
+                  <li style="display:flex;gap:11px;font-size:15px;line-height:1.55;color:var(--ink2)"><span style="color:#C0552F;font-weight:800;flex-shrink:0">→</span><span>Checked every colour pairing against WCAG contrast ratios, up to AAA.</span></li>
+                  <li style="display:flex;gap:11px;font-size:15px;line-height:1.55;color:var(--ink2)"><span style="color:#C0552F;font-weight:800;flex-shrink:0">→</span><span>Defined one type scale with sizes, weights, and letter-spacing per role.</span></li>
+                  <li style="display:flex;gap:11px;font-size:15px;line-height:1.55;color:var(--ink2)"><span style="color:#C0552F;font-weight:800;flex-shrink:0">→</span><span>Specced every nav, dropdown, and menu item across 5 interaction states: default, hover, active, pressed, focused.</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MESSAGING FLOW TO SCREEN -->
+      <section style="margin-bottom:56px">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px"><span style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;margin:0">08 · Messaging, from flow to screen</span><span style="display:inline-flex;align-items:center;font-size:11.5px;font-weight:700;letter-spacing:.02em;color:#1FA56B;background:#DAF3E4;border-radius:999px;padding:5px 12px">Both sides</span></div>
+        <h3 style="font-family:'Archivo';font-weight:800;font-size:clamp(25px,3vw,37px);letter-spacing:-.025em;line-height:1.08;margin:0 0 16px;max-width:24ch">Four trust features, each solving a named fear.</h3>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0 26px" class="two">
+          <sc-for list="{{ msgFeatures }}" as="m" hint-placeholder-count="4"><div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px"><div style="width:34px;height:34px;border-radius:10px;background:#DAF3E4;color:#1FA56B;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:12px">{{ m.icon }}</div><h4 style="font-family:'Archivo';font-weight:700;font-size:15.5px;letter-spacing:-.01em;margin:0 0 7px">{{ m.title }}</h4><p style="margin:0;font-size:13.5px;line-height:1.55;color:var(--ink2)">{{ m.body }}</p></div></sc-for>
+        </div>
+
+        <!-- messaging screens -->
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:30px 30px 26px;overflow-x:auto">
+          <div style="font-family:'Archivo';font-weight:800;font-size:19px;letter-spacing:-.01em;color:var(--ink);margin-bottom:4px">Key states, from application to hire</div>
+          <div style="font-size:13px;color:var(--ink3);margin-bottom:20px">Shipped screens, application through hire</div>
+          <div style="display:flex;gap:14px;min-width:1984px">
+            <div style="width:281px;height:609px;flex-shrink:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff"><img src="uploads/Conversations-6.png" alt="Messages inbox" style="display:block;width:281px;height:609px" /></div>
+            <div style="width:281px;height:609px;flex-shrink:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff"><img src="uploads/Conversations.png" alt="Recording a voice note reply" style="display:block;width:281px;height:609px" /></div>
+            <div style="width:281px;height:609px;flex-shrink:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff"><img src="uploads/Conversations-1.png" alt="Voice note sent, schedule a meeting" style="display:block;width:281px;height:609px" /></div>
+            <div style="width:281px;height:609px;flex-shrink:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff"><img src="uploads/Conversations-2.png" alt="In-person meeting requested" style="display:block;width:281px;height:609px" /></div>
+            <div style="width:281px;height:609px;flex-shrink:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff"><img src="uploads/Conversations-3.png" alt="Meeting accepted, shift invoice sent" style="display:block;width:281px;height:609px" /></div>
+            <div style="width:281px;height:609px;flex-shrink:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff"><img src="uploads/Conversations-4.png" alt="Hired confirmation" style="display:block;width:281px;height:609px" /></div>
+            <div style="width:281px;height:609px;flex-shrink:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff"><img src="uploads/Conversations-5.png" alt="Profile documents history" style="display:block;width:281px;height:609px" /></div>
+          </div>
+          <p style="margin:12px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink3);max-width:74ch">Payment routes to a connected third-party processor, Curam never touches card details directly, but the application, scheduling, hire, and trust &amp; safety states all stay inside the same thread.</p>
+        </div>
+      </section>
+
+      <!-- WHITEBOARD TO JOB DASHBOARD -->
+      <section style="margin-bottom:56px">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px"><span style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;margin:0">09 · From whiteboard to job dashboard</span><span style="display:inline-flex;align-items:center;font-size:11.5px;font-weight:700;letter-spacing:.02em;color:#2456E6;background:#E2ECFF;border-radius:999px;padding:5px 12px">Care-receiver-facing</span></div>
+        <h3 style="font-family:'Archivo';font-weight:800;font-size:clamp(25px,3vw,37px);letter-spacing:-.025em;line-height:1.08;margin:0 0 16px;max-width:26ch">The sticky-note flow, formalised into the receiver's dashboard.</h3>
+        <p style="margin:0 0 8px;font-size:17.5px;line-height:1.7;color:var(--ink2);max-width:70ch">The job-posting-to-hire flow, whiteboarded sticky-note by sticky-note before any screen was drawn, then built as the receiver's job dashboard.</p>
+
+        <!-- flow architecture -->
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:30px 30px 26px;margin-top:22px;overflow-x:auto">
+          <div style="font-family:'Archivo';font-weight:800;font-size:19px;letter-spacing:-.01em;color:var(--ink)">Flow architecture, job post to hire (client side)</div>
+          <div style="font-size:13px;color:var(--ink3);margin-top:5px;margin-bottom:22px">Digitised from the whiteboarding session, the same structure the team built out sticky-note by sticky-note</div>
+          <div style="min-width:820px;display:flex;flex-direction:column;gap:20px">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><sc-for list="{{ flowPost }}" as="n" hint-placeholder-count="4"><sc-if value="{{ n.arrow }}" hint-placeholder-val="{{ false }}"><span style="color:#4B32B3;font-weight:800;font-size:18px">→</span></sc-if><sc-if value="{{ n.label }}" hint-placeholder-val="{{ true }}"><div style="background:#494FC9;color:#fff;border-radius:11px;padding:14px 18px;font-family:'Archivo';font-weight:700;font-size:13.5px;text-align:center;line-height:1.3">{{ n.label }}</div></sc-if></sc-for></div>
+            <div><div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;color:var(--ink);margin-bottom:10px">Job requirements captured as a modal sequence</div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><sc-for list="{{ flowModal }}" as="n" hint-placeholder-count="5"><sc-if value="{{ n.arrow }}" hint-placeholder-val="{{ false }}"><span style="color:#9A86D6;font-weight:800;font-size:15px">→</span></sc-if><sc-if value="{{ n.label }}" hint-placeholder-val="{{ true }}"><div style="background:#C9BEEC;color:#3D2A82;border-radius:9px;padding:11px 15px;font-weight:600;font-size:12.5px;text-align:center;line-height:1.3">{{ n.label }}</div></sc-if></sc-for></div><div style="font-size:12px;color:var(--ink3);margin-top:10px;padding-left:2px">↓ application received</div></div>
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><sc-for list="{{ flowApp }}" as="n" hint-placeholder-count="4"><sc-if value="{{ n.arrow }}" hint-placeholder-val="{{ false }}"><span style="color:#2E7D32;font-weight:800;font-size:18px">→</span></sc-if><sc-if value="{{ n.label }}" hint-placeholder-val="{{ true }}"><div style="background:#3E7D1E;color:#fff;border-radius:11px;padding:14px 18px;font-family:'Archivo';font-weight:700;font-size:13.5px;text-align:center;line-height:1.3">{{ n.label }}<sc-if value="{{ n.sub }}" hint-placeholder-val="{{ false }}"><div style="font-family:'Hanken Grotesk';font-weight:500;font-size:11px;opacity:.85;margin-top:3px">{{ n.sub }}</div></sc-if></div></sc-if></sc-for></div>
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-left:2px"><span style="color:#1F5410;font-weight:800;font-size:16px">↳</span><sc-for list="{{ flowHire }}" as="n" hint-placeholder-count="3"><sc-if value="{{ n.arrow }}" hint-placeholder-val="{{ false }}"><span style="color:#1F5410;font-weight:800;font-size:18px">→</span></sc-if><sc-if value="{{ n.label }}" hint-placeholder-val="{{ true }}"><div style="background:#2C5910;color:#fff;border-radius:11px;padding:14px 18px;font-family:'Archivo';font-weight:700;font-size:13.5px;text-align:center;line-height:1.3">{{ n.label }}<sc-if value="{{ n.sub }}" hint-placeholder-val="{{ false }}"><div style="font-family:'Hanken Grotesk';font-weight:500;font-size:11px;opacity:.85;margin-top:3px">{{ n.sub }}</div></sc-if></div></sc-if></sc-for></div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--line)"><span style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink2)"><span style="width:12px;height:12px;border-radius:3px;background:#494FC9"></span>Job management</span><span style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink2)"><span style="width:12px;height:12px;border-radius:3px;background:#3E7D1E"></span>Applicant review</span><span style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink2)"><span style="width:12px;height:12px;border-radius:3px;background:#2C5910"></span>Messaging &amp; hire</span></div>
+          </div>
+        </div>
+
+        <!-- job dashboard mock -->
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;margin-top:20px;overflow:hidden">
+          <div style="display:flex;align-items:center;gap:18px;padding:14px 20px;border-bottom:1px solid var(--line)"><div style="display:flex;align-items:center;gap:8px"><div style="width:20px;height:20px;border-radius:50%;background:#494FC9"></div><span style="font-family:'Archivo';font-weight:800;font-size:14px">Curam</span></div><div style="display:flex;gap:18px;font-size:12.5px;color:var(--ink2)"><span style="color:#494FC9;font-weight:700">Home</span><span>Job posts</span><span>Messages</span><span>My hires</span></div></div>
+          <div style="padding:20px 22px">
+            <div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#494FC9;margin-bottom:13px;color:var(--ink3);margin-bottom:12px">What next?</div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
+              <div style="background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:12.5px"><strong style="color:#494FC9">REVIEW</strong> <span style="color:var(--ink2)">— evaluate applications received</span></div>
+              <div style="background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:12.5px"><strong style="color:#494FC9">MESSAGE</strong> <span style="color:var(--ink2)">— discuss with shortlisted carers</span></div>
+              <div style="background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:12.5px"><strong style="color:#494FC9">HIRE</strong> <span style="color:var(--ink2)">— select carer, pay invoices online</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
+              <div style="background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:16px 18px"><div style="font-size:12px;font-weight:700;margin-bottom:6px">Advertised rate</div><div style="font-size:11.5px;color:var(--ink2);line-height:1.5;margin-bottom:10px">£20.00/hr — average for SW10 0AA. Carers set their own rates; all negotiable. 10% booking fee.</div><span style="display:inline-block;background:#494FC9;color:#fff;border-radius:8px;padding:7px 14px;font-size:11.5px;font-weight:700">Change rate</span></div>
+              <div style="background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:16px 18px"><div style="font-size:12px;font-weight:700;margin-bottom:6px">Let the right carer find your job</div><div style="font-size:11.5px;color:var(--ink2);line-height:1.5;margin-bottom:10px">Add requirements so applicants are pre-filtered by need, language and availability, not just location.</div><span style="display:inline-block;background:#1FA56B;color:#fff;border-radius:8px;padding:7px 14px;font-size:11.5px;font-weight:700">Add details</span></div>
+            </div>
+            <div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#494FC9;margin-bottom:13px;color:var(--ink3);margin-bottom:12px">While you wait, recommended carers you can invite with one click</div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+              <sc-for list="{{ jobCarers }}" as="c" hint-placeholder-count="3">
+                <div style="border:1px solid var(--line);border-radius:12px;padding:14px 15px"><div style="display:flex;align-items:center;gap:9px;margin-bottom:9px"><div style="width:28px;height:28px;border-radius:50%;background:#E0D6F5"></div><div><div style="font-size:12.5px;font-weight:700">{{ c.name }}</div><div style="font-size:9.5px;color:var(--ink3)">{{ c.active }}</div></div></div><div style="font-size:10.5px;color:var(--ink2);line-height:1.5;margin-bottom:8px">{{ c.hrs }} hrs · {{ c.recs }} recommendations · {{ c.exp }}</div><div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:11px"><sc-for list="{{ c.tags }}" as="t" hint-placeholder-count="3"><span style="font-size:9.5px;font-weight:600;color:var(--ink2);background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:3px 9px">{{ t }}</span></sc-for></div><div style="display:flex;gap:6px"><div style="flex:1;border:1px solid var(--line);border-radius:8px;padding:6px;text-align:center;font-size:10.5px;font-weight:700;color:var(--ink2)">View profile</div><div style="flex:1;background:#1FA56B;color:#fff;border-radius:8px;padding:6px;text-align:center;font-size:10.5px;font-weight:700">Invite to job</div></div></div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+        <p style="margin:12px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink3);max-width:74ch">The dashboard's "What next?" strip replaced a blank waiting state with an explicit review → message → hire path.</p>
+      </section>
+
+      <!-- SHIPPED SCREENS -->
+      <section style="margin-bottom:56px">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px"><span style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;margin:0">10 · Shipped screens</span><span style="display:inline-flex;align-items:center;font-size:11.5px;font-weight:700;letter-spacing:.02em;color:#1FA56B;background:#DAF3E4;border-radius:999px;padding:5px 12px">Both sides</span></div>
+        <h3 style="font-family:'Archivo';font-weight:800;font-size:clamp(25px,3vw,37px);letter-spacing:-.025em;line-height:1.08;margin:0 0 16px;max-width:26ch">The trust artifact, and the path to that first message.</h3>
+
+        <!-- carer profile -->
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:30px 30px 26px;margin-top:22px">
+          <div style="font-family:'Archivo';font-weight:800;font-size:19px;letter-spacing:-.01em;color:var(--ink);margin-bottom:4px">Carer profile, read before a receiver ever messages</div>
+          <div style="font-size:13px;color:var(--ink3);margin-bottom:20px">Shipped screen, every credential surfaced above the fold</div>
+
+          <div style="border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff">
+            <img src="uploads/dashboard--new-user--desktop--full page (1).png" alt="Carer profile, shipped screen showing Pelagie Bareh Nwiyo's rates, vetting, credentials, and client recommendations" style="display:block;width:100%;height:auto" />
+          </div>
+          <p style="margin:12px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink3);max-width:74ch">Every credential, DBS level, interview status, photo verification, qualifications, client recommendations, is visible before a receiver has to decide whether to trust a stranger.</p>
+        </div>
+
+        <!-- receiver journey -->
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:30px 30px 26px;margin-top:20px;overflow-x:auto">
+          <div style="font-family:'Archivo';font-weight:800;font-size:19px;letter-spacing:-.01em;color:var(--ink);margin-bottom:4px">Care-receiver journey, search to first message</div>
+          <div style="font-size:13px;color:var(--ink3);margin-bottom:20px">Trust signals appear before any commitment is asked</div>
+          <div style="display:flex;gap:14px;min-width:2015px">
+            <div style="width:281px;height:609px;flex-shrink:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff"><img src="uploads/Mobile landing page (1).png" alt="Landing page, find a carer your family will love" style="display:block;width:281px;height:609px" /></div>
+            <div style="width:281px;height:609px;flex-shrink:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff"><img src="uploads/Frame 26987.png" alt="Found 129 carers in London" style="display:block;width:281px;height:609px" /></div>
+            <div style="width:281px;height:609px;flex-shrink:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff"><img src="uploads/List of Care Jobs.png" alt="Message multiple carers for free, select carers" style="display:block;width:281px;height:609px" /></div>
+            <div style="width:281px;height:609px;flex-shrink:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff"><img src="uploads/List of Care Jobs-1.png" alt="Send message modal, default message" style="display:block;width:281px;height:609px" /></div>
+            <div style="width:281px;height:609px;flex-shrink:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff"><img src="uploads/List of Care Jobs-3.png" alt="Send message modal, message with hints applied" style="display:block;width:281px;height:609px" /></div>
+            <div style="width:281px;height:609px;flex-shrink:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff"><img src="uploads/Conversations-1-d91b250b.png" alt="Messages sent to selected carers" style="display:block;width:281px;height:609px" /></div>
+            <div style="width:281px;height:609px;flex-shrink:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff"><img src="uploads/Conversations-1ad52306.png" alt="First message thread with Kaylynn Press" style="display:block;width:281px;height:609px" /></div>
+          </div>
+          <p style="margin:12px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink3);max-width:74ch">Bulk-selecting carers to message, with suggested phrasing, lowered the effort of writing a first message to several strangers at once, while trust statistics stayed visible the whole way through.</p>
+        </div>
+      </section>
+
+      <!-- DESIGN SYSTEM -->
+      <section style="margin-bottom:56px">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px"><span style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;margin:0">11 · Design system, before &amp; after</span><span style="display:inline-flex;align-items:center;font-size:11.5px;font-weight:700;letter-spacing:.02em;color:#1FA56B;background:#DAF3E4;border-radius:999px;padding:5px 12px">Both sides</span></div>
+        <h3 style="font-family:'Archivo';font-weight:800;font-size:clamp(25px,3vw,37px);letter-spacing:-.025em;line-height:1.08;margin:0 0 16px">One accessible source of truth for both sides.</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:22px" class="two">
+          <div style="background:#FCEFEA;border:1px solid #F1D3C8;border-radius:16px;padding:22px 24px"><div style="font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#B23C1E;margin-bottom:14px">Before</div><ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px"><sc-for list="{{ dsBefore }}" as="b" hint-placeholder-count="4"><li style="display:flex;gap:10px;font-size:14px;line-height:1.5;color:#7A2D18"><span>✕</span><span>{{ b }}</span></li></sc-for></ul></div>
+          <div style="background:#DAF3E4;border:1px solid #B9E6CE;border-radius:16px;padding:22px 24px"><div style="font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#1A8A57;margin-bottom:14px">After</div><ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px"><sc-for list="{{ dsAfter }}" as="b" hint-placeholder-count="4"><li style="display:flex;gap:10px;font-size:14px;line-height:1.5;color:#134A32"><span>✓</span><span>{{ b }}</span></li></sc-for></ul></div>
+        </div>
+
+        <!-- color ramp + nav states -->
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:30px 30px 26px;margin-top:20px">
+          <div style="font-family:'Archivo';font-weight:800;font-size:16px;letter-spacing:-.01em;color:var(--ink);margin-bottom:16px">One governed colour system, contrast-checked to WCAG AAA</div>
+          <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px">
+            <sc-for list="{{ ramps }}" as="r" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:14px"><div style="width:96px;font-size:12px;font-weight:700;color:var(--ink2);flex-shrink:0">{{ r.name }}</div><div style="display:flex;flex:1;border-radius:8px;overflow:hidden;border:1px solid var(--line)"><sc-for list="{{ r.steps }}" as="s" hint-placeholder-count="9"><div style="flex:1;height:30px;background:{{ s }}"></div></sc-for></div></div></sc-for>
+          </div>
+          <div style="font-family:'Archivo';font-weight:800;font-size:16px;letter-spacing:-.01em;color:var(--ink);margin-bottom:14px">Every nav item specced across 5 interaction states</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <sc-for list="{{ navStates }}" as="n" hint-placeholder-count="5"><div style="border:{{ n.border }};background:{{ n.bg }};border-radius:9px;padding:9px 16px;display:flex;flex-direction:column;gap:2px"><span style="font-size:12.5px;font-weight:700;color:{{ n.ink }}">Job posts</span><span style="font-size:9.5px;color:var(--ink3)">{{ n.label }}</span></div></sc-for>
+          </div>
+        </div>
+      </section>
+
+      <!-- LEADERSHIP -->
+      <section style="margin-bottom:56px">
+        <div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px">12 · Leading through the work</div>
+        <h3 style="font-family:'Archivo';font-weight:800;font-size:clamp(25px,3vw,37px);letter-spacing:-.025em;line-height:1.08;margin:0 0 16px;margin-bottom:20px">How I kept a distributed team aligned for ten months.</h3>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;max-width:78ch">
+          <sc-for list="{{ leadership }}" as="l" hint-placeholder-count="5"><li style="display:flex;gap:12px;font-size:16px;line-height:1.6;color:var(--ink2)"><span style="color:#C0552F;font-weight:800;flex-shrink:0">→</span><span>{{ l }}</span></li></sc-for>
+        </ul>
+      </section>
+
+      <!-- OUTCOMES -->
+      <section style="margin-bottom:44px">
+        <div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px">13 · Outcomes</div>
+        <h3 style="font-family:'Archivo';font-weight:800;font-size:clamp(25px,3vw,37px);letter-spacing:-.025em;line-height:1.08;margin:0 0 16px">How impact was measured, and what changed.</h3>
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:30px 30px 26px;margin-top:18px;padding:22px 26px">
+          <div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px;color:var(--ink3);margin-bottom:9px">How we measured it</div>
+          <p style="margin:0;font-size:15.5px;line-height:1.65;color:var(--ink2)">Google Analytics funnel reports gave a before/after view of where carers dropped off. Hotjar heatmaps and recordings confirmed whether specific pre-launch hesitation points, like stalling on document upload, eased once the segmented flow shipped.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px" class="two">
+          <sc-for list="{{ impactCards }}" as="c" hint-placeholder-count="3"><div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px"><div style="font-size:11.5px;font-weight:700;color:#C0552F;margin-bottom:9px">{{ c.tag }}</div><p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink2)">{{ c.body }}</p></div></sc-for>
+        </div>
+        <ul style="list-style:none;margin:22px 0 0;padding:0;display:flex;flex-direction:column;gap:11px;max-width:78ch">
+          <sc-for list="{{ outcomeResults }}" as="o" hint-placeholder-count="4"><li style="display:flex;gap:11px;font-size:15.5px;line-height:1.55;color:var(--ink2)"><span style="color:#1FA56B;font-weight:800;flex-shrink:0">✓</span><span>{{ o }}</span></li></sc-for>
+        </ul>
+        <p style="font-size:13px;color:var(--ink3);max-width:76ch;margin-top:14px;line-height:1.55">Note: specific before/after percentages from Curam's GA and Hotjar dashboards weren't retained after the engagement ended, so this study reports the measurement approach and the changes it drove rather than invented figures.</p>
+      </section>
+
+      <!-- REFLECTION -->
+      <section style="margin-bottom:44px">
+        <div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px">14 · Reflection</div>
+        <h3 style="font-family:'Archivo';font-weight:800;font-size:clamp(25px,3vw,37px);letter-spacing:-.025em;line-height:1.08;margin:0 0 16px;margin-bottom:20px">What I'd keep, and what I'd change.</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:13px" class="two">
+          <sc-for list="{{ reflectCards }}" as="r" hint-placeholder-count="4"><div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px"><h4 style="font-family:'Archivo';font-weight:700;font-size:16px;letter-spacing:-.01em;margin:0 0 9px;color:#C0552F">{{ r.h }}</h4><p style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink2)">{{ r.p }}</p></div></sc-for>
+        </div>
+      </section>
+
+      <div style="border-radius:20px;background:var(--bg2);border:1px solid var(--line);padding:32px 34px;margin-bottom:40px">
+        <div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#C0552F;margin-bottom:13px">The one thing that mattered most</div>
+        <p style="margin:0;font-family:'Archivo';font-weight:500;font-size:clamp(20px,2.3vw,26px);line-height:1.4;letter-spacing:-.01em;color:var(--ink)">The most important decision wasn't a UI choice, it was reframing the root cause as trust and hidden information, not tech-savviness. That clarity is the difference between a redesign that ships and one that actually works, on both sides of the marketplace.</p>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:13px;margin-bottom:30px;flex-wrap:wrap">
+      <div onClick="{{ openNextCase }}" class="pill-btn" style="cursor:pointer;background:var(--ink);color:var(--bg);font-weight:700;font-size:15px;padding:14px 26px;border-radius:999px">Next: Amplicomm Analytics →</div>
+      <div onClick="{{ goHome }}" class="pill-btn" style="cursor:pointer;background:var(--card);border:1px solid var(--line);font-weight:700;font-size:15px;padding:14px 26px;border-radius:999px">All work</div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ================= CASE STUDY DETAIL ================= -->
+  <sc-if value="{{ isCase }}" hint-placeholder-val="{{ false }}">
+  <div>
+    <div onClick="{{ goHome }}" class="pill-btn" style="cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14px;color:var(--ink2);margin-bottom:24px">← All work</div>
+
+    <div style="position:relative;border-radius:30px;overflow:hidden;background:{{ cs.grad }};padding:56px 50px;min-height:380px;display:flex;flex-direction:column;justify-content:center;margin-bottom:38px">
+      <span style="position:absolute;top:-9%;right:-3%;font-family:'Archivo';font-weight:900;font-size:clamp(90px,13vw,190px);line-height:.78;letter-spacing:-.05em;color:{{ cs.ghost }};text-transform:uppercase;pointer-events:none;max-width:52%;text-align:right;white-space:nowrap">{{ cs.short }}</span>
+      <div style="position:relative;z-index:1;max-width:62%">
+        <div style="width:56px;height:56px;border-radius:15px;background:{{ cs.logoBg }};color:{{ cs.logoInk }};display:flex;align-items:center;justify-content:center;font-family:'Archivo';font-weight:800;font-size:18px;margin-bottom:24px">{{ cs.mono }}</div>
+        <div style="font-family:'Hanken Grotesk';font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:rgba(21,19,31,.55);margin-bottom:16px">{{ cs.tag }}</div>
+        <h2 style="font-family:'Archivo';font-weight:900;font-size:clamp(32px,4.2vw,54px);line-height:1.0;letter-spacing:-.03em;margin:0 0 18px;color:#15131F">{{ cs.title }}</h2>
+        <p style="margin:0;font-size:19px;line-height:1.5;color:#3A3340;max-width:36ch">{{ cs.subtitle }}</p>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:30px 56px;padding:0 4px 32px;border-bottom:1px solid var(--line);margin-bottom:42px">
+      <div><div style="font-family:'Hanken Grotesk';font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:7px">Role</div><div style="font-size:16px;font-weight:600">{{ cs.role }}</div></div>
+      <div><div style="font-family:'Hanken Grotesk';font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:7px">Team</div><div style="font-size:16px;font-weight:600">{{ cs.team }}</div></div>
+      <div><div style="font-family:'Hanken Grotesk';font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:7px">Timeline</div><div style="font-size:16px;font-weight:600">{{ cs.timeline }}</div></div>
+      <div><div style="font-family:'Hanken Grotesk';font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:7px">Tools</div><div style="font-size:16px;font-weight:600">{{ cs.tools }}</div></div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:14px;margin-bottom:52px">
+      <sc-for list="{{ cs.metrics }}" as="m" hint-placeholder-count="3">
+        <div style="flex:1;min-width:170px;border:1px solid color-mix(in srgb, {{ m.c }} 28%, var(--line));border-radius:18px;padding:24px 26px;background:color-mix(in srgb, {{ m.c }} 9%, var(--card))">
+          <div style="font-family:'Archivo';font-weight:900;font-size:42px;letter-spacing:-.03em;line-height:1;color:{{ m.c }}">{{ m.v }}</div>
+          <div style="font-size:14.5px;color:var(--ink2);margin-top:8px;line-height:1.4">{{ m.l }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="max-width:900px;margin:0 auto">
+      <sc-for list="{{ cs.sections }}" as="s" hint-placeholder-count="5">
+        <section style="margin-bottom:54px">
+          <div style="display:inline-flex;align-items:center;gap:8px;font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:{{ cs.accent }};background:color-mix(in srgb, {{ cs.accent }} 12%, transparent);border-radius:999px;padding:6px 14px 5px;margin-bottom:14px">{{ s.eyebrow }}</div>
+          <h3 style="font-family:'Archivo';font-weight:800;font-size:clamp(26px,3vw,38px);letter-spacing:-.025em;line-height:1.08;margin:0 0 18px;max-width:24ch">{{ s.heading }}</h3>
+          <sc-for list="{{ s.paras }}" as="p" hint-placeholder-count="2"><p style="margin:0 0 16px;font-size:17.5px;line-height:1.72;color:var(--ink2);max-width:70ch">{{ p }}</p></sc-for>
+          <sc-if value="{{ s.imgAudit }}" hint-placeholder-val="{{ false }}">
+            <figure style="margin:22px 0 26px">
+              <img src="amplicomm-assets/research-synthesis.svg" alt="Diagram of the three research inputs used to ground the audit" style="width:100%;border-radius:14px;border:1px solid var(--line);display:block" />
+              <figcaption style="margin-top:10px;font-size:13.5px;line-height:1.5;color:var(--ink3)">Three inputs — a heuristic evaluation, stakeholder walkthroughs, and the CTO's data-stack constraints — cross-checked before anything was called a "problem."</figcaption>
+            </figure>
+            <sc-if value="{{ s.auditAnnotated }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.1fr) minmax(0,1fr);gap:0 16px;align-items:stretch;margin:26px 0 6px">
+                <div style="display:flex;flex-direction:column;justify-content:space-between;padding:6px 0">
+                  <sc-for list="{{ s.callLeft }}" as="c" hint-placeholder-count="2">
+                    <div style="display:flex;align-items:flex-start;gap:10px;text-align:right;flex-direction:row-reverse">
+                      <div style="flex:0 0 auto;width:26px;height:26px;border-radius:999px;background:{{ cs.accent }};color:#fff;font-family:'Archivo';font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center">{{ c.n }}</div>
+                      <div style="flex:1;min-width:0">
+                        <p style="margin:0 0 4px;font-size:14.5px;line-height:1.45;color:var(--ink2)">{{ c.t }}</p>
+                        <div style="font-size:20px;line-height:1;color:{{ cs.accent }};font-weight:700">→</div>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+                <figure style="margin:0">
+                  <img src="amplicomm-assets/audit-dashboard-clean.png" alt="Screenshot of the inherited CEO overview dashboard, annotated with audit findings" style="width:100%;border-radius:14px;border:1px solid var(--line);display:block" />
+                </figure>
+                <div style="display:flex;flex-direction:column;justify-content:space-between;padding:6px 0">
+                  <sc-for list="{{ s.callRight }}" as="c" hint-placeholder-count="3">
+                    <div style="display:flex;align-items:flex-start;gap:10px">
+                      <div style="flex:0 0 auto;width:26px;height:26px;border-radius:999px;background:{{ cs.accent }};color:#fff;font-family:'Archivo';font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center">{{ c.n }}</div>
+                      <div style="flex:1;min-width:0">
+                        <p style="margin:0 0 4px;font-size:14.5px;line-height:1.45;color:var(--ink2)">{{ c.t }}</p>
+                        <div style="font-size:20px;line-height:1;color:{{ cs.accent }};font-weight:700">←</div>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+              <figcaption style="margin:0 0 10px;font-size:13.5px;line-height:1.5;color:var(--ink3);text-align:center">The as-inherited CEO overview dashboard, before the redesign — five findings from the heuristic audit, mapped to what they actually looked like on screen.</figcaption>
+              <p style="margin:18px 0 0;padding:18px 22px;border-radius:14px;background:color-mix(in srgb, {{ cs.accent }} 10%, var(--bg2));border:1px solid color-mix(in srgb, {{ cs.accent }} 24%, var(--line));border-left:3px solid {{ cs.accent }};font-size:16.5px;line-height:1.6;font-style:italic;color:var(--ink)">{{ s.closing }}</p>
+            </sc-if>
+          </sc-if>
+          <sc-if value="{{ s.imgPrinciples }}" hint-placeholder-val="{{ false }}">
+            <figure style="margin:22px 0 26px">
+              <img src="amplicomm-assets/principles.svg" alt="Diagram of the four design principles applied across every dashboard" style="width:100%;border-radius:14px;border:1px solid var(--line);display:block" />
+              <figcaption style="margin-top:10px;font-size:13.5px;line-height:1.5;color:var(--ink3)">Four principles, each tracing back to a specific audit finding.</figcaption>
+            </figure>
+          </sc-if>
+          <sc-if value="{{ s.imgHomeSpec }}" hint-placeholder-val="{{ false }}">
+            <figure style="margin:22px 0 8px">
+              <img src="amplicomm-assets/state-empty.png" alt="Default dashboard state with one KPI selected" style="width:100%;border-radius:14px;border:1px solid var(--line);display:block" />
+              <figcaption style="margin-top:8px;font-size:12.5px;line-height:1.5;color:var(--ink3)">Default state — one clear KPI selected (Gross Merchandise Value), compare panel empty and inviting a choice rather than overwhelming by default.</figcaption>
+            </figure>
+
+            <figure style="margin:18px 0 26px">
+              <img src="amplicomm-assets/state-compare.png" alt="Dashboard state with four metrics compared" style="width:100%;border-radius:14px;border:1px solid var(--line);display:block" />
+              <figcaption style="margin-top:8px;font-size:12.5px;line-height:1.5;color:var(--ink3)">Active comparison — Orders, AOV, DRR, and TACOS each checked into the Compare Metrics panel, rendering as their own line on the chart.</figcaption>
+            </figure>
+          </sc-if>
+          <sc-if value="{{ s.imgCrossFilter }}" hint-placeholder-val="{{ false }}">
+            <figure style="margin:22px 0 26px">
+              <img src="amplicomm-assets/cross-filtering.svg" alt="Diagram showing cross-filtering serving four different seller personas" style="width:100%;border-radius:14px;border:1px solid var(--line);display:block" />
+              <figcaption style="margin-top:10px;font-size:13.5px;line-height:1.5;color:var(--ink3)">The same click means something different to each persona — one mechanic instead of four maintained dashboards.</figcaption>
+            </figure>
+          </sc-if>
+          <sc-if value="{{ s.imgLeadership }}" hint-placeholder-val="{{ false }}">
+            <figure style="margin:22px 0 26px">
+              <img src="amplicomm-assets/leadership.svg" alt="Diagram of the design team working with CEO, CTO, CPO, PM, and engineering" style="width:100%;border-radius:14px;border:1px solid var(--line);display:block" />
+              <figcaption style="margin-top:10px;font-size:13.5px;line-height:1.5;color:var(--ink3)">Design decisions were reviewed and contested at the C-suite level every week, not batched into quarterly reviews.</figcaption>
+            </figure>
+          </sc-if>
+          <sc-if value="{{ s.imgManualProcess }}" hint-placeholder-val="{{ false }}">
+            <figure style="margin:22px 0 26px">
+              <img src="ordestra-assets/manual-process.svg" alt="Diagram of the four manual tools the digital system replaced" style="width:100%;border-radius:14px;border:1px solid var(--line);display:block" />
+              <figcaption style="margin-top:10px;font-size:13.5px;line-height:1.5;color:var(--ink3)">{{ s.imgCaption }}</figcaption>
+            </figure>
+          </sc-if>
+          <sc-if value="{{ s.imgResearchTable }}" hint-placeholder-val="{{ false }}">
+            <figure style="margin:22px 0 26px">
+              <img src="ordestra-assets/research-table.svg" alt="Diagram of four research inputs" style="width:100%;border-radius:14px;border:1px solid var(--line);display:block" />
+              <figcaption style="margin-top:10px;font-size:13.5px;line-height:1.5;color:var(--ink3)">{{ s.imgCaption }}</figcaption>
+            </figure>
+          </sc-if>
+          <sc-if value="{{ s.imgPersonas }}" hint-placeholder-val="{{ false }}">
+            <figure style="margin:22px 0 26px">
+              <img src="ordestra-assets/personas.svg" alt="Diagram comparing the warehouse floor operator and the dispatch/ops manager" style="width:100%;border-radius:14px;border:1px solid var(--line);display:block" />
+              <figcaption style="margin-top:10px;font-size:13.5px;line-height:1.5;color:var(--ink3)">{{ s.imgCaption }}</figcaption>
+            </figure>
+          </sc-if>
+          <sc-if value="{{ s.imgPipeline }}" hint-placeholder-val="{{ false }}">
+            <figure style="margin:22px 0 26px">
+              <img src="ordestra-assets/pipeline.svg" alt="Diagram of the four-stage fulfillment pipeline" style="width:100%;border-radius:14px;border:1px solid var(--line);display:block" />
+              <figcaption style="margin-top:10px;font-size:13.5px;line-height:1.5;color:var(--ink3)">{{ s.imgCaption }}</figcaption>
+            </figure>
+          </sc-if>
+          <sc-if value="{{ s.imgJourneyMap }}" hint-placeholder-val="{{ false }}">
+            <figure style="margin:22px 0 26px">
+              <img src="ordestra-assets/journey-map.svg" alt="Journey map from picklist creation to courier pickup" style="width:100%;border-radius:14px;border:1px solid var(--line);display:block" />
+              <figcaption style="margin-top:10px;font-size:13.5px;line-height:1.5;color:var(--ink3)">{{ s.imgCaption }}</figcaption>
+            </figure>
+          </sc-if>
+          <sc-if value="{{ s.imgUserFlow }}" hint-placeholder-val="{{ false }}">
+            <figure style="margin:22px 0 26px">
+              <img src="ordestra-assets/user-flow.svg" alt="Flowchart from picklist creation to dispatch, including two backward loops" style="width:100%;border-radius:14px;border:1px solid var(--line);display:block" />
+              <figcaption style="margin-top:10px;font-size:13.5px;line-height:1.5;color:var(--ink3)">{{ s.imgCaption }}</figcaption>
+            </figure>
+          </sc-if>
+          <sc-if value="{{ s.imgPicking }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0 26px">
+              <figure style="margin:0">
+                <img src="ordestra-assets/screen-ready-to-pick.png" alt="Ready to Pick screen showing picklists queued for a picker" style="width:100%;border-radius:14px;border:1px solid var(--line);display:block" />
+                <figcaption style="margin-top:8px;font-size:12.5px;line-height:1.5;color:var(--ink3)">{{ s.imgCaption }}</figcaption>
+              </figure>
+              <figure style="margin:0">
+                <img src="ordestra-assets/screen-picking.png" alt="Mid-pick screen grouped by bin" style="width:100%;border-radius:14px;border:1px solid var(--line);display:block" />
+                <figcaption style="margin-top:8px;font-size:12.5px;line-height:1.5;color:var(--ink3)">{{ s.img2Caption }}</figcaption>
+              </figure>
+            </div>
+          </sc-if>
+          <sc-if value="{{ s.imgPacking }}" hint-placeholder-val="{{ false }}">
+            <figure style="margin:22px 0 26px">
+              <img src="ordestra-assets/screen-packing.png" alt="Packing screen with tote contents, box dimensions, and carrier information" style="width:100%;border-radius:14px;border:1px solid var(--line);display:block" />
+              <figcaption style="margin-top:10px;font-size:13.5px;line-height:1.5;color:var(--ink3)">{{ s.imgCaption }}</figcaption>
+            </figure>
+          </sc-if>
+          <sc-if value="{{ s.imgDispatch }}" hint-placeholder-val="{{ false }}">
+            <figure style="margin:22px 0 26px">
+              <img src="ordestra-assets/screen-dispatch.png" alt="Dispatch screen grouped by carrier" style="width:100%;border-radius:14px;border:1px solid var(--line);display:block" />
+              <figcaption style="margin-top:10px;font-size:13.5px;line-height:1.5;color:var(--ink3)">{{ s.imgCaption }}</figcaption>
+            </figure>
+          </sc-if>
+          <sc-if value="{{ s.imgLayoutReuse }}" hint-placeholder-val="{{ false }}">
+            <figure style="margin:22px 0 26px">
+              <img src="ordestra-assets/layout-reuse.svg" alt="Diagram showing the shared list-plus-work-columns layout across stages" style="width:100%;border-radius:14px;border:1px solid var(--line);display:block" />
+              <figcaption style="margin-top:10px;font-size:13.5px;line-height:1.5;color:var(--ink3)">{{ s.imgCaption }}</figcaption>
+            </figure>
+          </sc-if>
+          <sc-if value="{{ s.imgOrdersDashboard }}" hint-placeholder-val="{{ false }}">
+            <figure style="margin:22px 0 26px">
+              <img src="ordestra-assets/screen-orders-dashboard.png" alt="Orders dashboard with order list and full shipment detail" style="width:100%;border-radius:14px;border:1px solid var(--line);display:block" />
+              <figcaption style="margin-top:10px;font-size:13.5px;line-height:1.5;color:var(--ink3)">{{ s.imgCaption }}</figcaption>
+            </figure>
+          </sc-if>
+          <sc-if value="{{ s.hasBullets }}" hint-placeholder-val="{{ false }}">
+            <ul style="list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:11px;max-width:74ch">
+              <sc-for list="{{ s.bullets }}" as="b" hint-placeholder-count="3"><li style="display:flex;gap:12px;font-size:17px;line-height:1.65;color:var(--ink2)"><span style="color:{{ cs.accent }};font-weight:800;flex-shrink:0">→</span><span>{{ b }}</span></li></sc-for>
+            </ul>
+          </sc-if>
+          <sc-if value="{{ s.hasCards }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:13px;margin-top:8px">
+              <sc-for list="{{ s.cards }}" as="cd" hint-placeholder-count="3">
+                <div style="border:1px solid color-mix(in srgb, {{ cs.accent }} 26%, var(--line));border-radius:16px;padding:22px 24px;background:color-mix(in srgb, {{ cs.accent }} 8%, var(--card))">
+                  <h4 style="font-family:'Archivo';font-weight:700;font-size:18px;letter-spacing:-.01em;margin:0 0 7px;color:{{ cs.accent }}">{{ cd.h }}</h4>
+                  <p style="margin:0;font-size:15.5px;line-height:1.6;color:var(--ink2)">{{ cd.b }}</p>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </section>
+      </sc-for>
+
+      <div style="border-radius:20px;background:color-mix(in srgb, {{ cs.accent }} 7%, var(--bg2));border:1px solid color-mix(in srgb, {{ cs.accent }} 24%, var(--line));border-left:4px solid {{ cs.accent }};padding:34px 36px;margin-bottom:44px">
+        <div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:{{ cs.accent }};margin-bottom:14px">Reflection</div>
+        <p style="margin:0;font-family:'Archivo';font-weight:500;font-size:clamp(20px,2.3vw,26px);line-height:1.4;letter-spacing:-.01em;color:var(--ink)">{{ cs.reflection }}</p>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:13px;margin-bottom:30px">
+      <div onClick="{{ cs.nextOpen }}" class="pill-btn" style="cursor:pointer;background:var(--ink);color:var(--bg);font-weight:700;font-size:15px;padding:14px 26px;border-radius:999px">Next: {{ cs.nextName }} →</div>
+      <div onClick="{{ goHome }}" class="pill-btn" style="cursor:pointer;background:var(--card);border:1px solid var(--line);font-weight:700;font-size:15px;padding:14px 26px;border-radius:999px">All work</div>
+    </div>
+  </div>
+  </sc-if>
+
+  </main>
+
+  <footer style="border-top:1px solid var(--line);margin-top:40px">
+    <div style="max-width:1180px;margin:0 auto;padding:30px 32px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;font-size:14px;color:var(--ink3)">
+      <span>© 2026 Vigna Rathod · Lead UX Designer</span>
+      <span style="display:flex;gap:20px"><a class="pill-btn" href="https://linkedin.com/in/vigna-rathod" target="_blank">LinkedIn</a><a class="pill-btn" href="https://instagram.com/vignarathod" target="_blank">Instagram</a><a class="pill-btn" href="mailto:vignarathod122@gmail.com">Email</a></span>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { route: 'home', dark: false };
+
+  go(route) { this.setState({ route }); requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'auto' })); }
+  toggleTheme() {
+    const dark = !this.state.dark;
+    this.setState({ dark });
+    document.body.classList.toggle('dark', dark);
+  }
+  scrollWork() {
+    const el = document.getElementById('work');
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
+  }
+
+  componentDidMount() { document.body.classList.add('js'); this.setupReveal(); }
+  componentDidUpdate(_p, prev) { if (prev && prev.route !== this.state.route) this.setupReveal(); }
+
+  setupReveal() {
+    if (this.io) this.io.disconnect();
+    const show = () => { const vh = window.innerHeight; document.querySelectorAll('[data-rv]:not(.in)').forEach((el) => { if (el.getBoundingClientRect().top < vh * 0.95) el.classList.add('in'); }); };
+    requestAnimationFrame(show);
+    setTimeout(() => { try { this.io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); this.io.unobserve(e.target); } }), { threshold: 0.06, rootMargin: '0px 0px -4% 0px' }); document.querySelectorAll('[data-rv]:not(.in)').forEach((el) => this.io.observe(el)); } catch (e) {} }, 40);
+    if (!this._sc) { this._sc = show; window.addEventListener('scroll', show, { passive: true }); }
+    clearTimeout(this._fs);
+    this._fs = setTimeout(() => document.querySelectorAll('[data-rv]:not(.in)').forEach((el) => el.classList.add('in')), 2200);
+  }
+
+  csData() {
+    return {
+      curamcare: {
+        short: 'Curam', mono: 'CC', tag: 'Healthcare · UK', accent: '#C0552F', kicker1: 'Care Marketplace', kicker2: 'Healthcare',
+        grad: 'linear-gradient(135deg,#FCE9DF,#F3D9EC)', mockBg: 'linear-gradient(160deg,#FBEEE6,#F0DCEF)', ghost: 'rgba(192,85,47,.13)', metaInk: '#7A5A48', bodyInk: '#5A4A40',
+        logoBg: '#D2603E', logoInk: '#fff', shotLabel: 'verified profile + messaging', slotId: 'work-curamcare', slotPlaceholder: 'Drop CuramCare screen',
+        title: 'Designing trust into a two-sided care marketplace',
+        cardDesc: 'A 10-month research-to-redesign engagement. I found why carers were leaving a UK care platform, then rebuilt onboarding, job discovery, messaging, and the design system, for both sides of the marketplace.',
+        subtitle: 'Users left the platform the moment they found a match. I rebuilt trust, profiles, and messaging to bring them back.',
+        chips: ['Two-sided marketplace', 'Research → redesign', 'Design system', 'Trust & safety'],
+        role: 'Lead UX Designer', team: 'Solo, with dev & product', timeline: '9 months · 2023', tools: 'Figma, Hotjar, GA',
+        metrics: [{ v: '30%', l: 'fewer drop-offs from the matching flow', c: '#C0552F' }, { v: '2×', l: 'more conversations started on-platform', c: '#1FA56B' }, { v: '25%', l: 'lift in overall engagement', c: '#2456E6' }],
+        sections: [
+          { eyebrow: 'The Problem', heading: 'Users found a match, then left the platform.', paras: ['CuramCare connects UK families with professional carers. After a match, users routinely moved to WhatsApp, email, or phone, taking conversations off-platform. CuramCare lost visibility, couldn\u2019t protect users, and couldn\u2019t build the trust a marketplace runs on.', 'Carer profiles were sparse, so care seekers hedged by reaching out externally for context. The platform was creating the conditions for its own abandonment.'] },
+          { eyebrow: 'Research', heading: 'Understanding why users left', paras: ['Before touching Figma, I mapped the behaviour through 15+ interviews, competitive analysis, journey mapping, and a heuristic audit. Three root causes emerged:'], hasCards: true, cards: [{ h: 'No trust signals on profiles', b: 'Just a name and a short bio, users described "just guessing."' }, { h: 'In-app messaging felt cold', b: 'WhatsApp felt faster, more natural, more familiar.' }, { h: 'Onboarding set no expectations', b: 'The first 5 minutes left users unsure how it worked or why staying was safer.' }] },
+          { eyebrow: 'Design Strategy', heading: 'Three interventions, one goal: make the platform the safest place to talk.', paras: ['Rather than just a better chat window, I defined three interventions that worked together, onboarding that builds confidence in 2 minutes, verified carer profiles surfacing trust signals above the fold, and messaging as fast as WhatsApp with touchpoints it can\u2019t offer: scheduling, documents, progress tracking.'] },
+          { eyebrow: 'Key Decisions', heading: 'The thinking behind the work', paras: [], hasCards: true, cards: [{ h: 'Verification above the fold, not buried', b: 'Testing showed 80% never expanded a collapsible credentials section, so it became always-visible.' }, { h: 'A nudge the moment a match confirmed', b: 'Users who saw it were 3× more likely to start their conversation in-app.' }, { h: 'Progressive profile completion', b: 'Complete profiles got 70% more contact requests, a completion score incentivised it without mandating it.' }] },
+        ],
+        reflection: 'The most important decision wasn\u2019t a UI choice, it was framing the root cause as trust, not functionality. That clarity is the difference between a redesign that ships and one that actually works.',
+      },
+      amplicomm: {
+        short: 'Ampli', mono: 'Am', tag: 'SaaS · Analytics', accent: '#2456E6', kicker1: 'B2B Analytics', kicker2: 'SaaS Platform',
+        grad: 'linear-gradient(135deg,#E2ECFF,#EAE4FF)', mockBg: 'linear-gradient(160deg,#E8EFFF,#EEE9FF)', ghost: 'rgba(36,86,230,.12)', metaInk: '#4E5E86', bodyInk: '#46506A',
+        logoBg: '#2456E6', logoInk: '#fff', shotLabel: 'omnichannel analytics dashboard', slotId: 'work-amplicomm', slotPlaceholder: 'Drop Amplicomm dashboard',
+        title: 'Turning a Generic BI Tool Into a Product Sellers Actually Trust',
+        cardDesc: 'Redesigned a generic Superset-based BI tool into a focused analytics product for e-commerce sellers tracking performance across every channel they sell on.',
+        subtitle: 'Amplicomm\u2019s analytics dashboard started as a lightly customized Superset instance. I led the redesign that turned it into a focused product sellers actually trust.',
+        chips: ['Heuristic Audit', 'Design System', 'Omnichannel Analytics'],
+        role: 'Lead Designer', team: 'Lead + 2 designers', timeline: 'Oct 2023 \u2013 Present', tools: 'Figma',
+        metrics: [{ v: '5', l: 'heuristic issues fixed by the redesign', c: '#2456E6' }, { v: '4', l: 'principles applied across every dashboard', c: '#1FA56B' }, { v: '2', l: 'junior designers who extended the system without review', c: '#7A3CE0' }],
+        sections: [
+          { eyebrow: 'The Problem', heading: 'A powerful BI tool sellers didn\u2019t trust enough to act on.', paras: [
+            'Amplicomm gives e-commerce sellers one place to see performance across every channel they sell on \u2014 Amazon, Flipkart, and others \u2014 instead of checking each marketplace\u2019s own dashboard separately.',
+            'The product I inherited was a customized Apache Superset instance: powerful underneath, but visually and structurally still a generic BI tool. Sellers didn\u2019t have one obvious place to look when they opened it, and the KPIs that mattered most to their business were buried among charts that didn\u2019t.',
+            'My read: this was a trust and clarity problem as much as a visual one \u2014 a seller needs to trust a number before they\u2019ll act on it, and a screen with five equally-loud charts doesn\u2019t build that trust.'
+          ] },
+          { eyebrow: 'The Audit', heading: 'Starting with an honest audit, not an opinion.', paras: [
+            'Before proposing anything new, I ran a structured heuristic evaluation of the existing dashboard \u2014 the kind of unglamorous first step that\u2019s easy to skip and expensive to skip badly.'
+          ], imgAudit: true, auditAnnotated: true,
+            callLeft: [
+              { n: '1', t: 'Too many distractions competing for attention, with no focal point for the eye to land on first.' },
+              { n: '4', t: 'Redundant elements \u2014 duplicate axis labels already shown elsewhere \u2014 added noise without adding information.' }
+            ],
+            callRight: [
+              { n: '2', t: 'KPIs that mattered most weren\u2019t visually prioritized over anything else on the screen.' },
+              { n: '3', t: '"Month to Date" and "Year to Date" labels weren\u2019t self-explanatory to a non-analyst seller.' },
+              { n: '5', t: 'No consistent visual language across the screen.' }
+            ],
+            closing: 'An audit like this turns "I don\u2019t like how this looks" into a numbered list stakeholders can actually evaluate \u2014 which is what let a CEO, CTO, and CPO agree on scope quickly instead of relitigating taste.' },
+          { eyebrow: 'Design Strategy', heading: 'Four principles, applied everywhere.', paras: [
+            'Rather than redesign screen by screen, I set four principles up front so every dashboard \u2014 not just the home screen \u2014 would answer the same audit consistently.'
+          ], imgPrinciples: true,
+            hasCards: true, cards: [
+              { h: 'One clear focal point', b: 'The KPI panel anchors every screen, driving the chart below it \u2014 not competing with it. Fixes "no focal point."' },
+              { h: 'Self-explanatory time', b: 'Explicit period tabs and a compare-period picker with visible date ranges. Fixes "MTD/YTD unclear."' },
+              { h: 'Reusable components', b: 'Chart-type, item-quantity, and label controls behave identically everywhere they appear. Fixes "lacks consistency."' },
+              { h: 'Depth on demand', b: 'Maximise view, compare metrics, and drill-in stay one click away, not upfront. Fixes "too many distractions."' }
+            ] },
+          { eyebrow: 'The Redesign', heading: 'The redesigned Home dashboard.', paras: [
+            'The spec below isn\u2019t just a visual redesign \u2014 every interaction is documented as a rule, which is what let two junior designers extend the pattern to other dashboards consistently without me reviewing every screen personally.'
+          ], imgHomeSpec: true,
+            hasCards: true, cards: [
+              { h: 'Selected period panel', b: 'Quick tabs (1D/1W/1M/6M/1Y) plus a calendar picker. Selecting a period always shows the resulting date range back to the user in plain text.' },
+              { h: 'KPI panel drives the chart', b: 'Selecting a KPI changes which line renders below it. Hovering a compared period shows a dotted preview line before locking it in.' },
+              { h: 'Compare metrics panel', b: 'Sellers check multiple KPIs to overlay as separate lines, each with a distinct stroke color in the legend \u2014 no need to leave the chart.' },
+              { h: 'Consistent dropdown language', b: 'Chart-type, item-quantity, and label (Value/Variance) controls share the same interaction pattern everywhere they appear.' }
+            ] },
+          { eyebrow: 'Cross-Filtering', heading: 'One interaction, four different jobs.', paras: [
+            'The top filter bar (Tenant, Channel, Category, SKU, Brand) covered the obvious case, but different roles inside the same seller organization were asking fundamentally different questions of the same data \u2014 and rebuilding those filters manually every time was slow for all of them.'
+          ], hasBullets: true, bullets: [
+            'Made any chart element \u2014 a channel slice, a category bar, a low-stock insight \u2014 clickable as a live filter, instantly re-filtering every other chart and KPI on the dashboard.',
+            'The resulting selection appears as a real, removable filter chip in the top bar, so the state stays visible and shareable rather than hidden inside a click history.',
+            'One interaction model, reused everywhere, meant a founder, a category manager, an ads lead, and an operations lead could each get to their own answer without four separate dashboards to maintain.'
+          ], imgCrossFilter: true,
+            hasCards: true, cards: [
+              { h: 'Founder / CEO', b: 'Clicks the top channel slice to see if GMV growth is concentrated in one channel or spread evenly. Needs the 30-second answer.' },
+              { h: 'Category manager', b: 'Clicks a category bar to filter every KPI and the insights feed down to just that category\u2019s SKUs. Needs SKU-level depth.' },
+              { h: 'Marketing / Ads lead', b: 'Clicks a TACOS spike point to see which channel and SKUs drove the ad-spend jump that day. Needs cause, not just effect.' },
+              { h: 'Operations lead', b: 'Clicks a "Low Stock" insight to filter the whole dashboard to just that SKU\u2019s channel and delivery performance. Needs to act before it\u2019s a problem.' }
+            ] },
+          { eyebrow: 'Leadership', heading: 'Leading through the work, not around it.', paras: [
+            'This wasn\u2019t a design team working in isolation and presenting finished screens \u2014 every major decision was made in the room with the people who\u2019d have to live with its consequences.'
+          ], imgLeadership: true,
+            hasBullets: true, bullets: [
+              'Led two junior designers \u2014 my job was to keep every dashboard answering the same four principles, not just the Home screen I personally designed.',
+              'Worked with the CTO directly on what Superset\u2019s underlying query engine could realistically support, so designs didn\u2019t promise interactions engineering couldn\u2019t ship on the existing data stack.',
+              'Worked with the CEO and CPO to keep scope tied to business priorities \u2014 this was a startup, and every week of design time had a visible opportunity cost.',
+              'Partnered with PM on sequencing which dashboards got redesigned first, based on which ones sellers actually opened most.'
+            ] },
+          { eyebrow: 'Outcomes', heading: 'Shipped as a full product, not a one-off redesign.', paras: [
+            'This wasn\u2019t a screens-only exercise: it shipped as a complete analytics product \u2014 a heuristic audit that got stakeholder buy-in, four principles applied system-wide, and a fully documented interaction spec.',
+            'Two junior designers extended the same system to other dashboards without me reviewing every screen personally \u2014 the spec did that work instead of me.'
+          ] },
+        ],
+        reflection: 'Documenting interactions as explicit rules, not just static screens, is what let two junior designers apply the system consistently without constant review \u2014 that held up well. If I revisited it, I\u2019d pressure-test whether "depth on demand" is discoverable enough for less analytically confident sellers, and I\u2019d want real usage data on which KPIs sellers compare most. Building on Superset also meant some ideal interactions were bounded by what the query engine could return fast enough for an instant answer.',
+      },
+      ordestra: {
+        short: 'Ord', mono: 'Or', tag: 'Logistics · SaaS', accent: '#1A9560', kicker1: 'Warehouse Mgmt', kicker2: 'Logistics SaaS',
+        grad: 'linear-gradient(135deg,#DDF3E7,#E6F0DA)', mockBg: 'linear-gradient(160deg,#E2F4EB,#EAF2DD)', ghost: 'rgba(26,149,96,.13)', metaInk: '#4B7A63', bodyInk: '#3F6A55',
+        logoBg: '#1FA56B', logoInk: '#fff', shotLabel: 'mobile guided picking', slotId: 'work-ordestra', slotPlaceholder: 'Drop Ordestra mobile screen',
+        title: 'A Warehouse Management System for People Who Hate Software',
+        cardDesc: 'Warehouse staff were drowning in manual processes. I designed a guided digital system they adopted without any formal training.',
+        subtitle: 'Staff managed hundreds of orders on paper. I designed a system so intuitive they adopted it without training.',
+        chips: ['Mobile-first', 'Field Research', 'Zero-training'],
+        role: 'Lead Product Designer', team: 'Solo + dev team', timeline: '4 months · 2021', tools: 'Figma, Miro, Pen & Paper',
+        metrics: [{ v: '100%', l: 'manual order intake eliminated', c: '#1A9560' }, { v: '~0', l: 'mispicks after guided flow launch', c: '#2456E6' }, { v: '0', l: 'formal training required', c: '#7A3CE0' }],
+        sections: [
+          { eyebrow: 'The Problem', heading: 'Digitizing a floor process that had to stay faster than paper.', paras: [
+            'Ordestra runs the physical side of order fulfillment for e-commerce sellers, and this project replaced a manual, paper-based process end to end: getting the right item off the right shelf, into the right box, onto the right courier, without a printed sheet or a whiteboard in sight.',
+            'The core challenge wasn\u2019t information density, it was speed and error prevention under physical, time-pressured conditions, made harder by the fact that going digital had to feel faster than paper, not slower.'
+          ], imgManualProcess: true, imgCaption: 'Before Ordestra, fulfillment ran on paper, whiteboards, and phone calls between four disconnected steps \u2014 each one a place information could be lost.',
+            hasBullets: true, bullets: [
+            'Multiple staff work the same pipeline at once, several picklists being picked, several totes being packed, several carriers being dispatched, and a manual system had no way to show that in real time.',
+            'A single wrong pick or mislabeled box costs real money and a real complaint, so the interface has to make the correct action the obvious one every time, the job a good paper checklist used to do, just faster and traceable.'
+          ] },
+          { eyebrow: 'Research', heading: 'Mapping what every manual habit actually cost.', paras: [
+            'Before designing a single screen, I traced each manual habit on the floor to the specific cost it created, then to the digital response that would remove it.'
+          ], imgResearchTable: true, imgCaption: 'Four inputs, cross-checked against each other before anything was called a requirement.',
+            hasCards: true, cards: [
+            { h: 'Paper picklist per order', b: 'No record of who picked what, or when. Replaced with picklist cards carrying live pending/picked counts tied to a named picker.' },
+            { h: 'Whiteboard tally at packing', b: 'Erased and rewritten constantly, no shared visibility. Replaced with per-station progress bars everyone can see at once.' },
+            { h: 'Phone calls to confirm pickup', b: 'Slow handoff, manual recount right before pickup. Replaced with a carrier-grouped dispatch view and one manifest, printed on demand.' },
+            { h: 'No single source of order status', b: 'Support couldn\u2019t answer "where is this order" without walking the floor. Replaced with an Orders dashboard tracing one order to AWB number and delivery date.' }
+          ] },
+          { eyebrow: 'Two Users, One System', heading: 'A floor worker mid-shift and a desk-bound coordinator, same product.', paras: [
+            'The same system has to serve someone standing on the warehouse floor, moving between bins with a scanner in hand, and someone sitting at a desk reconciling an order dispute after the fact. Those two contexts pull the interface in opposite directions, so both needed a first-class mode instead of one compromised in favour of the other.'
+          ], imgPersonas: true, imgCaption: 'Two contexts, two sets of needs \u2014 glanceable progress and minimal decisions on the floor, dense detail and a full audit trail at the desk.' },
+          { eyebrow: 'The Pipeline', heading: 'One order, four stages, one shared structural pattern.', paras: [
+            'An order moves through four stages, Ready to Pick, Picking, Packing, and Dispatch, and the interface tracks it under the language staff actually use on the floor rather than one generic status label.'
+          ], imgPipeline: true, imgCaption: 'The same order, renamed at each handoff to match how the floor already talks about it.' },
+          { eyebrow: 'The Journey', heading: 'Zooming out: the end-to-end emotional arc.', paras: [
+            'The pipeline diagram shows the mechanics. This map shows what happens across all five stages for the people running them, including where confidence drops and where a handoff creates risk.'
+          ], imgJourneyMap: true, imgCaption: 'Every pain point sits at a handoff between roles, not inside a single person\u2019s task \u2014 a supervisor sizing a picklist gets no feedback from the picker who finishes it.' },
+          { eyebrow: 'User Flow', heading: 'Every path through the system, including the loops.', paras: [
+            'The journey map shows the emotional shape of the process. This flow shows the actual decision logic underneath it, including the two places the system deliberately sends someone back a step rather than forward.'
+          ], imgUserFlow: true, imgCaption: 'The contents check before printing a label is the one place the flow sends someone backward \u2014 a wrong label printed once is far more expensive than one extra verification step.' },
+          { eyebrow: 'Picking', heading: 'Speed with a paper trail.', paras: [
+            'Multiple picklists run in parallel, each with its own progress. The design goal was to make "what\u2019s left to do, and where" answerable at a glance, from across the room.'
+          ], imgPicking: true, imgCaption: 'Ready to Pick \u2014 each list shows exactly what to grab and where before a picker commits to starting it.', img2Caption: 'Mid pick, grouped by bin, so a picker moving through the aisle sees everything they need from one location at once.' },
+          { eyebrow: 'Packing', heading: 'Where physical and digital have to match exactly.', paras: [
+            'Packing is where a mistake becomes expensive: the wrong box dimensions, the wrong carrier, or the wrong item count means a return, a refund, or an angry customer. The form does double duty as a checklist and a shipping label generator.'
+          ], imgPacking: true, imgCaption: 'The packing form only becomes actionable once contents are confirmed \u2014 box dimensions, carrier, and item counts all live on one screen so nothing prints against the wrong package.' },
+          { eyebrow: 'Dispatch', heading: 'Handing off to the carrier.', paras: [
+            'The final stage groups work by carrier rather than by order, because that\u2019s how a dispatch operator actually has to think: everything going out with one carrier today, everything going out with another tomorrow.'
+          ], imgDispatch: true, imgCaption: 'Grouping by carrier, not by individual order, matches how a dispatch operator physically hands off boxes: one manifest, one carrier, one pickup.' },
+          { eyebrow: 'One System, Reused', heading: 'The same layout, from Ready to Pick through Dispatch.', paras: [
+            'The list-plus-work-columns layout isn\u2019t redesigned per stage. It\u2019s the same structural pattern everywhere, with only the content changing \u2014 staff rotate between stations often, and a picker moved onto packing learns new content, not a new interface shape.'
+          ], imgLayoutReuse: true, imgCaption: 'A list on the left, up to three active work columns on the right \u2014 the same structure whether you\u2019re picking, packing, or dispatching.' },
+          { eyebrow: 'The Back Office', heading: 'The Orders dashboard: a completely different mode.', paras: [
+            'Dense and tabular, built for someone auditing a specific order rather than moving through a physical pipeline \u2014 the screen that answers "where is it, and what happened."'
+          ], imgOrdersDashboard: true, imgCaption: 'Master list on the left, full detail on the right, traced all the way to AWB number and delivery date.' },
+          { eyebrow: 'Key Decisions', heading: 'The decisions that made adoption possible', paras: [], hasCards: true, cards: [{ h: 'Mobile-first, one-handed', b: 'Designed for staff on their feet, carrying items.' }, { h: 'Guided picking, not a list', b: 'One item at a time, nearly eliminating multi-pick errors.' }, { h: 'Bin-based, matching their mental model', b: 'Search by location, not order number, instantly faster lookups.' }, { h: 'Zero-training target', b: 'I tested with staff who\u2019d never seen it, any hesitation meant a redesign.' }] },
+        ],
+        reflection: 'The single reused layout pattern across four very different stages held up well, a strong systems decision a sole designer could maintain consistently without a larger team. If I revisited it, I\u2019d pressure-test whether the vocabulary shift from Picklist to Tote to Shipment, which matches how the floor already talks, is actually intuitive to a brand-new hire in week one or only to staff who already know the floor, and I\u2019d want real time-on-task data comparing a trained picker against a first-shift picker to see if reuse actually shortens onboarding as intended.',
+      },
+      siemens: {
+        short: 'TMS', mono: 'Si', tag: 'Industrial · Enterprise', accent: '#6E32D6', kicker1: 'Testing System', kicker2: 'Industrial Enterprise',
+        grad: 'linear-gradient(135deg,#E9E2FB,#E0EAFB)', mockBg: 'linear-gradient(160deg,#ECE6FB,#E2ECFB)', ghost: 'rgba(110,50,214,.12)', metaInk: '#5E4E86', bodyInk: '#50456E',
+        logoBg: '#009999', logoInk: '#fff', shotLabel: 'testing management', slotId: 'work-siemens', slotPlaceholder: 'Drop Siemens testing screen',
+        title: 'Digitising Transformer Testing for Siemens',
+        cardDesc: 'Replaced paper-based testing with real-time data capture, automated compliance checks, and remote multi-stream witnessing.',
+        subtitle: 'A high-integrity testing system replacing paper with real-time capture, automated compliance, and remote witnessing.',
+        chips: ['High-integrity', 'Compliance', 'Real-time'],
+        role: 'Lead UX Designer', team: 'With engineers & compliance', timeline: '2024', tools: 'Figma, Miro',
+        metrics: [{ v: '100%', l: 'paper-based process replaced', c: '#6E32D6' }, { v: 'Live', l: 'compliance checks at capture', c: '#1FA56B' }, { v: 'Remote', l: 'multi-stream witnessing', c: '#2456E6' }],
+        sections: [
+          { eyebrow: 'The Problem', heading: 'A multi-day test, a clipboard, and zero margin for error.', paras: ['Every transformer undergoes rigorous testing before it ships, and it ran on paper: hand-recorded readings, manual compliance, and customers travelling to the floor to witness results. In a high-integrity domain, a transcription error or missed tolerance undermines the trust the product depends on.'] },
+          { eyebrow: 'Research', heading: 'Mapping a process nobody had written down', paras: ['The real process lived in experienced engineers\u2019 heads. I shadowed full test sequences, interviewed compliance stakeholders, and traced the witnessing workflow.'], hasCards: true, cards: [{ h: 'Risk lived between capture and compliance', b: 'Readings were right on paper but errors crept in during later manual checks.' }, { h: 'Witnessing was the biggest hidden cost', b: 'Flying stakeholders to the floor added days and expense.' }, { h: 'Trust had to be designed in', b: 'Engineers wouldn\u2019t abandon paper for a screen they couldn\u2019t fully trust.' }] },
+          { eyebrow: 'Design Strategy', heading: 'Capture, validate, and witness, in real time.', paras: ['Three connected capabilities: real-time data capture replacing handwritten records, automated compliance validation at the moment of entry, and remote witnessing of multiple concurrent streams with a verifiable record, so authorised parties sign off with the same confidence as standing on the floor.'] },
+        ],
+        reflection: 'In a high-integrity domain the challenge isn\u2019t the interface, it\u2019s trust. The system succeeded because it made correctness visible: every value, check, and signature accountable.',
+      },
+    };
+  }
+
+  renderVals() {
+    const r = this.state.route;
+    const open = (id) => () => this.go(id);
+    const csAll = this.csData();
+    const order = ['curamcare', 'amplicomm', 'ordestra', 'siemens'];
+    const names = { curamcare: 'CuramCare', amplicomm: 'Amplicomm Analytics', ordestra: 'Ordestra WMS', siemens: 'Siemens TMS' };
+    const cases = order.map((id) => ({ ...csAll[id], open: open(id), preview: id === 'curamcare', ampliPreview: id === 'amplicomm', shotPreview: id === 'ordestra', noPreview: id !== 'curamcare' && id !== 'amplicomm' && id !== 'ordestra' }));
+
+    const stats = [
+      { v: '6+', l: 'Years of experience', c: '#6C5CE7' },
+      { v: '4', l: 'Industries shipped in', c: '#1FA0FF' },
+      { v: '3+', l: 'Designers led & mentored', c: '#1FA56B' },
+      { v: '~35%', l: 'Faster ideation with AI tools', c: '#F5B312' },
+    ];
+
+    const domains = ['Healthcare', 'Analytics', 'SaaS', 'Ecommerce', 'Fintech'];
+
+    const curamAreas = ['Landing page', 'Onboarding', 'Verification', 'Categorization', 'Job search', 'Messaging', 'Intro meetings', 'Service agreements', 'Invoicing', 'Payments', '+ 9 more'];
+    const stickyPalette = [{ bg: '#F5B312', ink: '#2A1A00' }, { bg: '#7CE0BC', ink: '#0F3D2A' }, { bg: '#F7B9C4', ink: '#4A1420' }, { bg: '#CDB4F0', ink: '#2A1A4A' }, { bg: '#9FD6F5', ink: '#0F3350' }];
+    const stickyRot = ['-3deg', '2deg', '-1.5deg', '3deg', '-2.5deg', '1.5deg'];
+    const curamAreasStyled = curamAreas.map((a, i) => ({ label: a, bg: stickyPalette[i % stickyPalette.length].bg, ink: stickyPalette[i % stickyPalette.length].ink, rot: stickyRot[i % stickyRot.length] }));
+
+    const empThinks = ['"Am I doing this profile right?"', 'Unsure what self-employment actually means', 'Proud of the flexibility Curam offers', 'Anxious about being judged on the approval call', "Worried the pay doesn't match the effort", 'Wants to feel like a professional, not an applicant', 'Fears scams, data, documents, identity', 'Confused by taxes and invoicing responsibilities'];
+    const empSays = ['"Curam pays better than my agency did."', '"Why hasn\'t anyone replied to my application?"', '"Nobody told me I\'d been marked unavailable."', '"I don\'t get why I need a Service Agreement."', '"The fee feels high for what I get back."', '"I love that I can say no to a job."', '"That WhatsApp message looks like a scam."', '"I never know where I stand in the process."'];
+    const empDoes = ['Compares Curam\'s rates to agency pay first', 'Uploads DBS, ID, and training documents', 'Scrolls a static job list, applies to several at once', 'Messages clients directly once matched', 'Moves conversations to WhatsApp for the family', 'Creates invoices manually, one shift at a time', 'Waits ~2 days for bank transfer after each shift'];
+    const empPains = ['Drops off mid-onboarding, too many unexplained fields', 'Loses eligibility over DBS confusion, not lack of care skill', 'Applies to jobs already filled or expired', 'Silently marked "unavailable" with no way to self-fix', 'Distrusts an Indian-number WhatsApp message', "Fears starting unpaid work if a client hasn't paid yet", 'Never sure what happens next, at almost any step'];
+
+    const bpStages = ['Discover & sign up', 'Onboarding & verify', 'Search & apply', 'Match & message', 'Work & get paid'];
+    const bpDoes = ['Sees a Facebook ad or referral; tries the earnings calculator', 'Fills a long form: ID, DBS, experience, refs, bank + KYC details', 'Browses a static job list, applies where location/skills match', 'Messages the client in-app, arranges an intro meeting', 'Works the shift, raises an invoice, waits ~2 days for bank transfer'];
+    const bpFeels = [{icon:'🙂',label:'Hopeful'},{icon:'😟',label:'Overwhelmed'},{icon:'😕',label:'Anxious, unsure'},{icon:'🙂',label:'Cautiously optimistic'},{icon:'😬',label:'Awkward, worried'}];
+    const bpBack = [{title:'Manual document review',body:'Prep team checks every file by hand, forged docs can slip through'},{title:'No lapse detection',body:'Filled or expired jobs stay listed with no flag to stop applications'},{title:'Human contact-scanning',body:'Staff scan chats for shared numbers to keep insurance valid'},{title:'Manual payment matching',body:'Ops match client payments to invoices by hand before releasing carer payout'}];
+    const bpBreaks = [{title:'48-hr rule, no warning',body:'Carers are silently marked "unavailable" for slow replies, with no visible way to reset it.'},{title:'Stale job listings',body:'Carers apply to jobs already filled or expired, hear nothing back, and stop trusting listings.'},{title:'Off-platform drift',body:'Contact details move to WhatsApp, Curam loses visibility and insurance cover.'},{title:'Payment anxiety',body:'Carers can start a 2nd shift before the 1st is paid, and absorb the loss if a client stalls.'}];
+
+    const phases = [
+      {months:'Months 1–2', name:'Discover', detail:'Interviews, GA funnels, Hotjar, service blueprint'},
+      {months:'Months 3–4', name:'Define', detail:'HMWs, prioritisation, 3 workstreams scoped'},
+      {months:'Months 5–8', name:'Design', detail:'Onboarding, job flow, design system built'},
+      {months:'Months 9–10', name:'Deliver', detail:'Handoff, QA, launch measurement in GA / Hotjar'},
+    ];
+
+    const arrow = {arrow:true};
+    const flowPost = [{label:'Post a job'},arrow,{label:'Job card / Dashboard'},arrow,{label:'Modify job / Invite carers'},arrow,{label:'Job modified'}];
+    const flowModal = [{label:'Type of help needed'},arrow,{label:'Care recipient name'},arrow,{label:'Preferred language'},arrow,{label:'Location + funding type'},arrow,{label:'Carer preferences'}];
+    const flowApp = [{label:'Applicants page'},arrow,{label:'List of applications'},arrow,{label:'Applicant card',sub:'under review / rejected'},arrow,{label:'View profile / Send message'}];
+    const flowHire = [{label:'Message carer'},arrow,{label:'Chat window',sub:'client & carer conversation'},arrow,{label:'Client requests shift / hires'}];
+
+    const hmw = [
+      {tag:'Trust & onboarding · Carer-facing', q:'"How might we help carers understand why each piece of information is needed, and see their own progress?"', bg:'#F5B312', tagInk:'#2A1A00', rot:'-2deg'},
+      {tag:'Job discovery · Care-receiver-facing', q:'"How might we stop carers applying to jobs that are already filled or lapsed?"', bg:'#7CE0BC', tagInk:'#0F3D2A', rot:'1.5deg'},
+      {tag:'Messaging & safety · Both sides', q:'"How might we make it safe for an anxious receiver to message a stranger about a vulnerable family member?"', bg:'#F7B9C4', tagInk:'#4A1420', rot:'-1.5deg'},
+      {tag:'Systems & scale · Both sides', q:'"How might we give both products one accessible design language so features stop starting from scratch?"', bg:'#CDB4F0', tagInk:'#2A1A4A', rot:'2deg'},
+    ];
+
+    const msgFeatures = [
+      {icon:'🔒', title:'Receiver-initiated only', body:'A carer can never cold-message a family. The receiver always starts the thread.'},
+      {icon:'🎙', title:'Voice notes', body:'For receivers who find typing a barrier, common among older first-time users.'},
+      {icon:'📅', title:'In-app scheduler', body:'Meetings are logged to Curam, so the platform has a record if an issue is reported.'},
+      {icon:'💳', title:'In-thread invoice & pay', body:'Invoice, approve and pay in one thread; it flips to a "Hired!" state on payment.'},
+    ];
+
+    const jobCarers = [
+      {name:'Mary D.', active:'Last active 2 hrs ago', hrs:'130', recs:'12', exp:'6 yrs experience', tags:['Dementia','COPD','Stroke','+2']},
+      {name:'Angela R.', active:'Last active 40 min ago', hrs:'340', recs:'6', exp:'9 yrs experience', tags:['Mobility','Live-in','+3']},
+      {name:'Tomasz K.', active:'Last active 5 hrs ago', hrs:'95', recs:'6', exp:'3 yrs experience', tags:['Overnight','First aid']},
+    ];
+
+    const profileTags = ['Stroke','Physical disability','Anxiety','Mental health','Personal care'];
+    const profileRecs = [
+      {quote:'Mum has been well looked after, always patient, caring, and very charming.', by:'Catherine B.'},
+      {quote:'Reliable and communicates clearly before every shift, exactly what we needed.', by:'Daniel R.'},
+    ];
+    const rateCards = [
+      {icon:'⏳', label:'Hourly', active:true, rows:[{k:'Daily', v:'£20 per hour'}]},
+      {icon:'⚡', label:'Short notice', active:true, rows:[{k:'Daily', v:'£20 per hour'}]},
+      {icon:'🌙', label:'Overnight', active:false, rows:[{k:'Daily', v:'£120 per 8 hours'},{k:'Waking', v:'£25 per hour'}]},
+      {icon:'🏠', label:'Live-in', active:false, rows:[{k:'Part time', v:'£120 per day'},{k:'Full time', v:'£840 per week'}]},
+    ];
+    const vetted = [
+      {k:'DBS/PVG/NI Access', v:'Enhanced'},
+      {k:'Interview status', v:'Interviewed'},
+      {k:'National insurance', v:'Insured'},
+      {k:'Photo comparison', v:'Verified'},
+    ];
+    const careCats = [
+      {title:'Specialist care', tags:['Stroke','Physical disabilities','Anxiety','Mental health','Data','Data','Data','Data','Data','Data']},
+      {title:'Personal care', tags:['Dressing/Undressing','Catheter care','Stoma care']},
+      {title:'Mobility assistance', tags:['Moving and handling','Exercise','Eating & Drinking assistance','Data','Data','Data','Data','Data','Data']},
+      {title:'Companionship and house tasks', tags:['Companionship','Cooking']},
+      {title:'Languages spoken', tags:['Sign supported English','French']},
+      {title:'Interests and hobbies', tags:['Art','Music','Sports']},
+    ];
+    const attributes = [
+      {icon:'🚗', label:'Has driving license'},{icon:'🚙', label:'Owns a car'},
+      {icon:'🐾', label:'Pet friendly'},{icon:'🚭', label:'Non-smoker'},
+    ];
+    const cpd = [
+      {t:'Equality and diversity', d:'Completed on 26th May 2020'},
+      {t:'Person centered care', d:'Completed on 26th May 2020'},
+      {t:'Health and safety with coshh awareness', d:'Completed on 26th May 2020'},
+    ];
+    const quals = [
+      {t:'Health and safety at work', d:'Acquired on 26th May 2020'},
+      {t:'Moving and handling certificate', d:'Acquired on 26th May 2020'},
+      {t:'First aid', d:'Acquired on 26th May 2020'},
+    ];
+    const recCards = [0,1,2].map(() => ({quote:'As usual, mum has been well looked after by Petronela who is always patient, caring, and very very charming. Cannot recommend her enough. Very happy daughter.', by:'Catherine B.', date:"4th april, '23"}));
+    const microteam = [0,1,2,3].map(() => ({name:'Pelagie B.', dist:'2 miles away', exp:'6 years of experience', reply:'Replies in 2 hours'}));
+    const resultCarers = [
+      {name:'Pelagie Bareh Nwiyo', meta:'2 miles away · 6 years experience', tags:'Dementia · COPD · Stroke +2', selBorder:'#494FC9', selBg:'#494FC9'},
+      {name:'Kaiya S.', meta:'1 mile away · 4 yrs experience', tags:"Alzheimer's · Mobility +1", selBorder:'#494FC9', selBg:'#494FC9'},
+    ];
+    const msgHints = ['I own a cat','Be friendly with my pet','Require a driving license'];
+    const howItWorks = [
+      {n:'1', t:'Share what care you need', d:'Postcode + what help is needed'},
+      {n:'2', t:'Message carers for free', d:'Multiple carers, one message'},
+      {n:'3', t:'Review applicants', d:'Average 53 applications/post'},
+    ];
+    const trustStats = [
+      {v:'2.5M', l:'hrs of quality care delivered'},
+      {v:'6,500', l:'experienced, vetted carers'},
+      {v:'436', l:'reviews, Excellent on Trustpilot'},
+    ];
+
+    const dsBefore = [
+      'Three near-duplicate gray scales in active use, undocumented',
+      'Type sizes and weights set ad hoc per screen',
+      'No documented interaction states for navigation or menus',
+      'No accessibility contrast checking on any colour pairing',
+    ];
+    const dsAfter = [
+      'One governed colour ramp, 9–11 steps per palette',
+      'Single type scale: size, weight, letter-spacing per role',
+      'Every nav / dropdown / menu item specced across 5 states',
+      'Contrast ratios documented per colour, up to WCAG AAA',
+    ];
+    const ramps = [
+      {name:'Neutral', steps:['#F5EDE9','#EBD8CE','#E0BEAC','#D49E82','#C87E58','#C0552F','#9E4526','#7C351D','#5A2614','#3A180C']},
+      {name:'Secondary', steps:['#EAF0FF','#CFDDFF','#A9C1FF','#7EA0FF','#4E7BF5','#2456E6','#1D45BC','#163593','#10256B','#0A1745']},
+      {name:'Negative', steps:['#FCEAE4','#F7CDBF','#F0A991','#E88160','#E05A34','#C0552F','#9E3F1F','#7C2F17','#5A210F','#3A1409']},
+      {name:'Gray', steps:['#F6F6F4','#E7E6E1','#D3D2CC','#B7B6AF','#95948D','#727169','#565550','#3D3C38','#262523','#111110']},
+    ];
+    const navStates = [
+      {label:'Default', bg:'var(--card)', ink:'var(--ink2)', border:'1px solid var(--line)'},
+      {label:'Hover', bg:'#F4EFFA', ink:'#494FC9', border:'1px solid transparent'},
+      {label:'Active', bg:'#EEEAFB', ink:'#494FC9', border:'1px solid transparent'},
+      {label:'Pressed', bg:'#C9BEEC', ink:'#3D2A82', border:'1px solid transparent'},
+      {label:'Focused', bg:'var(--card)', ink:'#494FC9', border:'2px solid #494FC9'},
+    ];
+
+    const leadership = [
+      'Led a team of three designers split across the product workstreams, while personally owning the design system.',
+      'Ran stakeholder relationships directly with UK-based product and operations leads across a distributed, cross-timezone team.',
+      'Used the whiteboard sessions as the shared source of truth, so research findings, HMWs, and screen decisions stayed traceable across ten months, and a new engineer or stakeholder could walk the wall and understand the reasoning, not just the deliverable.',
+      'Translated research into stakeholders\u2019 own metrics, drop-off, time-to-hire, support ticket volume, dispute rate, since Curam\u2019s team was operations-first, not design-first.',
+      'Made and defended the receiver-initiated-messaging trade-off directly with stakeholders who worried it would frustrate proactive carers, resolved by framing it around what protects retention on the side the business depends on most.',
+    ];
+    const impactCards = [
+      {tag:'Onboarding', body:'GA funnel data isolated the step carers abandoned most; Hotjar showed hesitation on document upload specifically, directly motivating the segmented, progress-visible redesign.'},
+      {tag:'Job discovery', body:'Session recordings on the old job list showed carers repeatedly opening and backing out of postings, the behavioural signature of "is this job still open?"'},
+      {tag:'Messaging & trust', body:'Logging meetings and keeping invoicing in-thread converted a support/dispute blind spot into data the operations team could actually use.'},
+    ];
+    const outcomeResults = [
+      'Engineering gained a single accessible source of truth for both products, replacing three inconsistent gray scales and undocumented component states.',
+      'The job dashboard replaced a passive "wait for applicants" state with an explicit next-step model on both sides.',
+      'Messaging now gives Curam a first-party record of meetings and payments that previously happened invisibly off-platform, directly supporting dispute resolution and insurance claims.',
+      'The reframed service blueprint, backed by funnel and behavioural data, gave stakeholders a shared view of which problems were product issues versus operations issues, changing the roadmap conversation for two quarters.',
+    ];
+    const reflectCards = [
+      {h:"What I'd push harder on earlier", p:'The service blueprint should have existed in month one, not month four, it became the most persuasive artifact in every stakeholder conversation.'},
+      {h:"What I'd advocate for next", p:'Automated document verification and job-lapse detection are the clearest next investment for reducing both carer distrust and operational load.'},
+      {h:"A trade-off I'd revisit", p:'Receiver-initiated-only messaging protects trust, but I\u2019d want usage data on whether it quietly discourages proactive, in-demand carers, and design a safe middle ground if so.'},
+      {h:'What held up well', p:'Treating the whiteboard as the shared source of truth kept a distributed team and remote stakeholders aligned for ten months without re-litigating earlier decisions.'},
+    ];
+
+    const story = [
+      { icon: '\u25C9', iconBg: '#FBE2D4', iconInk: '#E5732A', h: 'The Beginning', b: 'I started as a Product Design Intern, learning the discipline the hard way, from pen-and-paper sketches to client presentations. I discovered early that design isn\u2019t about making things beautiful. It\u2019s about making things understood.' },
+      { icon: '\u25D0', iconBg: '#E7E0FB', iconInk: '#6C5CE7', h: 'A Shift in Perspective', b: 'Across healthcare, fintech, SaaS, and logistics, each domain forced a new set of users, constraints, and stakes. In healthcare a confusing interface erodes trust; in fintech a poor flow loses a transaction. Those consequences made me more precise and more empathetic.' },
+      { icon: '\u25A6', iconBg: '#DAF3E4', iconInk: '#1FA56B', h: 'How I Approach Design', b: 'My approach is rooted in research, systems thinking, and influence. I focus on experiences that feel intuitive, scalable, and purposeful, balancing user needs with business impact, and staying in the build through QA and iteration.' },
+    ];
+
+    const process = [
+      { icon: '\u25C8', iconBg: '#E2ECFF', iconInk: '#2456E6', h: 'Research is the foundation', b: 'I don\u2019t start designing until I understand the user, the business goal, and the gap between them. Every decision traces back to something a user said or struggled with.' },
+      { icon: '\u25B3', iconBg: '#FBE2D4', iconInk: '#E5732A', h: 'Cross-functional orchestration', b: 'I work directly with PMs and engineers, speaking the language of product, engineering, and business until the right decision becomes the obvious one.' },
+      { icon: '\u25C9', iconBg: '#DAF3E4', iconInk: '#1FA56B', h: 'Evidence-based influence', b: 'I synthesise qualitative insight with quantitative behaviour to build the case for design decisions, data as a creative tool, not an afterthought.' },
+      { icon: '\u25A0', iconBg: '#E7E0FB', iconInk: '#6C5CE7', h: 'Systems thinking at scale', b: 'I build scalable design languages and systemic patterns that hold their integrity across complex, high-stakes products.' },
+    ];
+
+    const resume = [
+      { org: 'Amplicomm', period: 'Oct 2023 — Present', role: 'Lead UI/UX Designer', mono: 'Am', logoBg: '#16150F', logoInk: '#fff', accent: '#6C5CE7', desc: 'Building an omnichannel communication platform and B2B analytics dashboard from 0 to 1. Leading 3 designers, establishing design systems, and integrating AI into team workflows.' },
+      { org: 'Actyv.ai', period: 'Jun — Aug 2023', role: 'Sr. UI/UX Designer', mono: 'ac', logoBg: '#2456E6', logoInk: '#fff', accent: '#2456E6', desc: 'Drove UX improvements across a supply-chain financing platform, identifying onboarding friction and delivering a prioritised redesign roadmap to senior leadership.' },
+      { org: 'Tcules UX Studio', period: 'Jul 2022 — Apr 2023', role: 'Sr. UI/UX Designer', mono: 'Tc', logoBg: '#D2603E', logoInk: '#fff', accent: '#C0552F', desc: 'Led the full design lifecycle for CuramCare, a UK healthcare platform. Managed 2–3 designers, ran 15+ user interviews, and achieved a 30% drop in drop-offs post-launch.' },
+      { org: 'Actonate IT', period: 'Jan 2020 — Jun 2022', role: 'UI/UX Designer', mono: 'Ac', logoBg: '#1FA56B', logoInk: '#fff', accent: '#1A9560', desc: 'Designed SaaS, CRM, and e-commerce products across healthcare, fintech, and retail. Built scalable UI component systems and design-to-dev handoff standards.' },
+    ];
+
+    const beliefs = [
+      { n: '01', h: 'Users don\u2019t read. They scan, judge, and decide.', b: 'Every screen I design assumes the user is distracted, impatient, and slightly skeptical. That\u2019s not pessimism, it\u2019s precision. It forces clarity.' },
+      { n: '02', h: 'The best decisions happen before you open Figma.', b: 'The research, the alignment, the framing of the right problem, that\u2019s where the real design work happens. The screen is just the output.' },
+      { n: '03', h: 'A design that doesn\u2019t ship is just an opinion.', b: 'I fight for good design through influence, not authority, until the right decision becomes the obvious one for product, engineering, and business alike.' },
+    ];
+
+    const base = {
+      goHome: () => this.go('home'), goAbout: () => this.go('about'),
+      scrollWork: () => this.scrollWork(), toggleTheme: () => this.toggleTheme(),
+      isHome: r === 'home', isAbout: r === 'about', isCuram: r === 'curamcare', isCase: (r !== 'home' && r !== 'about' && r !== 'curamcare'),
+      openNextCase: () => this.go('amplicomm'),
+      seqMetrics: [
+        { name: 'Orders', color: '#B39DDB', anim: 'ampliLine1' },
+        { name: 'AOV', color: '#64B5F6', anim: 'ampliLine2' },
+        { name: 'DRR', color: '#6C5CE7', anim: 'ampliLine3' },
+        { name: 'TACOS', color: '#C6D93E', anim: 'ampliLine4' },
+      ],
+      homePillBg: r === 'home' ? 'var(--ink)' : 'transparent', homePillInk: r === 'home' ? 'var(--bg)' : 'var(--ink2)',
+      aboutPillBg: r === 'about' ? 'var(--ink)' : 'transparent', aboutPillInk: r === 'about' ? 'var(--bg)' : 'var(--ink2)',
+      knobX: this.state.dark ? '12px' : '0px', knobBg: this.state.dark ? '#2A2D38' : '#F2EFE5', themeIcon: this.state.dark ? '\u2600\uFE0F' : '\u{1F319}',
+      cases, stats, domains, curamAreas, curamAreasStyled, empThinks, empSays, empDoes, empPains, bpStages, bpDoes, bpFeels, bpBack, bpBreaks, phases, flowPost, flowModal, flowApp, flowHire, hmw, msgFeatures, jobCarers, profileTags, profileRecs, rateCards, vetted, careCats, attributes, cpd, quals, recCards, microteam, resultCarers, msgHints, howItWorks, trustStats, dsBefore, dsAfter, ramps, navStates, leadership, impactCards, outcomeResults, reflectCards, story, process, resume, beliefs,
+    };
+
+    if (r === 'home' || r === 'about') return { ...base, cs: csAll.curamcare };
+    const cur = csAll[r] || csAll.curamcare;
+    const idx = order.indexOf(r);
+    const nextId = order[(idx + 1) % order.length];
+    const cs = { ...cur, sections: cur.sections.map((s) => ({ ...s, hasBullets: !!s.hasBullets, hasCards: !!s.hasCards, paras: s.paras || [], bullets: s.bullets || [], cards: s.cards || [] })), nextName: names[nextId], nextOpen: open(nextId) };
+    return { ...base, cs };
+  }
+}
+</script>
+</body>
+</html>

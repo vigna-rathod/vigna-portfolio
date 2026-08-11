@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<svg viewBox="0 0 1200 520" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <filter id="softC" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#1f2937" flood-opacity="0.08"></feDropShadow>
+    </filter>
+    <marker id="arrowC" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8792a2"></path>
+    </marker>
+  </defs>
+  <rect width="1200" height="520" fill="#F6F7F9"></rect>
+  <text x="48" y="46" font-size="27" font-weight="800" fill="#1e3a5f">Working directly with the founding team</text>
+  <text x="48" y="70" font-size="18" fill="#8792a2">Design decisions were reviewed and contested at the C-suite level every week, not batched into quarterly reviews</text>
+
+  <g filter="url(#softC)">
+    <rect x="450" y="210" width="300" height="130" rx="18" fill="#1e3a5f"></rect>
+  </g>
+  <text x="600" y="252" font-size="19" font-weight="800" fill="white" text-anchor="middle">Design team</text>
+  <text x="600" y="278" font-size="16" fill="#cfe0f0" text-anchor="middle">Lead Designer (me)</text>
+  <text x="600" y="300" font-size="16" fill="#cfe0f0" text-anchor="middle">+ 2 junior designers</text>
+  <text x="600" y="322" font-size="14.5" fill="#9fb8d1" text-anchor="middle">Owned research, UX, and design system</text>
+
+  <g filter="url(#softC)">
+    <rect x="60" y="100" width="220" height="90" rx="14" fill="white"></rect>
+    <rect x="60" y="410" width="220" height="90" rx="14" fill="white"></rect>
+    <rect x="920" y="100" width="220" height="90" rx="14" fill="white"></rect>
+    <rect x="920" y="410" width="220" height="90" rx="14" fill="white"></rect>
+    <rect x="480" y="70" width="240" height="84" rx="14" fill="white"></rect>
+  </g>
+
+  <text x="170" y="136" font-size="17" font-weight="800" fill="#1e3a5f" text-anchor="middle">CEO</text>
+  <text x="170" y="158" font-size="14.5" fill="#3A3A46" text-anchor="middle">Business priorities,</text>
+  <text x="170" y="176" font-size="14.5" fill="#3A3A46" text-anchor="middle">seller retention goals</text>
+
+  <text x="170" y="446" font-size="17" font-weight="800" fill="#1e3a5f" text-anchor="middle">CTO</text>
+  <text x="170" y="468" font-size="14.5" fill="#3A3A46" text-anchor="middle">Superset/data constraints,</text>
+  <text x="170" y="486" font-size="14.5" fill="#3A3A46" text-anchor="middle">what&#39;s feasible to query fast</text>
+
+  <text x="1030" y="136" font-size="17" font-weight="800" fill="#1e3a5f" text-anchor="middle">CPO</text>
+  <text x="1030" y="158" font-size="14.5" fill="#3A3A46" text-anchor="middle">Product scope,</text>
+  <text x="1030" y="176" font-size="14.5" fill="#3A3A46" text-anchor="middle">roadmap sequencing</text>
+
+  <text x="1030" y="446" font-size="17" font-weight="800" fill="#1e3a5f" text-anchor="middle">Engineering</text>
+  <text x="1030" y="468" font-size="14.5" fill="#3A3A46" text-anchor="middle">Build feasibility,</text>
+  <text x="1030" y="486" font-size="14.5" fill="#3A3A46" text-anchor="middle">component handoff</text>
+
+  <text x="600" y="104" font-size="17" font-weight="800" fill="#1e3a5f" text-anchor="middle">PM</text>
+  <text x="600" y="128" font-size="14.5" fill="#3A3A46" text-anchor="middle">Prioritization, seller feedback loop</text>
+
+  <g stroke="#8792a2" stroke-width="1.6" marker-end="url(#arrowC)" marker-start="url(#arrowC)">
+    <line x1="280" y1="168" x2="475" y2="250"></line>
+    <line x1="280" y1="433" x2="475" y2="300"></line>
+    <line x1="920" y1="168" x2="725" y2="250"></line>
+    <line x1="920" y1="433" x2="725" y2="300"></line>
+    <line x1="600" y1="154" x2="600" y2="210"></line>
+  </g>
+
+  <rect x="60" y="230" width="300" height="84" rx="10" fill="#EAF3EC"></rect>
+  <text x="80" y="258" font-size="15" font-weight="700" fill="#2e6b3e">What this meant day to day</text>
+  <text x="80" y="278" font-size="13.5" fill="#3A3A46">Weekly reviews with founders, not a</text>
+  <text x="80" y="296" font-size="13.5" fill="#3A3A46">design-team echo chamber.</text>
+</svg>

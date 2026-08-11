@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<svg viewBox="0 0 1200 380" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <filter id="softR" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#1f2937" flood-opacity="0.08"></feDropShadow>
+    </filter>
+  </defs>
+  <rect width="1200" height="380" fill="#F6F7F9"></rect>
+  <text x="48" y="46" font-size="27" font-weight="800" fill="#1e3a5f">How the audit criteria were grounded</text>
+  <text x="48" y="70" font-size="17.5" fill="#8792a2">Three inputs, cross-checked against each other before anything was called a &#34;problem&#34;</text>
+
+  <g filter="url(#softR)">
+    <rect x="66" y="100" width="340" height="232" rx="16" fill="#FFFFFF"></rect>
+    <rect x="430" y="100" width="340" height="232" rx="16" fill="#FFFFFF"></rect>
+    <rect x="794" y="100" width="340" height="232" rx="16" fill="#FFFFFF"></rect>
+  </g>
+
+  <circle cx="106" cy="140" r="22" fill="#E7EEF7"></circle>
+  <text x="106" y="148" font-size="22" text-anchor="middle">📋</text>
+  <text x="88" y="182" font-size="18" font-weight="800" fill="#1e3a5f">Heuristic evaluation</text>
+  <text x="88" y="210" font-size="16" fill="#3A3A46">Nielsen-style pass across the</text>
+  <text x="88" y="230" font-size="16" fill="#3A3A46">inherited dashboard: focal point,</text>
+  <text x="88" y="250" font-size="16" fill="#3A3A46">consistency, error prevention,</text>
+  <text x="88" y="270" font-size="16" fill="#3A3A46">recognition over recall.</text>
+  <rect x="88" y="290" width="180" height="26" rx="13" fill="#E7EEF7"></rect>
+  <text x="178" y="307" font-size="14" fill="#1d4e89" text-anchor="middle" font-weight="700">5 issues logged</text>
+
+  <circle cx="470" cy="140" r="22" fill="#EAF3EC"></circle>
+  <text x="470" y="148" font-size="22" text-anchor="middle">👤</text>
+  <text x="452" y="182" font-size="18" font-weight="800" fill="#1e3a5f">Stakeholder walkthroughs</text>
+  <text x="452" y="210" font-size="16" fill="#3A3A46">Sat with the CEO, CTO, and CPO</text>
+  <text x="452" y="230" font-size="16" fill="#3A3A46">as each opened the dashboard cold,</text>
+  <text x="452" y="250" font-size="16" fill="#3A3A46">narrating where they looked first</text>
+  <text x="452" y="270" font-size="16" fill="#3A3A46">and what confused them.</text>
+  <rect x="452" y="290" width="210" height="26" rx="13" fill="#EAF3EC"></rect>
+  <text x="557" y="307" font-size="14" fill="#2e6b3e" text-anchor="middle" font-weight="700">3 roles observed</text>
+
+  <circle cx="834" cy="140" r="22" fill="#FBEFE1"></circle>
+  <text x="834" y="148" font-size="22" text-anchor="middle">🔌</text>
+  <text x="816" y="182" font-size="18" font-weight="800" fill="#1e3a5f">Data-stack constraints</text>
+  <text x="816" y="210" font-size="16" fill="#3A3A46">Reviewed with the CTO what</text>
+  <text x="816" y="230" font-size="16" fill="#3A3A46">Superset&#39;s query engine could</text>
+  <text x="816" y="250" font-size="16" fill="#3A3A46">realistically support, so findings</text>
+  <text x="816" y="270" font-size="16" fill="#3A3A46">stayed buildable, not aspirational.</text>
+  <rect x="816" y="290" width="225" height="26" rx="13" fill="#FBEFE1"></rect>
+  <text x="928" y="307" font-size="14" fill="#a3610b" text-anchor="middle" font-weight="700">Grounded in feasibility</text>
+</svg>
