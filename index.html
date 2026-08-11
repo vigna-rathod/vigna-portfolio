@@ -1310,23 +1310,6 @@ class Component extends DCLogic {
         ],
         reflection: 'The single reused layout pattern across four very different stages held up well, a strong systems decision a sole designer could maintain consistently without a larger team. If I revisited it, I\u2019d pressure-test whether the vocabulary shift from Picklist to Tote to Shipment, which matches how the floor already talks, is actually intuitive to a brand-new hire in week one or only to staff who already know the floor, and I\u2019d want real time-on-task data comparing a trained picker against a first-shift picker to see if reuse actually shortens onboarding as intended.',
       },
-      siemens: {
-        short: 'TMS', mono: 'Si', tag: 'Industrial · Enterprise', accent: '#6E32D6', kicker1: 'Testing System', kicker2: 'Industrial Enterprise',
-        grad: 'linear-gradient(135deg,#E9E2FB,#E0EAFB)', mockBg: 'linear-gradient(160deg,#ECE6FB,#E2ECFB)', ghost: 'rgba(110,50,214,.12)', metaInk: '#5E4E86', bodyInk: '#50456E',
-        logoBg: '#009999', logoInk: '#fff', shotLabel: 'testing management', slotId: 'work-siemens', slotPlaceholder: 'Drop Siemens testing screen',
-        title: 'Digitising Transformer Testing for Siemens',
-        cardDesc: 'Replaced paper-based testing with real-time data capture, automated compliance checks, and remote multi-stream witnessing.',
-        subtitle: 'A high-integrity testing system replacing paper with real-time capture, automated compliance, and remote witnessing.',
-        chips: ['High-integrity', 'Compliance', 'Real-time'],
-        role: 'Lead UX Designer', team: 'With engineers & compliance', timeline: '2024', tools: 'Figma, Miro',
-        metrics: [{ v: '100%', l: 'paper-based process replaced', c: '#6E32D6' }, { v: 'Live', l: 'compliance checks at capture', c: '#1FA56B' }, { v: 'Remote', l: 'multi-stream witnessing', c: '#2456E6' }],
-        sections: [
-          { eyebrow: 'The Problem', heading: 'A multi-day test, a clipboard, and zero margin for error.', paras: ['Every transformer undergoes rigorous testing before it ships, and it ran on paper: hand-recorded readings, manual compliance, and customers travelling to the floor to witness results. In a high-integrity domain, a transcription error or missed tolerance undermines the trust the product depends on.'] },
-          { eyebrow: 'Research', heading: 'Mapping a process nobody had written down', paras: ['The real process lived in experienced engineers\u2019 heads. I shadowed full test sequences, interviewed compliance stakeholders, and traced the witnessing workflow.'], hasCards: true, cards: [{ h: 'Risk lived between capture and compliance', b: 'Readings were right on paper but errors crept in during later manual checks.' }, { h: 'Witnessing was the biggest hidden cost', b: 'Flying stakeholders to the floor added days and expense.' }, { h: 'Trust had to be designed in', b: 'Engineers wouldn\u2019t abandon paper for a screen they couldn\u2019t fully trust.' }] },
-          { eyebrow: 'Design Strategy', heading: 'Capture, validate, and witness, in real time.', paras: ['Three connected capabilities: real-time data capture replacing handwritten records, automated compliance validation at the moment of entry, and remote witnessing of multiple concurrent streams with a verifiable record, so authorised parties sign off with the same confidence as standing on the floor.'] },
-        ],
-        reflection: 'In a high-integrity domain the challenge isn\u2019t the interface, it\u2019s trust. The system succeeded because it made correctness visible: every value, check, and signature accountable.',
-      },
     };
   }
 
@@ -1334,8 +1317,8 @@ class Component extends DCLogic {
     const r = this.state.route;
     const open = (id) => () => this.go(id);
     const csAll = this.csData();
-    const order = ['curamcare', 'amplicomm', 'ordestra', 'siemens'];
-    const names = { curamcare: 'CuramCare', amplicomm: 'Amplicomm Analytics', ordestra: 'Ordestra WMS', siemens: 'Siemens TMS' };
+    const order = ['curamcare', 'amplicomm', 'ordestra'];
+    const names = { curamcare: 'CuramCare', amplicomm: 'Amplicomm Analytics', ordestra: 'Ordestra WMS' };
     const cases = order.map((id) => ({ ...csAll[id], open: open(id), preview: id === 'curamcare', ampliPreview: id === 'amplicomm', shotPreview: id === 'ordestra', noPreview: id !== 'curamcare' && id !== 'amplicomm' && id !== 'ordestra' }));
 
     const stats = [
