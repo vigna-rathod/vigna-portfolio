@@ -1,0 +1,53 @@
+<svg viewBox="0 0 1200 320" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <filter id="softR" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#3a1220" flood-opacity="0.10"></feDropShadow>
+    </filter>
+  </defs>
+  <rect width="1200" height="320" fill="#FAF7F6"></rect>
+  <text x="48" y="44" font-size="22" font-weight="800" fill="#3a1220">What shaped the design</text>
+  <text x="48" y="66" font-size="13.5" fill="#8a7a7d">Four signals that informed the fulfillment flow, gathered from watching the floor and the process it replaced</text>
+
+  <g filter="url(#softR)">
+    <rect x="48" y="90" width="256" height="200" rx="16" fill="#FFFFFF"></rect>
+    <rect x="328" y="90" width="256" height="200" rx="16" fill="#FFFFFF"></rect>
+    <rect x="608" y="90" width="256" height="200" rx="16" fill="#FFFFFF"></rect>
+    <rect x="888" y="90" width="256" height="200" rx="16" fill="#FFFFFF"></rect>
+  </g>
+
+  <circle cx="88" cy="128" r="22" fill="#F7E9EC"></circle>
+  <text x="88" y="134" font-size="16" font-weight="800" fill="#9c2444" text-anchor="middle">1</text>
+  <text x="70" y="168" font-size="13.5" font-weight="800" fill="#3a1220">Floor observation</text>
+  <text x="70" y="196" font-size="12.5" fill="#3A3A46">Pickers re-checking bin</text>
+  <text x="70" y="212" font-size="12.5" fill="#3A3A46">labels mid-aisle, unsure if</text>
+  <text x="70" y="228" font-size="12.5" fill="#3A3A46">they&#39;d already picked an item.</text>
+  <rect x="70" y="248" width="204" height="24" rx="12" fill="#F7E9EC"></rect>
+  <text x="172" y="264" font-size="11" fill="#9c2444" text-anchor="middle" font-weight="700">Led to per bin grouping</text>
+
+  <circle cx="368" cy="128" r="22" fill="#FBEFE1"></circle>
+  <text x="368" y="134" font-size="16" font-weight="800" fill="#a3610b" text-anchor="middle">2</text>
+  <text x="350" y="168" font-size="13.5" font-weight="800" fill="#3a1220">Error pattern review</text>
+  <text x="350" y="196" font-size="12.5" fill="#3A3A46">Most mis-picks traced back to</text>
+  <text x="350" y="212" font-size="12.5" fill="#3A3A46">near-identical SKUs read too</text>
+  <text x="350" y="228" font-size="12.5" fill="#3A3A46">quickly under time pressure.</text>
+  <rect x="350" y="248" width="204" height="24" rx="12" fill="#FBEFE1"></rect>
+  <text x="452" y="264" font-size="11" fill="#a3610b" text-anchor="middle" font-weight="700">Led to large item thumbnails</text>
+
+  <circle cx="648" cy="128" r="22" fill="#EAF3EC"></circle>
+  <text x="648" y="134" font-size="16" font-weight="800" fill="#2e6b3e" text-anchor="middle">3</text>
+  <text x="630" y="168" font-size="13.5" font-weight="800" fill="#3a1220">Staff shadowing</text>
+  <text x="630" y="196" font-size="12.5" fill="#3A3A46">Packers double checking box</text>
+  <text x="630" y="212" font-size="12.5" fill="#3A3A46">contents by hand even after</text>
+  <text x="630" y="228" font-size="12.5" fill="#3A3A46">the system said &#34;complete.&#34;</text>
+  <rect x="630" y="248" width="204" height="24" rx="12" fill="#EAF3EC"></rect>
+  <text x="732" y="264" font-size="11" fill="#2e6b3e" text-anchor="middle" font-weight="700">Led to an explicit item count</text>
+
+  <circle cx="928" cy="128" r="22" fill="#EAF1F8"></circle>
+  <text x="928" y="134" font-size="16" font-weight="800" fill="#2f5d8f" text-anchor="middle">4</text>
+  <text x="910" y="168" font-size="13.5" font-weight="800" fill="#3a1220">Prior process review</text>
+  <text x="910" y="196" font-size="12.5" fill="#3A3A46">Paper picklists and manual</text>
+  <text x="910" y="212" font-size="12.5" fill="#3A3A46">tally sheets left no record</text>
+  <text x="910" y="228" font-size="12.5" fill="#3A3A46">of who picked what, when.</text>
+  <rect x="910" y="248" width="204" height="24" rx="12" fill="#EAF1F8"></rect>
+  <text x="1012" y="264" font-size="11" fill="#2f5d8f" text-anchor="middle" font-weight="700">Led to a full digital record</text>
+</svg>

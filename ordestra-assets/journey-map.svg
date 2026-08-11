@@ -1,0 +1,151 @@
+<svg viewBox="0 0 1400 760" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <filter id="softJ2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#3a1220" flood-opacity="0.10"></feDropShadow>
+    </filter>
+  </defs>
+  <rect width="1400" height="760" fill="#FAF7F6"></rect>
+  <text x="48" y="42" font-size="24" font-weight="800" fill="#3a1220">Journey map: creating a picklist to dispatch</text>
+  <text x="48" y="64" font-size="13.5" fill="#8a7a7d">Five stages, three roles, one order moving through the warehouse from manual handoff points toward a digital record</text>
+
+  
+  <g font-size="13.5" font-weight="800" fill="white" text-anchor="middle">
+    <rect x="48" y="84" width="248" height="36" rx="8" fill="#9c2444"></rect><text x="172" y="107">Create Picklist</text>
+    <rect x="320" y="84" width="248" height="36" rx="8" fill="#b8305a"></rect><text x="444" y="107">Ready to Pick</text>
+    <rect x="592" y="84" width="248" height="36" rx="8" fill="#c6486e"></rect><text x="716" y="107">Picking</text>
+    <rect x="864" y="84" width="248" height="36" rx="8" fill="#3d7ab5"></rect><text x="988" y="107">Packing</text>
+    <rect x="1136" y="84" width="248" height="36" rx="8" fill="#2e6b3e"></rect><text x="1260" y="107">Dispatch</text>
+  </g>
+  <g font-size="10.5" fill="#8a7a7d" text-anchor="middle" font-weight="700">
+    <text x="172" y="134">ROLE: Supervisor</text>
+    <text x="444" y="134">ROLE: Picker</text>
+    <text x="716" y="134">ROLE: Picker</text>
+    <text x="988" y="134">ROLE: Packer</text>
+    <text x="1260" y="134">ROLE: Dispatch operator</text>
+  </g>
+
+  
+  <text x="48" y="164" font-size="12" font-weight="800" fill="#9c2444">EMOTIONAL CURVE</text>
+  <line x1="48" y1="230" x2="1384" y2="230" stroke="#EFE6E7" stroke-width="1.5" stroke-dasharray="4,4"></line>
+  <text x="1390" y="180" font-size="9.5" fill="#8a7a7d">Confident</text>
+  <text x="1390" y="234" font-size="9.5" fill="#8a7a7d">Neutral</text>
+  <text x="1390" y="290" font-size="9.5" fill="#8a7a7d">Strained</text>
+
+  <path d="M 172 190 C 260 175, 380 210, 444 225 C 520 245, 630 250, 716 240 C 800 232, 900 255, 988 258 C 1080 262, 1180 200, 1260 178" fill="none" stroke="#9c2444" stroke-width="3"></path>
+  <g fill="#9c2444">
+    <circle cx="172" cy="190" r="6"></circle>
+    <circle cx="444" cy="225" r="6"></circle>
+    <circle cx="716" cy="240" r="6"></circle>
+    <circle cx="988" cy="258" r="6"></circle>
+    <circle cx="1260" cy="178" r="6"></circle>
+  </g>
+  <g font-size="11" font-weight="700" fill="#3a1220" text-anchor="middle">
+    <text x="172" y="210">Organized</text>
+    <text x="444" y="245">Uncertain</text>
+    <text x="716" y="260">Time-pressed</text>
+    <text x="988" y="278">A little rushed</text>
+    <text x="1260" y="198">Relieved</text>
+  </g>
+
+  
+  <g filter="url(#softJ2)">
+    <rect x="48" y="320" width="248" height="150" rx="12" fill="white"></rect>
+    <rect x="320" y="320" width="248" height="150" rx="12" fill="white"></rect>
+    <rect x="592" y="320" width="248" height="150" rx="12" fill="white"></rect>
+    <rect x="864" y="320" width="248" height="150" rx="12" fill="white"></rect>
+    <rect x="1136" y="320" width="248" height="150" rx="12" fill="white"></rect>
+  </g>
+  <text x="66" y="342" font-size="11" font-weight="800" fill="#9c2444">DOING</text>
+  <g font-size="11" fill="#3A3A46">
+    <text x="66" y="360">Groups pending orders</text>
+    <text x="66" y="376">into a picklist by bin and</text>
+    <text x="66" y="392">item, assigns it to a</text>
+    <text x="66" y="408">picker to start.</text>
+  </g>
+
+  <text x="338" y="342" font-size="11" font-weight="800" fill="#9c2444">DOING</text>
+  <g font-size="11" fill="#3A3A46">
+    <text x="338" y="360">Opens the assigned</text>
+    <text x="338" y="376">picklist, checks item</text>
+    <text x="338" y="392">count and bin spread</text>
+    <text x="338" y="408">before starting.</text>
+  </g>
+
+  <text x="610" y="342" font-size="11" font-weight="800" fill="#9c2444">DOING</text>
+  <g font-size="11" fill="#3A3A46">
+    <text x="610" y="360">Walks bin to bin, picks</text>
+    <text x="610" y="376">the listed quantity,</text>
+    <text x="610" y="392">confirms each item as</text>
+    <text x="610" y="408">it&#39;s picked.</text>
+  </g>
+
+  <text x="882" y="342" font-size="11" font-weight="800" fill="#9c2444">DOING</text>
+  <g font-size="11" fill="#3A3A46">
+    <text x="882" y="360">Verifies tote contents,</text>
+    <text x="882" y="376">chooses box size and</text>
+    <text x="882" y="392">carrier, prints the</text>
+    <text x="882" y="408">shipping label.</text>
+  </g>
+
+  <text x="1154" y="342" font-size="11" font-weight="800" fill="#9c2444">DOING</text>
+  <g font-size="11" fill="#3A3A46">
+    <text x="1154" y="360">Groups packed parcels</text>
+    <text x="1154" y="376">by carrier, prints a</text>
+    <text x="1154" y="392">manifest, hands the</text>
+    <text x="1154" y="408">batch off.</text>
+  </g>
+
+  <line x1="66" y1="422" x2="278" y2="422" stroke="#EFE6E7"></line>
+  <line x1="338" y1="422" x2="550" y2="422" stroke="#EFE6E7"></line>
+  <line x1="610" y1="422" x2="822" y2="422" stroke="#EFE6E7"></line>
+  <line x1="882" y1="422" x2="1094" y2="422" stroke="#EFE6E7"></line>
+  <line x1="1154" y1="422" x2="1366" y2="422" stroke="#EFE6E7"></line>
+
+  <text x="66" y="440" font-size="11" font-weight="800" fill="#8A030A">PAIN POINT</text>
+  <g font-size="10.5" fill="#8a1f38">
+    <text x="66" y="456">Batch size is a guess,</text>
+    <text x="66" y="470">no feedback on how</text>
+    <text x="66" y="484">long it takes live.</text>
+  </g>
+
+  <text x="338" y="440" font-size="11" font-weight="800" fill="#8A030A">PAIN POINT</text>
+  <g font-size="10.5" fill="#8a1f38">
+    <text x="338" y="456">No priority signal</text>
+    <text x="338" y="470">across active</text>
+    <text x="338" y="484">picklists.</text>
+  </g>
+
+  <text x="610" y="440" font-size="11" font-weight="800" fill="#8A030A">PAIN POINT</text>
+  <g font-size="10.5" fill="#8a1f38">
+    <text x="610" y="456">Bin memory is manual,</text>
+    <text x="610" y="470">easy to re-check a bin</text>
+    <text x="610" y="484">already cleared.</text>
+  </g>
+
+  <text x="882" y="440" font-size="11" font-weight="800" fill="#8A030A">PAIN POINT</text>
+  <g font-size="10.5" fill="#8a1f38">
+    <text x="882" y="456">Box size is a manual</text>
+    <text x="882" y="470">judgment call, no size</text>
+    <text x="882" y="484">guidance from contents.</text>
+  </g>
+
+  <text x="1154" y="440" font-size="11" font-weight="800" fill="#8A030A">PAIN POINT</text>
+  <g font-size="10.5" fill="#8a1f38">
+    <text x="1154" y="456">Missing parcels surface</text>
+    <text x="1154" y="470">at the very end, right</text>
+    <text x="1154" y="484">before pickup.</text>
+  </g>
+
+  
+  <rect x="48" y="495" width="1336" height="120" rx="14" fill="#F7E9EC"></rect>
+  <text x="72" y="522" font-size="14" font-weight="800" fill="#9c2444">Where this points next</text>
+  <g font-size="12" fill="#3A3A46">
+    <text x="72" y="546">Every pain point sits at a handoff between roles, not inside one person&#39;s task. A supervisor sizing a picklist gets no</text>
+    <text x="72" y="566">feedback from the picker who finishes it. A picker has no priority signal across four active lists. A packer gets no size</text>
+    <text x="72" y="586">guidance from data the system already holds. The fix is surfacing information one role already has to the next role</text>
+    <text x="72" y="606">who needs it, rather than treating each of the five stages as its own isolated problem.</text>
+  </g>
+
+  <text x="48" y="650" font-size="11.5" fill="#8a7a7d">Note: emotional states and pain points are informed by the manual process this system replaced, not transcribed from live sessions.</text>
+  <text x="48" y="668" font-size="11.5" fill="#8a7a7d">Replace with real floor feedback if available.</text>
+</svg>
