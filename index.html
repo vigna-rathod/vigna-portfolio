@@ -63,7 +63,8 @@
   body.js [data-rv]{opacity:0;transform:translateY(20px)}
   body.js [data-rv].in{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.22,.7,.18,1),transform .7s cubic-bezier(.22,.7,.18,1)}
   .knob{transition:transform .35s cubic-bezier(.34,1.56,.64,1),background .3s}
-  @media(max-width:860px){.h1big{font-size:17vw !important}.two{grid-template-columns:1fr !important}.sticker{display:none}.cursor{display:none}}
+  @media(max-width:860px){.h1big{font-size:17vw !important}.two{grid-template-columns:1fr !important}.sticker{display:none}.cursor{display:none}main{padding-left:20px !important;padding-right:20px !important;padding-top:104px !important}.workcard>.two{gap:0 !important}.workcard img,.workcard [style*="aspect-ratio"]{aspect-ratio:16/11 !important}nav>div{width:100%;padding:0 12px;justify-content:space-between}nav .navpill{padding:9px 14px !important;font-size:13.5px !important}section[style*="padding:56px 48px"],section[style*="padding: 56px 48px"]{padding:36px 24px !important}div[style*="padding:56px 50px"]{padding:34px 24px !important}div[style*="max-width:74%"]{max-width:100% !important}}
+  @media(max-width:520px){main{padding-left:16px !important;padding-right:16px !important}.pill-btn{font-size:14px !important;padding:12px 20px !important}div[style*="grid-template-columns:repeat(4,1fr)"]{grid-template-columns:1fr 1fr !important}}
   .selbox{position:absolute;inset:-.06em -.04em;pointer-events:none;z-index:3;border:2px solid #5B47E0;background:rgba(91,71,224,.07);opacity:0;clip-path:inset(0 100% 100% 0);animation:marqueeLoop 6s ease-in-out .45s infinite}
   @keyframes marqueeLoop{0%{opacity:0;clip-path:inset(0 100% 100% 0)}3%{opacity:1}13%{clip-path:inset(0 0 0 0)}90%{opacity:1;clip-path:inset(0 0 0 0)}97%{opacity:0;clip-path:inset(0 0 0 0)}100%{opacity:0;clip-path:inset(0 100% 100% 0)}}
   @keyframes marquee{0%{opacity:0;clip-path:inset(0 100% 100% 0)}2%{opacity:1}100%{opacity:1;clip-path:inset(0 0 0 0)}}
@@ -121,11 +122,11 @@
         </h1>
       </div>
 
-      <p data-rv style="margin:104px auto 0;font-size:clamp(17px,1.7vw,21px);line-height:1.6;color:var(--ink2);max-width:64ch">With <strong style="color:var(--ink)">6+ years of experience</strong>, I turn complex, high-stakes workflows into products people actually want to use, across <strong style="color:var(--ink)">healthcare, SaaS, analytics, fintech &amp; enterprise</strong>. Currently leading UX for <strong style="color:var(--ink)">TruFlo</strong>, building omnichannel and AI-powered experiences from 0 to 1. Previously led a team of 3 on a UK care platform that <strong style="color:var(--ink)">improved task completion by 25%</strong>.</p>
+      <p data-rv style="margin:104px auto 0;font-size:clamp(17px,1.7vw,21px);line-height:1.6;color:var(--ink2);max-width:64ch">With <strong style="color:var(--ink)">6+ years of experience</strong>, I turn complex, high-stakes workflows into products people actually want to use, across <strong style="color:var(--ink)">healthcare, analytics, logistics &amp; enterprise</strong>. Currently leading UX for <strong style="color:var(--ink)">TruFlo</strong>, building omnichannel and AI-powered experiences from 0 to 1. Previously led a team of 3 on a UK care platform that <strong style="color:var(--ink)">improved task completion by 25%</strong>.</p>
 
       <div data-rv style="display:flex;flex-wrap:wrap;gap:13px;justify-content:center;margin-top:34px">
         <div onClick="{{ scrollWork }}" class="pill-btn" style="cursor:pointer;background:var(--ink);color:var(--bg);font-weight:700;font-size:16px;padding:15px 30px;border-radius:999px;display:inline-flex;align-items:center;gap:9px">View My Work ↓</div>
-        <a class="pill-btn" href="mailto:vignarathod122@gmail.com?subject=Resume%20request" style="background:var(--card);border:1px solid var(--line);font-weight:700;font-size:16px;padding:15px 30px;border-radius:999px">Download Resume</a>
+        <a class="pill-btn" href="uploads/VignaRathod.Resume.pdf" download="Vigna Rathod Resume.pdf" style="background:var(--card);border:1px solid var(--line);font-weight:700;font-size:16px;padding:15px 30px;border-radius:999px">Download Resume</a>
       </div>
     </section>
 
@@ -249,7 +250,6 @@
       <div data-rv style="display:flex;flex-wrap:wrap;gap:13px;justify-content:center">
         <a class="pill-btn" href="mailto:vignarathod122@gmail.com" style="background:#6C5CE7;color:#fff;font-weight:700;font-size:16px;padding:15px 32px;border-radius:999px">Say Hi</a>
         <a class="pill-btn" href="https://linkedin.com/in/vigna-rathod" target="_blank" style="background:var(--card);border:1px solid var(--line);font-weight:700;font-size:16px;padding:15px 30px;border-radius:999px">LinkedIn</a>
-        <a class="pill-btn" href="https://instagram.com/vignarathod" target="_blank" style="background:var(--card);border:1px solid var(--line);font-weight:700;font-size:16px;padding:15px 30px;border-radius:999px">Instagram</a>
       </div>
     </section>
   </div>
@@ -268,12 +268,12 @@
         </div>
       </div>
       <div data-rv style="position:relative">
-        <div style="aspect-ratio:4/4.4;border-radius:24px;background:linear-gradient(150deg,#6C5CE7,#9E3F2C);display:flex;align-items:center;justify-content:center">
-          <span style="font-family:'Archivo';font-weight:800;font-size:13px;color:rgba(255,255,255,.9);text-align:center;line-height:1.5;letter-spacing:.04em">[ PORTRAIT ]<br>full-bleed photo</span>
+        <div style="aspect-ratio:4/4.4;border-radius:24px;overflow:hidden">
+          <img src="uploads/IMG_20260321_002457_002.webp" alt="Vigna Rathod portrait" style="width:100%;height:100%;object-fit:cover;display:block" />
         </div>
         <div style="position:absolute;bottom:18px;left:18px;background:#6C5CE7;color:#fff;border-radius:14px;padding:16px 20px;max-width:62%">
           <div style="font-size:12.5px;opacity:.8;margin-bottom:5px">Experience Across Domains</div>
-          <div style="font-weight:700;font-size:15.5px;line-height:1.4">Healthcare · Fintech · SaaS<br>Analytics · Enterprise</div>
+          <div style="font-weight:700;font-size:15.5px;line-height:1.4">Healthcare · Logistics · Analytics<br>Warehousing · Industrial</div>
         </div>
       </div>
     </section>
@@ -934,7 +934,7 @@
 
     <div style="display:flex;flex-wrap:wrap;gap:14px;margin-bottom:52px">
       <sc-for list="{{ cs.metrics }}" as="m" hint-placeholder-count="3">
-        <div style="flex:1;min-width:170px;border:1px solid color-mix(in srgb, {{ m.c }} 28%, var(--line));border-radius:18px;padding:24px 26px;background:color-mix(in srgb, {{ m.c }} 9%, var(--card))">
+        <div style="flex:1;min-width:170px;border:1px solid var(--line);border-radius:18px;padding:24px 26px;background:var(--card)">
           <div style="font-family:'Archivo';font-weight:900;font-size:42px;letter-spacing:-.03em;line-height:1;color:{{ m.c }}">{{ m.v }}</div>
           <div style="font-size:14.5px;color:var(--ink2);margin-top:8px;line-height:1.4">{{ m.l }}</div>
         </div>
@@ -944,7 +944,7 @@
     <div style="max-width:900px;margin:0 auto">
       <sc-for list="{{ cs.sections }}" as="s" hint-placeholder-count="5">
         <section style="margin-bottom:54px">
-          <div style="display:inline-flex;align-items:center;gap:8px;font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:{{ cs.accent }};background:color-mix(in srgb, {{ cs.accent }} 12%, transparent);border-radius:999px;padding:6px 14px 5px;margin-bottom:14px">{{ s.eyebrow }}</div>
+          <div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:{{ cs.accent }};margin-bottom:14px">{{ s.eyebrow }}</div>
           <h3 style="font-family:'Archivo';font-weight:800;font-size:clamp(26px,3vw,38px);letter-spacing:-.025em;line-height:1.08;margin:0 0 18px;max-width:24ch">{{ s.heading }}</h3>
           <sc-for list="{{ s.paras }}" as="p" hint-placeholder-count="2"><p style="margin:0 0 16px;font-size:17.5px;line-height:1.72;color:var(--ink2);max-width:70ch">{{ p }}</p></sc-for>
           <sc-if value="{{ s.imgAudit }}" hint-placeholder-val="{{ false }}">
@@ -981,7 +981,7 @@
                 </div>
               </div>
               <figcaption style="margin:0 0 10px;font-size:13.5px;line-height:1.5;color:var(--ink3);text-align:center">The as-inherited CEO overview dashboard, before the redesign — five findings from the heuristic audit, mapped to what they actually looked like on screen.</figcaption>
-              <p style="margin:18px 0 0;padding:18px 22px;border-radius:14px;background:color-mix(in srgb, {{ cs.accent }} 10%, var(--bg2));border:1px solid color-mix(in srgb, {{ cs.accent }} 24%, var(--line));border-left:3px solid {{ cs.accent }};font-size:16.5px;line-height:1.6;font-style:italic;color:var(--ink)">{{ s.closing }}</p>
+              <p style="margin:18px 0 0;padding:18px 22px;border-radius:14px;background:var(--bg2);border:1px solid var(--line);font-size:16.5px;line-height:1.6;font-style:italic;color:var(--ink)">{{ s.closing }}</p>
             </sc-if>
           </sc-if>
           <sc-if value="{{ s.imgPrinciples }}" hint-placeholder-val="{{ false }}">
@@ -1093,8 +1093,8 @@
           <sc-if value="{{ s.hasCards }}" hint-placeholder-val="{{ false }}">
             <div style="display:flex;flex-direction:column;gap:13px;margin-top:8px">
               <sc-for list="{{ s.cards }}" as="cd" hint-placeholder-count="3">
-                <div style="border:1px solid color-mix(in srgb, {{ cs.accent }} 26%, var(--line));border-radius:16px;padding:22px 24px;background:color-mix(in srgb, {{ cs.accent }} 8%, var(--card))">
-                  <h4 style="font-family:'Archivo';font-weight:700;font-size:18px;letter-spacing:-.01em;margin:0 0 7px;color:{{ cs.accent }}">{{ cd.h }}</h4>
+                <div style="border:1px solid var(--line);border-radius:16px;padding:22px 24px;background:var(--card)">
+                  <h4 style="font-family:'Archivo';font-weight:700;font-size:18px;letter-spacing:-.01em;margin:0 0 7px;color:var(--ink)">{{ cd.h }}</h4>
                   <p style="margin:0;font-size:15.5px;line-height:1.6;color:var(--ink2)">{{ cd.b }}</p>
                 </div>
               </sc-for>
@@ -1103,7 +1103,7 @@
         </section>
       </sc-for>
 
-      <div style="border-radius:20px;background:color-mix(in srgb, {{ cs.accent }} 7%, var(--bg2));border:1px solid color-mix(in srgb, {{ cs.accent }} 24%, var(--line));border-left:4px solid {{ cs.accent }};padding:34px 36px;margin-bottom:44px">
+      <div style="border-radius:20px;background:var(--bg2);border:1px solid var(--line);padding:34px 36px;margin-bottom:44px">
         <div style="font-family:'Hanken Grotesk';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:{{ cs.accent }};margin-bottom:14px">Reflection</div>
         <p style="margin:0;font-family:'Archivo';font-weight:500;font-size:clamp(20px,2.3vw,26px);line-height:1.4;letter-spacing:-.01em;color:var(--ink)">{{ cs.reflection }}</p>
       </div>
@@ -1121,7 +1121,7 @@
   <footer style="border-top:1px solid var(--line);margin-top:40px">
     <div style="max-width:1180px;margin:0 auto;padding:30px 32px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;font-size:14px;color:var(--ink3)">
       <span>© 2026 Vigna Rathod · Lead UX Designer</span>
-      <span style="display:flex;gap:20px"><a class="pill-btn" href="https://linkedin.com/in/vigna-rathod" target="_blank">LinkedIn</a><a class="pill-btn" href="https://instagram.com/vignarathod" target="_blank">Instagram</a><a class="pill-btn" href="mailto:vignarathod122@gmail.com">Email</a></span>
+      <span style="display:flex;gap:20px"><a class="pill-btn" href="https://linkedin.com/in/vigna-rathod" target="_blank">LinkedIn</a><a class="pill-btn" href="mailto:vignarathod122@gmail.com">Email</a></span>
     </div>
   </footer>
 
@@ -1171,7 +1171,7 @@ class Component extends DCLogic {
           { eyebrow: 'The Problem', heading: 'Users found a match, then left the platform.', paras: ['CuramCare connects UK families with professional carers. After a match, users routinely moved to WhatsApp, email, or phone, taking conversations off-platform. CuramCare lost visibility, couldn\u2019t protect users, and couldn\u2019t build the trust a marketplace runs on.', 'Carer profiles were sparse, so care seekers hedged by reaching out externally for context. The platform was creating the conditions for its own abandonment.'] },
           { eyebrow: 'Research', heading: 'Understanding why users left', paras: ['Before touching Figma, I mapped the behaviour through 15+ interviews, competitive analysis, journey mapping, and a heuristic audit. Three root causes emerged:'], hasCards: true, cards: [{ h: 'No trust signals on profiles', b: 'Just a name and a short bio, users described "just guessing."' }, { h: 'In-app messaging felt cold', b: 'WhatsApp felt faster, more natural, more familiar.' }, { h: 'Onboarding set no expectations', b: 'The first 5 minutes left users unsure how it worked or why staying was safer.' }] },
           { eyebrow: 'Design Strategy', heading: 'Three interventions, one goal: make the platform the safest place to talk.', paras: ['Rather than just a better chat window, I defined three interventions that worked together, onboarding that builds confidence in 2 minutes, verified carer profiles surfacing trust signals above the fold, and messaging as fast as WhatsApp with touchpoints it can\u2019t offer: scheduling, documents, progress tracking.'] },
-          { eyebrow: 'Key Decisions', heading: 'The thinking behind the work', paras: [], hasCards: true, cards: [{ h: 'Verification above the fold, not buried', b: 'Testing showed 80% never expanded a collapsible credentials section, so it became always-visible.' }, { h: 'A nudge the moment a match confirmed', b: 'Users who saw it were 3× more likely to start their conversation in-app.' }, { h: 'Progressive profile completion', b: 'Complete profiles got 70% more contact requests, a completion score incentivised it without mandating it.' }] },
+          { eyebrow: 'Key Decisions', heading: 'The thinking behind the work', paras: [], hasCards: true, cards: [{ c: '#C0552F', h: 'Verification above the fold, not buried', b: 'Testing showed 80% never expanded a collapsible credentials section, so it became always-visible.' }, { c: '#C0552F', h: 'A nudge the moment a match confirmed', b: 'Users who saw it were 3× more likely to start their conversation in-app.' }, { c: '#C0552F', h: 'Progressive profile completion', b: 'Complete profiles got 70% more contact requests, a completion score incentivised it without mandating it.' }] },
         ],
         reflection: 'The most important decision wasn\u2019t a UI choice, it was framing the root cause as trust, not functionality. That clarity is the difference between a redesign that ships and one that actually works.',
       },
@@ -1179,7 +1179,7 @@ class Component extends DCLogic {
         short: 'Ampli', mono: 'Am', tag: 'SaaS · Analytics', accent: '#2456E6', kicker1: 'B2B Analytics', kicker2: 'SaaS Platform',
         grad: 'linear-gradient(135deg,#E2ECFF,#EAE4FF)', mockBg: 'linear-gradient(160deg,#E8EFFF,#EEE9FF)', ghost: 'rgba(36,86,230,.12)', metaInk: '#4E5E86', bodyInk: '#46506A',
         logoBg: '#2456E6', logoInk: '#fff', shotLabel: 'omnichannel analytics dashboard', slotId: 'work-amplicomm', slotPlaceholder: 'Drop Amplicomm dashboard',
-        title: 'Turning a Generic BI Tool Into a Product Sellers Actually Trust',
+        title: 'Designing an Omnichannel Analytics Platform for E-Commerce Sellers',
         cardDesc: 'Redesigned a generic Superset-based BI tool into a focused analytics product for e-commerce sellers tracking performance across every channel they sell on.',
         subtitle: 'Amplicomm\u2019s analytics dashboard started as a lightly customized Superset instance. I led the redesign that turned it into a focused product sellers actually trust.',
         chips: ['Heuristic Audit', 'Design System', 'Omnichannel Analytics'],
@@ -1208,19 +1208,19 @@ class Component extends DCLogic {
             'Rather than redesign screen by screen, I set four principles up front so every dashboard \u2014 not just the home screen \u2014 would answer the same audit consistently.'
           ], imgPrinciples: true,
             hasCards: true, cards: [
-              { h: 'One clear focal point', b: 'The KPI panel anchors every screen, driving the chart below it \u2014 not competing with it. Fixes "no focal point."' },
-              { h: 'Self-explanatory time', b: 'Explicit period tabs and a compare-period picker with visible date ranges. Fixes "MTD/YTD unclear."' },
-              { h: 'Reusable components', b: 'Chart-type, item-quantity, and label controls behave identically everywhere they appear. Fixes "lacks consistency."' },
-              { h: 'Depth on demand', b: 'Maximise view, compare metrics, and drill-in stay one click away, not upfront. Fixes "too many distractions."' }
+              { c: '#2456E6', h: 'One clear focal point', b: 'The KPI panel anchors every screen, driving the chart below it \u2014 not competing with it. Fixes "no focal point."' },
+              { c: '#1FA56B', h: 'Self-explanatory time', b: 'Explicit period tabs and a compare-period picker with visible date ranges. Fixes "MTD/YTD unclear."' },
+              { c: '#7A3CE0', h: 'Reusable components', b: 'Chart-type, item-quantity, and label controls behave identically everywhere they appear. Fixes "lacks consistency."' },
+              { c: '#E5732A', h: 'Depth on demand', b: 'Maximise view, compare metrics, and drill-in stay one click away, not upfront. Fixes "too many distractions."' }
             ] },
           { eyebrow: 'The Redesign', heading: 'The redesigned Home dashboard.', paras: [
             'The spec below isn\u2019t just a visual redesign \u2014 every interaction is documented as a rule, which is what let two junior designers extend the pattern to other dashboards consistently without me reviewing every screen personally.'
           ], imgHomeSpec: true,
             hasCards: true, cards: [
-              { h: 'Selected period panel', b: 'Quick tabs (1D/1W/1M/6M/1Y) plus a calendar picker. Selecting a period always shows the resulting date range back to the user in plain text.' },
-              { h: 'KPI panel drives the chart', b: 'Selecting a KPI changes which line renders below it. Hovering a compared period shows a dotted preview line before locking it in.' },
-              { h: 'Compare metrics panel', b: 'Sellers check multiple KPIs to overlay as separate lines, each with a distinct stroke color in the legend \u2014 no need to leave the chart.' },
-              { h: 'Consistent dropdown language', b: 'Chart-type, item-quantity, and label (Value/Variance) controls share the same interaction pattern everywhere they appear.' }
+              { c: '#2456E6', h: 'Selected period panel', b: 'Quick tabs (1D/1W/1M/6M/1Y) plus a calendar picker. Selecting a period always shows the resulting date range back to the user in plain text.' },
+              { c: '#1FA56B', h: 'KPI panel drives the chart', b: 'Selecting a KPI changes which line renders below it. Hovering a compared period shows a dotted preview line before locking it in.' },
+              { c: '#7A3CE0', h: 'Compare metrics panel', b: 'Sellers check multiple KPIs to overlay as separate lines, each with a distinct stroke color in the legend \u2014 no need to leave the chart.' },
+              { c: '#E5732A', h: 'Consistent dropdown language', b: 'Chart-type, item-quantity, and label (Value/Variance) controls share the same interaction pattern everywhere they appear.' }
             ] },
           { eyebrow: 'Cross-Filtering', heading: 'One interaction, four different jobs.', paras: [
             'The top filter bar (Tenant, Channel, Category, SKU, Brand) covered the obvious case, but different roles inside the same seller organization were asking fundamentally different questions of the same data \u2014 and rebuilding those filters manually every time was slow for all of them.'
@@ -1230,10 +1230,10 @@ class Component extends DCLogic {
             'One interaction model, reused everywhere, meant a founder, a category manager, an ads lead, and an operations lead could each get to their own answer without four separate dashboards to maintain.'
           ], imgCrossFilter: true,
             hasCards: true, cards: [
-              { h: 'Founder / CEO', b: 'Clicks the top channel slice to see if GMV growth is concentrated in one channel or spread evenly. Needs the 30-second answer.' },
-              { h: 'Category manager', b: 'Clicks a category bar to filter every KPI and the insights feed down to just that category\u2019s SKUs. Needs SKU-level depth.' },
-              { h: 'Marketing / Ads lead', b: 'Clicks a TACOS spike point to see which channel and SKUs drove the ad-spend jump that day. Needs cause, not just effect.' },
-              { h: 'Operations lead', b: 'Clicks a "Low Stock" insight to filter the whole dashboard to just that SKU\u2019s channel and delivery performance. Needs to act before it\u2019s a problem.' }
+              { c: '#2456E6', h: 'Founder / CEO', b: 'Clicks the top channel slice to see if GMV growth is concentrated in one channel or spread evenly. Needs the 30-second answer.' },
+              { c: '#1FA56B', h: 'Category manager', b: 'Clicks a category bar to filter every KPI and the insights feed down to just that category\u2019s SKUs. Needs SKU-level depth.' },
+              { c: '#7A3CE0', h: 'Marketing / Ads lead', b: 'Clicks a TACOS spike point to see which channel and SKUs drove the ad-spend jump that day. Needs cause, not just effect.' },
+              { c: '#E5732A', h: 'Operations lead', b: 'Clicks a "Low Stock" insight to filter the whole dashboard to just that SKU\u2019s channel and delivery performance. Needs to act before it\u2019s a problem.' }
             ] },
           { eyebrow: 'Leadership', heading: 'Leading through the work, not around it.', paras: [
             'This wasn\u2019t a design team working in isolation and presenting finished screens \u2014 every major decision was made in the room with the people who\u2019d have to live with its consequences.'
@@ -1274,10 +1274,10 @@ class Component extends DCLogic {
             'Before designing a single screen, I traced each manual habit on the floor to the specific cost it created, then to the digital response that would remove it.'
           ], imgResearchTable: true, imgCaption: 'Four inputs, cross-checked against each other before anything was called a requirement.',
             hasCards: true, cards: [
-            { h: 'Paper picklist per order', b: 'No record of who picked what, or when. Replaced with picklist cards carrying live pending/picked counts tied to a named picker.' },
-            { h: 'Whiteboard tally at packing', b: 'Erased and rewritten constantly, no shared visibility. Replaced with per-station progress bars everyone can see at once.' },
-            { h: 'Phone calls to confirm pickup', b: 'Slow handoff, manual recount right before pickup. Replaced with a carrier-grouped dispatch view and one manifest, printed on demand.' },
-            { h: 'No single source of order status', b: 'Support couldn\u2019t answer "where is this order" without walking the floor. Replaced with an Orders dashboard tracing one order to AWB number and delivery date.' }
+            { c: '#1A9560', h: 'Paper picklist per order', b: 'No record of who picked what, or when. Replaced with picklist cards carrying live pending/picked counts tied to a named picker.' },
+            { c: '#2456E6', h: 'Whiteboard tally at packing', b: 'Erased and rewritten constantly, no shared visibility. Replaced with per-station progress bars everyone can see at once.' },
+            { c: '#7A3CE0', h: 'Phone calls to confirm pickup', b: 'Slow handoff, manual recount right before pickup. Replaced with a carrier-grouped dispatch view and one manifest, printed on demand.' },
+            { c: '#E5732A', h: 'No single source of order status', b: 'Support couldn\u2019t answer "where is this order" without walking the floor. Replaced with an Orders dashboard tracing one order to AWB number and delivery date.' }
           ] },
           { eyebrow: 'Two Users, One System', heading: 'A floor worker mid-shift and a desk-bound coordinator, same product.', paras: [
             'The same system has to serve someone standing on the warehouse floor, moving between bins with a scanner in hand, and someone sitting at a desk reconciling an order dispute after the fact. Those two contexts pull the interface in opposite directions, so both needed a first-class mode instead of one compromised in favour of the other.'
@@ -1306,7 +1306,7 @@ class Component extends DCLogic {
           { eyebrow: 'The Back Office', heading: 'The Orders dashboard: a completely different mode.', paras: [
             'Dense and tabular, built for someone auditing a specific order rather than moving through a physical pipeline \u2014 the screen that answers "where is it, and what happened."'
           ], imgOrdersDashboard: true, imgCaption: 'Master list on the left, full detail on the right, traced all the way to AWB number and delivery date.' },
-          { eyebrow: 'Key Decisions', heading: 'The decisions that made adoption possible', paras: [], hasCards: true, cards: [{ h: 'Mobile-first, one-handed', b: 'Designed for staff on their feet, carrying items.' }, { h: 'Guided picking, not a list', b: 'One item at a time, nearly eliminating multi-pick errors.' }, { h: 'Bin-based, matching their mental model', b: 'Search by location, not order number, instantly faster lookups.' }, { h: 'Zero-training target', b: 'I tested with staff who\u2019d never seen it, any hesitation meant a redesign.' }] },
+          { eyebrow: 'Key Decisions', heading: 'The decisions that made adoption possible', paras: [], hasCards: true, cards: [{ c: '#1A9560', h: 'Mobile-first, one-handed', b: 'Designed for staff on their feet, carrying items.' }, { c: '#2456E6', h: 'Guided picking, not a list', b: 'One item at a time, nearly eliminating multi-pick errors.' }, { c: '#7A3CE0', h: 'Bin-based, matching their mental model', b: 'Search by location, not order number, instantly faster lookups.' }, { c: '#E5732A', h: 'Zero-training target', b: 'I tested with staff who\u2019d never seen it, any hesitation meant a redesign.' }] },
         ],
         reflection: 'The single reused layout pattern across four very different stages held up well, a strong systems decision a sole designer could maintain consistently without a larger team. If I revisited it, I\u2019d pressure-test whether the vocabulary shift from Picklist to Tote to Shipment, which matches how the floor already talks, is actually intuitive to a brand-new hire in week one or only to staff who already know the floor, and I\u2019d want real time-on-task data comparing a trained picker against a first-shift picker to see if reuse actually shortens onboarding as intended.',
       },
@@ -1323,12 +1323,12 @@ class Component extends DCLogic {
 
     const stats = [
       { v: '6+', l: 'Years of experience', c: '#6C5CE7' },
-      { v: '4', l: 'Industries shipped in', c: '#1FA0FF' },
+      { v: '7+', l: 'Industries shipped in', c: '#1FA0FF' },
       { v: '3+', l: 'Designers led & mentored', c: '#1FA56B' },
       { v: '~35%', l: 'Faster ideation with AI tools', c: '#F5B312' },
     ];
 
-    const domains = ['Healthcare', 'Analytics', 'SaaS', 'Ecommerce', 'Fintech'];
+    const domains = ['Healthcare', 'Warehouse Management', 'Analytics', 'CRM', 'Ecommerce', 'Industrial Testing', 'Logistics'];
 
     const curamAreas = ['Landing page', 'Onboarding', 'Verification', 'Categorization', 'Job search', 'Messaging', 'Intro meetings', 'Service agreements', 'Invoicing', 'Payments', '+ 9 more'];
     const stickyPalette = [{ bg: '#F5B312', ink: '#2A1A00' }, { bg: '#7CE0BC', ink: '#0F3D2A' }, { bg: '#F7B9C4', ink: '#4A1420' }, { bg: '#CDB4F0', ink: '#2A1A4A' }, { bg: '#9FD6F5', ink: '#0F3350' }];
@@ -1489,7 +1489,7 @@ class Component extends DCLogic {
 
     const story = [
       { icon: '\u25C9', iconBg: '#FBE2D4', iconInk: '#E5732A', h: 'The Beginning', b: 'I started as a Product Design Intern, learning the discipline the hard way, from pen-and-paper sketches to client presentations. I discovered early that design isn\u2019t about making things beautiful. It\u2019s about making things understood.' },
-      { icon: '\u25D0', iconBg: '#E7E0FB', iconInk: '#6C5CE7', h: 'A Shift in Perspective', b: 'Across healthcare, fintech, SaaS, and logistics, each domain forced a new set of users, constraints, and stakes. In healthcare a confusing interface erodes trust; in fintech a poor flow loses a transaction. Those consequences made me more precise and more empathetic.' },
+      { icon: '\u25D0', iconBg: '#E7E0FB', iconInk: '#6C5CE7', h: 'A Shift in Perspective', b: 'Across healthcare, analytics, warehousing, and logistics, each domain forced a new set of users, constraints, and stakes. In healthcare a confusing interface erodes trust; in fintech a poor flow loses a transaction. Those consequences made me more precise and more empathetic.' },
       { icon: '\u25A6', iconBg: '#DAF3E4', iconInk: '#1FA56B', h: 'How I Approach Design', b: 'My approach is rooted in research, systems thinking, and influence. I focus on experiences that feel intuitive, scalable, and purposeful, balancing user needs with business impact, and staying in the build through QA and iteration.' },
     ];
 
